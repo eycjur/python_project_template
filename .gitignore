@@ -1,1 +1,20 @@
-.venv
+# キャッシュ関連
+__pycache__/
+.idea/
+.ipynb_checkpoints/
+.venv/
+.*_cache/
+
+# データ関連
+data/
+logs/
+output/
+old/
+temp/
+
+# ドキュメント関連
+source/
+_build/
+
+# notebook
+*.ipynb

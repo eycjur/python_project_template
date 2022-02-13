@@ -1,4 +1,4 @@
-from python_project_template.add import add
+from python_project_template.add.add import add
 
 
 def add():
