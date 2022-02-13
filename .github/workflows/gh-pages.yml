@@ -26,7 +26,7 @@ jobs:
           key: ${{ runner.os }}-poetry
 
       - name: install poetry
-        if: steps.poetry-cache.outputs.cache-hit != "true"
+        if: steps.poetry-cache.outputs.cache-hit != 'true'
         run: curl -sSL https://install.python-poetry.org/ | python3 -
 
       - name: add poetry to path
