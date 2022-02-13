@@ -13,7 +13,7 @@
         "**/.*_cache": true,
     },
     // pythonパス関連
-    "python.defaultInterpreterPath": "${workspaceFolder}\\.venv\\bin\\python.exe",
+    "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python.exe",
     // フォーマッター
     "autoDocstring.docstringFormat": "google",
     "python.formatting.provider": "black",
