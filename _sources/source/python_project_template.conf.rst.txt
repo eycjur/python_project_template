@@ -1,0 +1,21 @@
+python\_project\_template.conf package
+======================================
+
+Submodules
+----------
+
+python\_project\_template.conf.conf module
+------------------------------------------
+
+.. automodule:: python_project_template.conf.conf
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: python_project_template.conf
+   :members:
+   :undoc-members:
+   :show-inheritance:

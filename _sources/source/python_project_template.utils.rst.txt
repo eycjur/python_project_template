@@ -1,0 +1,29 @@
+python\_project\_template.utils package
+=======================================
+
+Submodules
+----------
+
+python\_project\_template.utils.settings module
+-----------------------------------------------
+
+.. automodule:: python_project_template.utils.settings
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+python\_project\_template.utils.util module
+-------------------------------------------
+
+.. automodule:: python_project_template.utils.util
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: python_project_template.utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
