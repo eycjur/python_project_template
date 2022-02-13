@@ -56,7 +56,7 @@ flake8:
 
 # sphinx（ドキュメント自動作成ツール）関係
 sphinx:
-	poetry run sphinx-apidoc -f -o ./docs/source .
+	poetry run sphinx-apidoc -f -o ./docs/source ./python_project_template
 	poetry run sphinx-build -b html ./docs ./docs/_build
 sphinx-reflesh:
 	rm -rf docs/_build/* docs/source/*.rst
