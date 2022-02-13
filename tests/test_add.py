@@ -1,4 +1,4 @@
-from python_project_template.add.add import add
+from add.add import add
 
 
 def test_add() -> None:
