@@ -4,10 +4,10 @@ python\_project\_template.conf package
 Submodules
 ----------
 
-python\_project\_template.conf.conf module
-------------------------------------------
+python\_project\_template.conf.settings module
+----------------------------------------------
 
-.. automodule:: python_project_template.conf.conf
+.. automodule:: python_project_template.conf.settings
    :members:
    :undoc-members:
    :show-inheritance:

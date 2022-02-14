@@ -4,14 +4,6 @@ python\_project\_template.utils package
 Submodules
 ----------
 
-python\_project\_template.utils.settings module
------------------------------------------------
-
-.. automodule:: python_project_template.utils.settings
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 python\_project\_template.utils.util module
 -------------------------------------------
 

@@ -89,17 +89,84 @@
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="このヘッドラインへのパーマリンク"></a></h2>
 </section>
-<section id="module-python_project_template.conf.conf">
-<span id="python-project-template-conf-conf-module"></span><h2>python_project_template.conf.conf module<a class="headerlink" href="#module-python_project_template.conf.conf" title="このヘッドラインへのパーマリンク"></a></h2>
+<section id="module-python_project_template.conf.settings">
+<span id="python-project-template-conf-settings-module"></span><h2>python_project_template.conf.settings module<a class="headerlink" href="#module-python_project_template.conf.settings" title="このヘッドラインへのパーマリンク"></a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="python_project_template.conf.conf.CFG">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">python_project_template.conf.conf.</span></span><span class="sig-name descname"><span class="pre">CFG</span></span><a class="reference internal" href="../_modules/python_project_template/conf/conf.html#CFG"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#python_project_template.conf.conf.CFG" title="この定義へのパーマリンク"></a></dt>
+<dt class="sig sig-object py" id="python_project_template.conf.settings.CFG">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">python_project_template.conf.settings.</span></span><span class="sig-name descname"><span class="pre">CFG</span></span><a class="reference internal" href="../_modules/python_project_template/conf/settings.html#CFG"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#python_project_template.conf.settings.CFG" title="この定義へのパーマリンク"></a></dt>
 <dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="python_project_template.conf.conf.CFG.is_debug_mode">
-<span class="sig-name descname"><span class="pre">is_debug_mode</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#python_project_template.conf.conf.CFG.is_debug_mode" title="この定義へのパーマリンク"></a></dt>
-<dd></dd></dl>
+</dd></dl>
 
+<dl class="py class">
+<dt class="sig sig-object py" id="python_project_template.conf.settings.CustomLoggerAdapter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">python_project_template.conf.settings.</span></span><span class="sig-name descname"><span class="pre">CustomLoggerAdapter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logger</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extra</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/python_project_template/conf/settings.html#CustomLoggerAdapter"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#python_project_template.conf.settings.CustomLoggerAdapter" title="この定義へのパーマリンク"></a></dt>
+<dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">logging.LoggerAdapter</span></code></p>
+<p>ロガーをカスタマイズするためのクラス</p>
+<ul class="simple">
+<li><p>ログのextraにkeyが渡されなかったときにデフォルト値を追加する</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ</dt>
+<dd class="field-odd"><p><strong>logging</strong> (<em>Logger</em>) -- カスタマイズするロガー</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="python_project_template.conf.settings.CustomLoggerAdapter.process">
+<span class="sig-name descname"><span class="pre">process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/python_project_template/conf/settings.html#CustomLoggerAdapter.process"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#python_project_template.conf.settings.CustomLoggerAdapter.process" title="この定義へのパーマリンク"></a></dt>
+<dd><p>ログをとる処理で呼び出される</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>msg</strong> (<em>str</em>) -- ログメッセージ</p></li>
+<li><p><strong>kwargs</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) -- ログメッセージに渡す引数 ex{'extra': {'key': 'deprecated'}}</p></li>
+</ul>
+</dd>
+<dt class="field-even">戻り値</dt>
+<dd class="field-even"><p>{&quot;key&quot;: self.extra}を追加したログメッセージと引数</p>
+</dd>
+<dt class="field-odd">戻り値の型</dt>
+<dd class="field-odd"><p>Tuple[str, Dict[str, Any]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_project_template.conf.settings.set_logger">
+<span class="sig-prename descclassname"><span class="pre">python_project_template.conf.settings.</span></span><span class="sig-name descname"><span class="pre">set_logger</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">modname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">set_level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'debug'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">logging.Logger</span></span></span><a class="reference internal" href="../_modules/python_project_template/conf/settings.html#set_logger"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#python_project_template.conf.settings.set_logger" title="この定義へのパーマリンク"></a></dt>
+<dd><p>loggingに関する設定</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>modname</strong> (<em>str</em>) -- モジュールの名前(__name__を推奨)</p></li>
+<li><p><strong>set_level</strong> (<em>str</em>) -- loggingを出力するレベル</p></li>
+</ul>
+</dd>
+<dt class="field-even">例外</dt>
+<dd class="field-even"><p><strong>ValueError</strong> -- set_levelがレベルでない場合</p>
+</dd>
+</dl>
+<p class="rubric">サンプル</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">settings</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">logger</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">set_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">set_level</span><span class="o">=</span><span class="s2">&quot;WARNING&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">()),</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;2dimensional_data&quot;</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="python_project_template.conf.settings.set_seed">
+<span class="sig-prename descclassname"><span class="pre">python_project_template.conf.settings.</span></span><span class="sig-name descname"><span class="pre">set_seed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/python_project_template/conf/settings.html#set_seed"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#python_project_template.conf.settings.set_seed" title="この定義へのパーマリンク"></a></dt>
+<dd><p>seedを固定</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ</dt>
+<dd class="field-odd"><p><strong>seed</strong> (<em>int</em><em>, </em><em>optional</em>) -- シードの値 Defaults to 4.</p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
