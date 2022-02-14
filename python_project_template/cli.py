@@ -19,9 +19,10 @@ Attention:
 """
 
 import typer
-from add.add import add
-from conf.conf import CFG
-from utils import settings  # noqa
+
+from python_project_template.add.add import add
+from python_project_template.conf.conf import CFG
+from python_project_template.utils import settings  # noqa
 
 app = typer.Typer()
 
@@ -33,7 +34,7 @@ def hello() -> None:
 
 
 @app.command()
-def main() -> None:
+def sample() -> None:
     """メインコマンド"""
     print(CFG.is_debug_mode)
     print(add(3, 5))
@@ -42,5 +43,5 @@ def main() -> None:
 typer_click_object = typer.main.get_command(app)
 
 
-if __name__ == "__main__":
+def main() -> None:
     typer_click_object()

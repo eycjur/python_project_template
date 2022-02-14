@@ -13,15 +13,16 @@
 # ---
 
 # %%
-import sys; sys.path.append("../python_project_template")
+import sys; sys.path.append("..")
 
 import japanize_matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
-from conf.conf import CFG
-from utils import settings
+
+from python_project_template.conf.conf import CFG
+from python_project_template.utils import settings
 
 np.set_printoptions(edgeitems=3)
 plt.rcParams["font.size"] = 14

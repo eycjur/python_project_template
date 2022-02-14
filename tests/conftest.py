@@ -6,4 +6,4 @@
 import sys
 from pathlib import Path
 
-sys.path.append(str(Path(__file__).parent.parent.joinpath("python_project_template")))
+sys.path.append(str(Path(__file__).parent.parent))

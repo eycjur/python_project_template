@@ -164,9 +164,11 @@ python_project_template/cli.pyで利用
 ### 実行
 ```bash
 make cli target=<command>
-poetry run python python_project_template/cli.py <command>
+poetry run python python_project_template <command>
 # ヘルプを表示
 make cli target=--help
+poetry run python python_project_template --help
+poetry run python python_project_template <command> --help
 ```
 
 ## profile
@@ -177,3 +179,7 @@ make cli target=--help
 poetry run python -m cProfile -o logs/profile.stats python_project_template/cli.py <command>
 poetry run snakeviz ./logs/profile.stats
 ```
+
+## TODO
+ライセンスファイルの追加  
+docker対応  

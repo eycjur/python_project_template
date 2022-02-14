@@ -71,4 +71,4 @@ profile:
 ## 実行コマンド
 # cli.pyの実行
 cli:
-	poetry run python python_project_template/cli.py $(target)
+	poetry run python python_project_template $(target)
