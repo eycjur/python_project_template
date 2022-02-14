@@ -2,7 +2,7 @@
 name = "python_project_template"
 version = "0.1.0"
 description = ""
-authors = ["eycjur <eycjur@gmail.com>"]
+authors = ["eycjur"]
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.11"
@@ -14,7 +14,6 @@ isort = "^5.10.1"
 notebook = "^6.4.8"
 jupyterlab = "^3.2.9"
 jupytext = "^1.13.7"
-japanize-matplotlib = "^1.1.3"
 scipy = "^1.8.0"
 seaborn = "^0.11.2"
 line-profiler = "^3.4.0"
@@ -28,6 +27,7 @@ myst-parser = "^0.17.0"
 sphinx-rtd-theme = "^1.0.0"
 
 [tool.poetry.extras]
+extra = []
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

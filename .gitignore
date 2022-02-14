@@ -4,6 +4,7 @@ __pycache__/
 .ipynb_checkpoints/
 .venv/
 .*_cache/
+.DS_Store
 
 # データ関連
 data/

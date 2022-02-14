@@ -35,8 +35,6 @@ jupyter:
 # notebookとpythonスクリプトを同期
 sync-notebook:
 	poetry run jupytext --sync notebook/*.ipynb
-# py2jupyter:
-# 	poetry run jupytext --to notebook notebook/hogehoge.py
 
 # テストコードの実行
 test:
@@ -45,6 +43,7 @@ test:
 # リンター
 lint:
 	@make --no-print-directory black
+	@make --no-print-directory isort
 	@make --no-print-directory flake8
 	@make --no-print-directory mypy
 mypy:
@@ -53,6 +52,8 @@ black:
 	poetry run black $(target)
 flake8:
 	poetry run flake8 $(target)
+isort:
+	poetry run isort $(target)
 
 # sphinx（ドキュメント自動作成ツール）関係
 sphinx:
@@ -64,7 +65,7 @@ sphinx-reflesh:
 
 # プロファイリング
 profile:
-	poetry run python -m cProfile -o logs/profile.stats python_project_template/cli.py command --is-full
+	poetry run python -m cProfile -o logs/profile.stats python_project_template/cli.py command
 	poetry run snakeviz ./logs/profile.stats
 
 ## 実行コマンド
