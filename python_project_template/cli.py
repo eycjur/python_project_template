@@ -21,8 +21,7 @@ Attention:
 import typer
 
 from python_project_template.add.add import add
-from python_project_template.conf.conf import CFG
-from python_project_template.utils import settings  # noqa
+from python_project_template.conf import settings  # noqa
 
 app = typer.Typer()
 
@@ -36,7 +35,7 @@ def hello() -> None:
 @app.command()
 def sample() -> None:
     """メインコマンド"""
-    print(CFG.is_debug_mode)
+    print(settings.cfg.is_debug_mode)
     print(add(3, 5))
 
 
