@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>python_project_template.conf.settings &mdash; python_project_template  ドキュメント</title>
+  <title>src.config.settings &mdash; python_project_template  ドキュメント</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -37,7 +37,9 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../source/modules.html">python_project_template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/modules.html">src</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme_link.html">[readme]python_project_template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme_link.html#id2">各種ツール使い方</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../commandline.html">Command line tools</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../todolist.html">Todo lists</a></li>
 </ul>
@@ -57,7 +59,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="../../index.html">モジュールコード</a> &raquo;</li>
-      <li>python_project_template.conf.settings</li>
+      <li>src.config.settings</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -66,7 +68,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <h1>python_project_template.conf.settings のソースコード</h1><div class="highlight"><pre>
+  <h1>src.config.settings のソースコード</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">random</span>
@@ -80,14 +82,14 @@
 <span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">suppress</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;font.size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">16</span>
 
-<span class="n">BASE_DIR</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parents</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>  <span class="c1"># 上のpython_project_template</span>
-<span class="n">SRC_DIR</span> <span class="o">=</span> <span class="n">BASE_DIR</span> <span class="o">/</span> <span class="s2">&quot;python_project_template&quot;</span>
+<span class="n">BASE_DIR</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parents</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>  <span class="c1"># python_project_template</span>
+<span class="n">SRC_DIR</span> <span class="o">=</span> <span class="n">BASE_DIR</span> <span class="o">/</span> <span class="s2">&quot;src&quot;</span>
 <span class="n">LOG_FILE</span> <span class="o">=</span> <span class="n">BASE_DIR</span> <span class="o">/</span> <span class="s2">&quot;logs&quot;</span> <span class="o">/</span> <span class="s2">&quot;log.txt&quot;</span>
 
 
-<div class="viewcode-block" id="CFG"><a class="viewcode-back" href="../../../source/python_project_template.conf.html#python_project_template.conf.settings.CFG">[ドキュメント]</a><span class="k">class</span> <span class="nc">CFG</span><span class="p">:</span>
+<div class="viewcode-block" id="CFG"><a class="viewcode-back" href="../../../source/src.config.html#src.config.settings.CFG">[ドキュメント]</a><span class="k">class</span> <span class="nc">CFG</span><span class="p">:</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">SRC_DIR</span> <span class="o">/</span> <span class="s2">&quot;conf&quot;</span> <span class="o">/</span> <span class="s2">&quot;config.yml&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">SRC_DIR</span> <span class="o">/</span> <span class="s2">&quot;config&quot;</span> <span class="o">/</span> <span class="s2">&quot;config.yml&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_config</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
 
     <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
@@ -96,7 +98,7 @@
         <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> is not found in config&quot;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="set_seed"><a class="viewcode-back" href="../../../source/python_project_template.conf.html#python_project_template.conf.settings.set_seed">[ドキュメント]</a><span class="k">def</span> <span class="nf">set_seed</span><span class="p">(</span><span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="set_seed"><a class="viewcode-back" href="../../../source/src.config.html#src.config.settings.set_seed">[ドキュメント]</a><span class="k">def</span> <span class="nf">set_seed</span><span class="p">(</span><span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;seedを固定</span>
 
 <span class="sd">    Args:</span>
@@ -112,7 +114,7 @@
 <span class="n">set_seed</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="CustomLoggerAdapter"><a class="viewcode-back" href="../../../source/python_project_template.conf.html#python_project_template.conf.settings.CustomLoggerAdapter">[ドキュメント]</a><span class="k">class</span> <span class="nc">CustomLoggerAdapter</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">LoggerAdapter</span><span class="p">):</span>
+<div class="viewcode-block" id="CustomLoggerAdapter"><a class="viewcode-back" href="../../../source/src.config.html#src.config.settings.CustomLoggerAdapter">[ドキュメント]</a><span class="k">class</span> <span class="nc">CustomLoggerAdapter</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">LoggerAdapter</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;ロガーをカスタマイズするためのクラス</span>
 
 <span class="sd">    - ログのextraにkeyが渡されなかったときにデフォルト値を追加する</span>
@@ -121,7 +123,7 @@
 <span class="sd">        logging (Logger): カスタマイズするロガー</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="CustomLoggerAdapter.process"><a class="viewcode-back" href="../../../source/python_project_template.conf.html#python_project_template.conf.settings.CustomLoggerAdapter.process">[ドキュメント]</a>    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span>  <span class="c1"># type: ignore[override]</span>
+<div class="viewcode-block" id="CustomLoggerAdapter.process"><a class="viewcode-back" href="../../../source/src.config.html#src.config.settings.CustomLoggerAdapter.process">[ドキュメント]</a>    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span>  <span class="c1"># type: ignore[override]</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
         <span class="sd">&quot;&quot;&quot;ログをとる処理で呼び出される</span>
@@ -138,7 +140,7 @@
         <span class="k">return</span> <span class="n">msg</span><span class="p">,</span> <span class="n">kwargs</span></div></div>
 
 
-<div class="viewcode-block" id="set_logger"><a class="viewcode-back" href="../../../source/python_project_template.conf.html#python_project_template.conf.settings.set_logger">[ドキュメント]</a><span class="k">def</span> <span class="nf">set_logger</span><span class="p">(</span><span class="n">modname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">set_level</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">mode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">logging</span><span class="o">.</span><span class="n">Logger</span><span class="p">:</span>
+<div class="viewcode-block" id="set_logger"><a class="viewcode-back" href="../../../source/src.config.html#src.config.settings.set_logger">[ドキュメント]</a><span class="k">def</span> <span class="nf">set_logger</span><span class="p">(</span><span class="n">modname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">set_level</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">mode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">logging</span><span class="o">.</span><span class="n">Logger</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;loggingに関する設定</span>
 
 <span class="sd">    Args:</span>

@@ -1,7 +1,7 @@
-python_project_template
-=======================
+src
+===
 
 .. toctree::
    :maxdepth: 4
 
-   python_project_template
+   src

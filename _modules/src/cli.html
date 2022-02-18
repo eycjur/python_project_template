@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>python_project_template.cli &mdash; python_project_template  ドキュメント</title>
+  <title>src.cli &mdash; python_project_template  ドキュメント</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -37,7 +37,9 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../source/modules.html">python_project_template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/modules.html">src</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../readme_link.html">[readme]python_project_template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../readme_link.html#id2">各種ツール使い方</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../commandline.html">Command line tools</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../todolist.html">Todo lists</a></li>
 </ul>
@@ -57,7 +59,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="../index.html">モジュールコード</a> &raquo;</li>
-      <li>python_project_template.cli</li>
+      <li>src.cli</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -66,7 +68,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <h1>python_project_template.cli のソースコード</h1><div class="highlight"><pre>
+  <h1>src.cli のソースコード</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;各種pythonファイルをコマンドラインから利用するためのCLIツール</span>
 
 <span class="sd">See Also:</span>
@@ -87,23 +89,28 @@
 <span class="sd">    _は-で実行する</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+
 <span class="kn">import</span> <span class="nn">typer</span>
 
-<span class="kn">from</span> <span class="nn">python_project_template.add.add</span> <span class="kn">import</span> <span class="n">add</span>
-<span class="kn">from</span> <span class="nn">python_project_template.conf</span> <span class="kn">import</span> <span class="n">settings</span>  <span class="c1"># noqa</span>
+<span class="kn">from</span> <span class="nn">src.add.add</span> <span class="kn">import</span> <span class="n">add</span>
+<span class="kn">from</span> <span class="nn">src.config</span> <span class="kn">import</span> <span class="n">settings</span>  <span class="c1"># noqa</span>
 
 <span class="n">app</span> <span class="o">=</span> <span class="n">typer</span><span class="o">.</span><span class="n">Typer</span><span class="p">()</span>
 
 
-<div class="viewcode-block" id="hello"><a class="viewcode-back" href="../../source/python_project_template.html#python_project_template.cli.hello">[ドキュメント]</a><span class="nd">@app</span><span class="o">.</span><span class="n">command</span><span class="p">()</span>
+<div class="viewcode-block" id="hello"><a class="viewcode-back" href="../../source/src.html#src.cli.hello">[ドキュメント]</a><span class="nd">@app</span><span class="o">.</span><span class="n">command</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">hello</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;hello&quot;&quot;&quot;</span>
     <span class="n">typer</span><span class="o">.</span><span class="n">echo</span><span class="p">(</span><span class="s2">&quot;hello&quot;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="sample"><a class="viewcode-back" href="../../source/python_project_template.html#python_project_template.cli.sample">[ドキュメント]</a><span class="nd">@app</span><span class="o">.</span><span class="n">command</span><span class="p">()</span>
-<span class="k">def</span> <span class="nf">sample</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="sample"><a class="viewcode-back" href="../../source/src.html#src.cli.sample">[ドキュメント]</a><span class="nd">@app</span><span class="o">.</span><span class="n">command</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">sample</span><span class="p">(</span>
+    <span class="n">text</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">typer</span><span class="o">.</span><span class="n">Option</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;-t&quot;</span><span class="p">,</span> <span class="s2">&quot;--text&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;出力する文字列&quot;</span><span class="p">)</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;メインコマンド&quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;text:&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">is_debug_mode</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">add</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span></div>
 
@@ -111,7 +118,7 @@
 <span class="n">typer_click_object</span> <span class="o">=</span> <span class="n">typer</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">get_command</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../source/python_project_template.html#python_project_template.cli.main">[ドキュメント]</a><span class="k">def</span> <span class="nf">main</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../source/src.html#src.cli.main">[ドキュメント]</a><span class="k">def</span> <span class="nf">main</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="n">typer_click_object</span><span class="p">()</span></div>
 </pre></div>
 
