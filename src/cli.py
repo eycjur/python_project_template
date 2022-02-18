@@ -18,10 +18,12 @@ Attention:
     _は-で実行する
 """
 
+from typing import Optional
+
 import typer
 
-from python_project_template.add.add import add
-from python_project_template.conf import settings  # noqa
+from src.add.add import add
+from src.config import settings  # noqa
 
 app = typer.Typer()
 
@@ -33,8 +35,11 @@ def hello() -> None:
 
 
 @app.command()
-def sample() -> None:
+def sample(
+    text: Optional[str] = typer.Option(None, "-t", "--text", help="出力する文字列")
+) -> None:
     """メインコマンド"""
+    print("text:", text)
     print(settings.cfg.is_debug_mode)
     print(add(3, 5))
 

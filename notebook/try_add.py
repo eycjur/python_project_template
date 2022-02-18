@@ -21,8 +21,7 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 
-from python_project_template.conf.conf import CFG
-from python_project_template.utils import settings
+from src.config import settings
 
 np.set_printoptions(edgeitems=3)
 plt.rcParams["font.size"] = 14

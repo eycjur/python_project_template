@@ -1,5 +1,8 @@
 {
     // エディタ関連
+    "editor.wordWrap": "on",
+    "editor.snippetSuggestions": "top",
+    "extensions.ignoreRecommendations": false,
     "search.exclude": {
         "**/.venv": true,
         "**/old": true,

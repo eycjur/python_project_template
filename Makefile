@@ -57,7 +57,7 @@ isort:
 
 # sphinx（ドキュメント自動作成ツール）関係
 sphinx:
-	poetry run sphinx-apidoc -f -o ./docs/source ./python_project_template
+	poetry run sphinx-apidoc -f -o ./docs/source ./src
 	poetry run sphinx-build -b html ./docs ./docs/_build
 sphinx-reflesh:
 	rm -rf docs/_build/* docs/source/*.rst
@@ -65,10 +65,10 @@ sphinx-reflesh:
 
 # プロファイリング
 profile:
-	poetry run python -m cProfile -o logs/profile.stats python_project_template/cli.py command
+	poetry run python -m cProfile -o logs/profile.stats src/cli.py command
 	poetry run snakeviz ./logs/profile.stats
 
 ## 実行コマンド
 # cli.pyの実行
 cli:
-	poetry run python python_project_template $(target)
+	poetry run python src $(target)

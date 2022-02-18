@@ -11,14 +11,14 @@ import yaml
 np.set_printoptions(suppress=True)
 plt.rcParams["font.size"] = 16
 
-BASE_DIR = Path(__file__).resolve().parents[2]  # 上のpython_project_template
-SRC_DIR = BASE_DIR / "python_project_template"
+BASE_DIR = Path(__file__).resolve().parents[2]  # python_project_template
+SRC_DIR = BASE_DIR / "src"
 LOG_FILE = BASE_DIR / "logs" / "log.txt"
 
 
 class CFG:
     def __init__(self) -> None:
-        with open(SRC_DIR / "conf" / "config.yml") as file:
+        with open(SRC_DIR / "config" / "config.yml") as file:
             self._config = yaml.safe_load(file.read())
 
     def __getattr__(self, name: str) -> Any:

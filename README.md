@@ -1,4 +1,8 @@
-# [readme]python project template
+# [readme]python_project_template
+
+## use
+python_project_templateを全て置換
+`make install`で環境を構築
 
 ## docs
 [https://eycjur.github.io/python_project_template/](https://eycjur.github.io/python_project_template/)
@@ -120,7 +124,7 @@ make lint target=<target>
 poetry run <tool> .
 make <tool>
 # 特定ファイルのみ
-poetry run <tool> python_project_template/<file_name>.py
+poetry run <tool> src/<file_name>.py
 ```
 
 ## jupyter notebook
@@ -159,16 +163,16 @@ docs/_build/以下にhtmlが出力される
 
 ## typer
 pythonのCLI作成ツール  
-python_project_template/cli.pyで利用
+src/cli.pyで利用
 
 ### 実行
 ```bash
 make cli target=<command>
-poetry run python python_project_template <command>
+poetry run python src <command>
 # ヘルプを表示
 make cli target=--help
-poetry run python python_project_template --help
-poetry run python python_project_template <command> --help
+poetry run python src --help
+poetry run python src <command> --help
 ```
 
 ## profile
@@ -176,7 +180,7 @@ poetry run python python_project_template <command> --help
 
 ### 実行
 ```bash
-poetry run python -m cProfile -o logs/profile.stats python_project_template/cli.py <command>
+poetry run python -m cProfile -o logs/profile.stats src/cli.py <command>
 poetry run snakeviz ./logs/profile.stats
 ```
 
