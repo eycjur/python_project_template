@@ -76,9 +76,9 @@ cli:
 ## dockerコマンド
 # 確認
 images:
-	docker compose images
+	docker images
 ps:
-	docker compose ps -a
+	docker ps -a
 volume:
 	docker volume ls
 logs:
@@ -106,6 +106,8 @@ restart:
 	@make up
 	@make app
 destroy:
-	docker compose down --rim all --volumes --remove-orphans
+	docker compose down --rmi all --volumes --remove-orphans
 destroy-volumes:
 	docker compose down --volumes --remove-orphans
+prune:
+	docker system prune

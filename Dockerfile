@@ -2,10 +2,13 @@
 FROM python:3.10-slim-buster
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y git vim zsh neovim sudo
+RUN apt update && apt install -y git vim zsh neovim sudo
 RUN python -m pip install -U pip poetry
 COPY pyproject.toml poetry.lock ./
 RUN python -m poetry install --no-interaction
+
+ARG ROOT_PASSWORD=pass
+RUN echo "root:${ROOT_PASSWORD}" | chpasswd
 
 ARG DOCKER_UID=1000
 ARG DOCKER_USER=user
