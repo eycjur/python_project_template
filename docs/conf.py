@@ -23,7 +23,7 @@ import sys
 from pathlib import Path
 
 module_dir = Path(__file__).resolve().parent.parent  # analysisディレクトリ
-sys.path.insert(0, str(module_dir.joinpath("src")))
+sys.path.insert(0, str(module_dir))
 # -- Project information -----------------------------------------------------
 
 project = "python_project_template"

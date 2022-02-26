@@ -183,7 +183,3 @@ poetry run python src <command> --help
 poetry run python -m cProfile -o logs/profile.stats src/cli.py <command>
 poetry run snakeviz ./logs/profile.stats
 ```
-
-## TODO
-ライセンスファイルの追加  
-docker対応  

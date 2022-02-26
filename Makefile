@@ -6,12 +6,6 @@ target := .
 # デフォルトコマンド(test sync_notebook lint)
 all: test sync-notebook lint
 
-# ターゲットは関数名みたいな感じで使ってます
-.PHONY: list
-# すべてのターゲット名を取得
-list :  # スペースを空けるとhelpに表示しない
-	@sh -c "$(MAKE) -p no_targets__ | awk -F':' '/^[a-zA-Z0-9][^\$$#\/\\t=]*:([^=]|$$)/ {split(\$$1,A,/ /);for(i in A)print A[i]}' | grep -v '__\$$' | grep -v 'make\[1\]' | grep -v 'Makefile' | sort"
-
 # ヘルプを表示
 help:
 	@cat $(MAKEFILE_LIST) | python -u -c 'import sys, re; from itertools import tee,chain; rx = re.compile(r"^[a-zA-Z0-9\-_]+:"); xs, ys = tee(sys.stdin); [print(f"""\t{line.split(":")[0]:20s}\t{prev.lstrip("# ").rstrip()}""") if rx.search(line) and prev.startswith("#") else print(f"""\n{prev.lstrip("## ").rstrip()}""") if prev.startswith("##") else "" for prev, line in zip(chain([""], xs), ys)]'
@@ -90,9 +84,9 @@ build:
 up:
 	docker compose up -d --build
 app:
-	docker compose exec app zsh
+	docker compose exec app bash
 root:
-	docker compose exec -u root app zsh
+	docker compose exec -u root app bash
 create-project:
 	@make build
 	@make up
