@@ -65,7 +65,7 @@ profile:
 ## 実行コマンド
 # cli.pyの実行
 cli:
-	poetry run python src $(target)
+	poetry run python -m src $(target)
 
 ## dockerコマンド
 # 確認
