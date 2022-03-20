@@ -6,12 +6,17 @@ Welcome to python_project_template's documentation!
 ===================================================
 
 .. toctree::
-   :maxdepth: 5
-   :caption: Contents:
+   :maxdepth: 1
+   :caption: BASIC:
 
-   source/modules
    readme_link
+
+.. toctree::
+   :maxdepth: 1
+   :caption: ADVANCED:
+
    commandline
+   modules
    todolist
 
 

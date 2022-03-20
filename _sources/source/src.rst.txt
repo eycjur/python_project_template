@@ -8,7 +8,7 @@ Subpackages
    :maxdepth: 4
 
    src.config
-   src.utils
+   src.util
 
 Submodules
 ----------
@@ -17,6 +17,14 @@ src.cli module
 --------------
 
 .. automodule:: src.cli
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.version module
+------------------
+
+.. automodule:: src.version
    :members:
    :undoc-members:
    :show-inheritance:
