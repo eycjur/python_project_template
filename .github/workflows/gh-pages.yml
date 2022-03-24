@@ -1,12 +1,10 @@
 name: GitHub Pages
 
 on:
-  push:
-    branches:
-      - "main"
+  pull_request:
 
 jobs:
-  build:
+  gh-pages:
     runs-on: ubuntu-20.04
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}

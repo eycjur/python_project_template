@@ -1,4 +1,4 @@
-Todo lists
+Todo Lists
 ==========
 
 .. todolist::
