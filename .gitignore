@@ -19,3 +19,6 @@ _build/
 
 # notebook
 *.ipynb
+
+# 環境関連
+.env

@@ -10,9 +10,9 @@
             "env": {
                 "PYTHONPATH": "${workspaceFolder}"
             },
-            "args": [
-                "segmentation",
-            ]
+            // "args": [
+            //     "arg",
+            // ]
         },
         {
             "name": "Python: Attach using Process Id",
@@ -23,3 +23,30 @@
         }
     ]
 }
+// {  # 入力をファイルで受け取る場合
+//   "version": "0.2.0",
+//   "configurations": [
+//     {
+//       "name": "atcoder Execute",
+//       "type": "python",
+//       "request": "launch",
+//       "program": "${file}",
+//       "console": "integratedTerminal",
+//       "args": [
+//         "<",
+//         "${fileDirname}/input.txt"
+//       ]
+//     },
+//     {
+//       "name": "atcoder Debugger",
+//       "type": "python",
+//       "request": "launch",
+//       "program": "${file}",
+//       "console": "integratedTerminal",
+//       "args": [
+//         "<",
+//         "${fileDirname}/input.txt"
+//       ]
+//     },
+//   ]
+// }
