@@ -1,27 +1,27 @@
 {
-    "configurations": [
-        {
-            "name": "Python: Current File",
-            "type": "python",
-            "request": "launch",
-            "program": "${file}",
-            "console": "integratedTerminal",
-            "justMyCode": false,
-            "env": {
-                "PYTHONPATH": "${workspaceFolder}"
-            },
-            // "args": [
-            //     "arg",
-            // ]
-        },
-        {
-            "name": "Python: Attach using Process Id",
-            "type": "python",
-            "request": "attach",
-            "justMyCode": false,
-            "processId": "${command:pickProcess}"
-        }
-    ]
+  "configurations": [
+    {
+      "name": "Python: Current File",
+      "type": "python",
+      "request": "launch",
+      "program": "${file}",
+      "console": "integratedTerminal",
+      "justMyCode": false,
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}"
+      },
+      // "args": [
+      //     "arg",
+      // ]
+    },
+    {
+      "name": "Python: Attach using Process Id",
+      "type": "python",
+      "request": "attach",
+      "justMyCode": false,
+      "processId": "${command:pickProcess}"
+    }
+  ]
 }
 // {  # 入力をファイルで受け取る場合
 //   "version": "0.2.0",

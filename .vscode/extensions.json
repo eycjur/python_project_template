@@ -1,16 +1,17 @@
 {
-    "recommendations": [
-        "ms-ceintl.vscode-language-pack-ja",
-        "coenraads.bracket-pair-colorizer",
-        "editorconfig.editorconfig",
-        "vscodevim.vim",
-        "gruntfuggly.todo-tree",
-        "yzane.markdown-pdf",
-        "ms-python.python",
-        "ms-toolsai.jupyter",
-        "njpwerner.autodocstring",
-        "github.copilot",
-        "ms-toolsai.jupyter-keymap",
-        "mosapride.zenkaku",
-    ]
+  "recommendations": [
+    "ms-ceintl.vscode-language-pack-ja",
+    "ms-python.python",
+    "ms-python.isort",
+    "ms-toolsai.jupyter",
+    "ms-toolsai.jupyter-keymap",
+    "janisdd.vscode-edit-csv",
+    "yzane.markdown-pdf",
+    "vscodevim.vim",
+    "editorconfig.editorconfig",
+    "mhutchie.git-graph",
+    "github.copilot",
+    "mosapride.zenkaku",
+    "gruntfuggly.todo-tree"
+  ]
 }
