@@ -5,6 +5,7 @@ services:
     tty: true
     volumes:
       - .:/workspace:cached
+      - ./app:/app
     working_dir: /workspace
     env_file:
       - .env

@@ -97,16 +97,22 @@ cli:
 server:
 	python app.py
 
-# デプロイ
-.PHONY: deploy
-deploy:
-	./deploy.sh
-
 # pip freeze
 .PHONY: pip-freeze
 pip-freeze:
 	python -m pip freeze > requirements.txt
 
+
+## デプロイ
+# dockerのサーバーの起動
+.PHONY: docker-server
+docker-server:
+	docker build -t $(CONTAINER_NAME) .
+	docker run -e PORT=8000 -p 8000:8000 --rm $(CONTAINER_NAME)
+
+.PHONY: deploy
+deploy:
+	./deploy_gcp.sh
 
 ## dockerの確認コマンド
 # 確認
