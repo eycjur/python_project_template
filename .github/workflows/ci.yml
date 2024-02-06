@@ -42,8 +42,18 @@ jobs:
       - name: install dependencies
         run: poetry install --no-interaction
 
-      - name: lint
-        run: make lint
+      - name: Run Tests
+        if: always()
+        run: poetry run pytest -sv
 
-      - name: test
-        run: make test
+      - name: Run Black
+        if: always()
+        run: poetry run black --check --config=pyproject.toml .
+
+      - name: Run Ruff
+        if: always()
+        run: poetry run ruff .
+
+      - name: Run Mypy
+        if: always()
+        run: poetry run mypy --config-file=pyproject.toml .
