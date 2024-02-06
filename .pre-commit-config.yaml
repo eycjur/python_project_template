@@ -4,33 +4,25 @@ repos:
     hooks:
       - id: check-added-large-files
       - id: check-json
-        exclude: "vscode/"
+        exclude: ".devcontainer/"
       - id: check-toml
       - id: check-yaml
       - id: detect-private-key
       - id: no-commit-to-branch
         args: [--branch, main]
-
-  - repo: https://github.com/pycqa/isort
-    rev: 5.12.0
-    hooks:
-      - id: isort
-
   - repo: https://github.com/psf/black
-    rev: 23.1.0
+    rev: 23.3.0
     hooks:
       - id: black
-
+        args: ["--config=pyproject.toml", "."]
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.0.272
+    hooks:
+      - id: ruff
+        args: ["--fix"]
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.1.1
+    rev: v0.982
     hooks:
-      - id: mypy
-
-  - repo: https://github.com/PyCQA/flake8
-    rev: 6.0.0
-    hooks:
-      - id: flake8
-        additional_dependencies:
-          - flake8-bugbear
-          - flake8-builtins
-          - pep8-naming
+    - id: mypy
+      pass_filenames: false
+      args: ["--config-file=pyproject.toml", "."]

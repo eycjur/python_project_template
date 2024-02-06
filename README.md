@@ -1,29 +1,25 @@
 # About Python Project Template
 pythonでプロジェクトを作成する際のテンプレートです。
 
-## docs
-[https://eycjur.github.io/python_project_template/](https://eycjur.github.io/python_project_template/)
+# How to Run
 
-## usage guide
- [pythonでのプロジェクト作成に関するツールの使い方まとめ](https://qiita.com/eycjur/items/38459af60ea6f989a068#%E5%AE%9F%E8%A1%8C-4)
+1. .env.sampleを元に.envを作成、credential.jsonを配置
+2. `make up`でDocker Composeを起動
+3. http://localhost:8100/ からアプリにアクセス
+4. `make down`でDocker Composeを終了  
+   終了せずにDev Containerを起動すると、docker-compose.override.ymlの内容が上書きされずデバッグが利用できません。
 
-## reference
-- [【Python】自作モジュール内でloggingする](https://qiita.com/Esfahan/items/275b0f124369ccf8cf18)
-- [python-project-template](https://github.com/rochacbruno/python-project-template)
+# How to Develop
 
-# Installation
-Install with pip:
-```bash
-pip install git+https://github.com/eycjur/python_project_template
-```
+1. .env.sampleを元に.envを作成、credential.jsonを配置
+2. pre-commitをインストール(ex. `pip install pre-commit`)
+3. `pre-commit install`でpre-commitのhookスクリプトを導入
+4. VSCodeでDev Container拡張機能をインストール
+5. コマンドパレット(`Ctrl+Shift+P`)から`Remote-Containers: Reopen in Container`を実行
+6. (Docker Compose立ち上げ時のみ)拡張機能の依存関係の解決に失敗するので、通知に従ってウィンドウの再読み込みする
+7. F5でデバッグ実行が可能
+8. http://localhost:8100/ からアプリにアクセス
 
-Install with poetry:
-```bash
-poetry add git+https://github.com/eycjur/python_project_template.git#main
-```
+# How to Deploy
 
-# Quick Start
-1. use this templateからリポジトリを作成
-1. `git clone git+https://github.com/eycjur/<project_name>`
-1. python_project_templateをプロジェクト名に全て置換
-1. `make install`で環境を構築
+1. `make deploy`でCloud Runにデプロイ

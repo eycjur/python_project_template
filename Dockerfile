@@ -1,36 +1,26 @@
-# ベースイメージ
-FROM --platform=linux/amd64 python:3.10
-
+FROM python:3.10-slim-buster
 RUN apt-get update && \
-    apt-get install -y gcc git make vim zsh neovim sudo
+    apt-get install --no-install-recommends -y curl gcc python3-dev git make vim zsh neovim sudo
 
-## for development
-COPY requirements.txt /tmp/requirements.txt
-RUN pip install -U pip && \
-    pip install -r /tmp/requirements.txt
-# RUN python -m pip install -U pip poetry
-# COPY pyproject.toml poetry.lock ./
-# RUN python -m poetry install --no-interaction
+RUN curl -sSL https://install.python-poetry.org | python -
+ENV PATH /root/.local/bin:$PATH
+RUN poetry config virtualenvs.create false
 
-ADD https://api.github.com/repos/eycjur/dotfiles/git/refs/heads/main version.json
-RUN git clone https://github.com/eycjur/dotfiles.git ~/dotfiles
-RUN ~/dotfiles/install.sh
-
-# CMD ["/bin/zsh"]
-
-
-## for web app
+RUN mkdir /app
 WORKDIR /app
-COPY ./app .
-COPY requirements.txt .
 
-RUN pip install -U pip && pip install -r requirements.txt
+COPY ./pyproject.toml /app/pyproject.toml
+COPY ./poetry.lock /app/poetry.lock
+RUN poetry install
 
-CMD exec gunicorn \
-    --bind :$PORT \
-    --workers 1 \
-    --threads 8 \
-    --timeout 0 \
-    --reload \
-    -k uvicorn.workers.UvicornWorker \
-    app:app
+COPY ./src /app/src
+
+EXPOSE ${PORT}
+
+CMD	gunicorn \
+        --bind "0.0.0.0:${PORT}" \
+        --log-file - \
+        --access-logfile - \
+        -k uvicorn.workers.UvicornWorker \
+        --timeout 180 \
+        src.app:app

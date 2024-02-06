@@ -1,177 +1,95 @@
 include .env
-shell_name = zsh
-target := .
 
 ## メタ的なコマンド
-# デフォルトコマンド(test sync_notebook lint)
+# デフォルトコマンド(test lint)
 .PHONY: all
-all: test sync-notebook lint
-
-# まとめたもの(lint test sync_notebook sphinx-reflesh)
-.PHONY: full
-full: lint test sync-notebook sphinx-reflesh
-
-# docker関連のコマンドをまとめたもの（build exec）
-.PHONY: docker
-docker: build exec
+all: test lint
 
 
 ## python関連のコマンド
-# jupyterの起動
-.PHONY: lab
-lab:
-	jupyter lab
-.PHONY: jupyter
-jupyter:
-	@make lab
-
-# notebookとpythonスクリプトを同期
-.PHONY: sync-notebook
-sync-notebook:
-	jupytext --sync notebook/*.ipynb
-
 # テストコードの実行
 .PHONY: test
 test:
-	pytest
+	pytest -sv
 
 # リンター
 .PHONY: lint
 lint:
 	@make --no-print-directory black
-	@make --no-print-directory isort
-	@make --no-print-directory flake8
+	@make --no-print-directory ruff
 	@make --no-print-directory mypy
-	@make --no-print-directory radon
+
 .PHONY: black
 black:
-	black $(target)
-.PHONY: isort
+	black --config-file=pyproject.toml .
+
+.PHONY: ruff
 isort:
-	isort $(target)
-.PHONY: flake8
-flake8:
-	flake8 $(target)
+	ruff .
+
 .PHONY: mypy
 mypy:
-	python -m mypy $(target)
-.PHONY: radon
-radon:
-	echo "循環的複雑度"
-	radon cc -s -nb $(target)
-	echo "保守容易性指数"
-	radon mi -s -nb $(target)
-
-# sphinx（ドキュメント自動作成ツール）関係
-.PHONY: sphinx
-sphinx:
-	sphinx-apidoc -f -o ./docs/source ./src
-	sphinx-build -b html ./docs ./docs/_build
-# キャッシュを削除してsphinxを実行
-.PHONY: sphinx-reflesh
-sphinx-reflesh:
-	rm -rf docs/_build/* docs/source/*.rst
-	@make --no-print-directory sphinx
-# ドキュメントをブラウザで開く
-.PHONY: open-docs
-open-docs:
-	open -a "Google Chrome" docs/_build/index.html
-
-# プロファイリング
-.PHONY: profile
-profile:
-	python -m cProfile -o logs/profile.stats src/cli.py command
-	snakeviz ./logs/profile.stats
-
-
-## 実行コマンド
-# cli.pyの実行
-.PHONY: cli
-cli:
-	python -m src $(target)
-
-
-## dockerコンテナ内でのコマンド
-# サーバーを起動する
-.PHONY: server
-server:
-	python app.py
-
-# pip freeze
-.PHONY: pip-freeze
-pip-freeze:
-	python -m pip freeze > requirements.txt
+	python -m mypy --config-file=pyproject.toml .
 
 
 ## デプロイ
 # dockerのサーバーの起動
-.PHONY: docker-server
-docker-server:
-	docker build -t $(CONTAINER_NAME) .
-	docker run -e PORT=8000 -p 8000:8000 --rm $(CONTAINER_NAME)
-
 .PHONY: deploy
 deploy:
-	./deploy_gcp.sh
+	gcloud builds submit \
+		--region $(REGION) \
+		--tag gcr.io/$(PROJECT_ID)/$(CONTAINER_NAME) \
+		--project $(PROJECT_ID) \
+		.
 
-## dockerの確認コマンド
-# 確認
-.PHONY: images
-images:
-	docker images
-
-# コンテナを一覧表示
-.PHONY: ps
-ps:
-	docker compose ps -a
-
-# volumeを一覧表示
-.PHONY: volumes
-volumes:
-	docker volume ls
-
-# dockerのlogを表示
-.PHONY: logs
-logs:
-	docker compose logs
+	gcloud run deploy $(CONTAINER_NAME) \
+		--image gcr.io/$(PROJECT_ID)/$(CONTAINER_NAME) \
+		--region $(REGION) \
+		--port $(PORT) \
+		--set-env-vars=$(shell \
+			cat .env | \
+			grep -vE '^\s*($$|#)' | \
+			tr '\n' ',' | \
+			sed 's/,$$//' \
+		) \
+		--platform managed \
+		--service-account $(SERVICE_ACCOUNT) \
+		--project $(PROJECT_ID)
 
 
 ## dockerの実行コマンド
-# ビルド
-.PHONY: build
-build:
-	docker compose build
-
-# コンテナの起動
+# コンテナのビルド・起動
 .PHONY: up
 up:
-	docker compose up -d --build
+	docker compose up --build
 
-# 実行
+# コンテナのビルド・起動（キャッシュを使わない）
+.PHONY: up-no-cache
+up-no-cache:
+	docker compose build --no-cache
+	docker compose up
+
+# コンテナ内のシェル実行
 .PHONY: exec
 exec:
 	@make up
-	docker compose exec app ${shell_name}
-
-# コンテナを停止
-.PHONY: stop
-stop:
-	docker compose stop
+	docker compose exec app bash
 
 # コンテナを停止して削除
 .PHONY: down
 down:
 	docker compose down --remove-orphans
 
+# コンテナを再起動
+.PHONY: restart
+restart:
+	@make --no-print-directory down
+	@make --no-print-directory up
+
 # コンテナを停止して一括削除
 .PHONY: destroy
 destroy:
 	docker compose down --rmi all --volumes --remove-orphans
-
-# dockerの未使用オブジェクトを削除
-.PHONY: prune
-prune:
-	docker system prune -af
 
 
 .PHONY: help

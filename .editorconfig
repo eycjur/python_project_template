@@ -22,5 +22,3 @@ indent_size = 2
 
 [*.rst]
 indent_size = 3
-
-# https://github.com/RehanSaeed/EditorConfig/blob/main/.editorconfig
