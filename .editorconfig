@@ -11,11 +11,14 @@ trim_trailing_whitespace = true
 [*.md]
 trim_trailing_whitespace = false
 
+[Makefile]
+indent_style = tab
+
 [*.{yml,yaml}]
+indent_size = 2
+
+[*.{html,js,json,ts,tsx,css,scss}]
 indent_size = 2
 
 [*.rst]
 indent_size = 3
-
-[Makefile]
-indent_style = tab

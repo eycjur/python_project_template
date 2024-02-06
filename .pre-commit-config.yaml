@@ -1,0 +1,28 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v2.3.0
+    hooks:
+      - id: check-added-large-files
+      - id: check-json
+        exclude: ".devcontainer/"
+      - id: check-toml
+      - id: check-yaml
+      - id: detect-private-key
+      - id: no-commit-to-branch
+        args: [--branch, main]
+  - repo: https://github.com/psf/black
+    rev: 24.1.1
+    hooks:
+      - id: black
+        args: ["--config=pyproject.toml", "."]
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.2.1
+    hooks:
+      - id: ruff
+        args: ["--fix"]
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.8.0
+    hooks:
+    - id: mypy
+      pass_filenames: false
+      args: ["--config-file=pyproject.toml", "."]

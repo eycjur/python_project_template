@@ -1,10 +1,18 @@
 version: '3'
-
 services:
   app:
-    build: .
-    tty: true
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: ${CONTAINER_NAME}
     volumes:
-      - .:/app
+      - ./:/app
+      - ./credential.json:/credential.json:ro
+    working_dir: /app
+    env_file:
+      - .env
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=/credential.json
     ports:
-      - "8080:8080"
+      - 127.0.0.1:8100:${APP_PORT}
+    tty: true

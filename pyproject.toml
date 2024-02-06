@@ -1,55 +1,81 @@
 [tool.poetry]
-name = "python_project_template"
+name = "src"
 version = "1.0.0"
 description = ""
 authors = ["eycjur"]
+readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-numpy = "^1.22.2"
-pandas = "^1.4.1"
-matplotlib = "^3.5.1"
-japanize-matplotlib = "^1.1.3"
+fastapi = "^0.109.2"
+google-cloud = "^0.34.0"
+uvicorn = "^0.27.0.post1"
+gunicorn = "^21.2.0"
+pyyaml = "^6.0.1"
 click = "^8.0.3"
 typer = "^0.4.0"
-pyyml = "^0.0.2"
-snakeviz = "^2.1.1"
+dash = "^2.15.0"
+dash-bootstrap-components = "^1.5.0"
+streamlit = "^1.31.0"
 
-[tool.poetry.extras]
-extra = []
-
-[tool.poetry.dev-dependencies]
-isort = "^5.10.1"
-flake8 = "^4.0.1"
-black = "^22.1.0"
-mypy = "^0.931"
-pytest = "^7.0.1"
-lxml = "^4.7.1"
-notebook = "^6.4.8"
-jupyterlab = "^3.2.9"
-jupytext = "^1.13.7"
-line-profiler = "^3.4.0"
-Sphinx = "^4.4.0"
-sphinx-click = "^3.1.0"
-sphinx-rtd-theme = "^1.0.0"
-myst-parser = "^0.17.0"
-types-PyYAML = "^6.0.4"
+[tool.poetry.group.dev.dependencies]
+mypy = "1.8.0"
+black = "24.1.1"
+pytest = "^8.0.0"
+ruff = "0.2.1"
+types-pyyaml = "^6.0.12.12"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
-[tool.jupytext]
-formats = "notebook//ipynb,notebook//py:percent"
-
 [tool.black]
-exclude = '''
-/(
-      \..*_cache
-    | \.venv
-    | __pycache__
-    | docs
-    | notebook
-    | old
-)/
-'''
+target-version = ['py310']
+include = '\.pyi?$'
+line-length = 88
+preview = true
+
+[tool.ruff]
+lint.select = [
+    # cf. https://beta.ruff.rs/docs/rules/
+    "E",  # pycodestyle error
+    "W",  # pycodestyle warning
+    "F",  # Pyflakes
+    "I",  # isort
+]
+lint.fixable = ["I"]
+lint.unfixable = ["E", "W", "F"]
+line-length = 88
+
+[tool.mypy]
+# チェック項目
+strict = true
+warn_unreachable = true
+# strictを打ち消す
+disallow_subclassing_any = false
+warn_return_any = false
+disallow_any_decorated = false
+disallow_any_generics = false
+disallow_untyped_calls = false
+disallow_untyped_decorators = false
+no_implicit_reexport = false
+warn_unused_ignores = false
+# サードパーティー製のライブラリを無視
+ignore_missing_imports = true
+# 表示関係
+pretty = true
+show_error_codes = true
+show_error_context = true
+
+[[tool.mypy.overrides]]
+module = ["requests.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["azure.*"]
+ignore_errors = true
+
+[tool.pytest]
+minversion = "6.0"
+addopts = "-lsraq -vv --capture=no --full-trace --cache-clear"
+testpaths = ["tests/*"]

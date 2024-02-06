@@ -1,107 +1,97 @@
-# 環境構築の際や後処理を記述
-
-target := .
+include .env
 
 ## メタ的なコマンド
-# デフォルトコマンド(test sync_notebook lint)
-all: test sync-notebook lint
+# デフォルトコマンド(test lint)
+.PHONY: all
+all: test lint
 
-# ヘルプを表示
-help:
-	@cat $(MAKEFILE_LIST) | python -u -c 'import sys, re; from itertools import tee,chain; rx = re.compile(r"^[a-zA-Z0-9\-_]+:"); xs, ys = tee(sys.stdin); [print(f"""\t{line.split(":")[0]:20s}\t{prev.lstrip("# ").rstrip()}""") if rx.search(line) and prev.startswith("#") else print(f"""\n{prev.lstrip("## ").rstrip()}""") if prev.startswith("##") else "" for prev, line in zip(chain([""], xs), ys)]'
-
-# まとめたもの(lint test sync_notebook sphinx-reflesh)
-full: lint test sync-notebook sphinx-reflesh
-
-
-## 環境構築関連
-# 1から環境構築
-install:
-	poetry install
 
 ## python関連のコマンド
-# jupyterの起動
-lab:
-	poetry run jupyter lab
-jupyter:
-	@make lab
-
-# notebookとpythonスクリプトを同期
-sync-notebook:
-	poetry run jupytext --sync notebook/*.ipynb
-
 # テストコードの実行
+.PHONY: test
 test:
-	poetry run pytest
+	pytest -sv
 
 # リンター
+.PHONY: lint
 lint:
 	@make --no-print-directory black
-	@make --no-print-directory isort
-	@make --no-print-directory flake8
+	@make --no-print-directory ruff
 	@make --no-print-directory mypy
-mypy:
-	poetry run python -m mypy $(target)
+
+.PHONY: black
 black:
-	poetry run black $(target)
-flake8:
-	poetry run flake8 $(target)
-isort:
-	poetry run isort $(target)
+	black --config=pyproject.toml .
 
-# sphinx（ドキュメント自動作成ツール）関係
-sphinx:
-	poetry run sphinx-apidoc -f -o ./docs/source ./src
-	poetry run sphinx-build -b html ./docs ./docs/_build
-sphinx-reflesh:
-	rm -rf docs/_build/* docs/source/*.rst
-	@make --no-print-directory sphinx
+.PHONY: ruff
+ruff:
+	ruff --fix .
 
-# プロファイリング
-profile:
-	poetry run python -m cProfile -o logs/profile.stats src/cli.py command
-	poetry run snakeviz ./logs/profile.stats
+.PHONY: mypy
+mypy:
+	python -m mypy --config-file=pyproject.toml .
 
-## 実行コマンド
-# cli.pyの実行
-cli:
-	poetry run python -m src $(target)
 
-## dockerコマンド
-# 確認
-images:
-	docker images
-ps:
-	docker ps -a
-volume:
-	docker volume ls
-logs:
-	docker compose logs
+## デプロイ
+# dockerのサーバーの起動
+.PHONY: deploy
+deploy:
+	gcloud builds submit \
+		--region $(REGION) \
+		--tag gcr.io/$(PROJECT_ID)/$(CONTAINER_NAME) \
+		--project $(PROJECT_ID) \
+		.
 
-# 実行
-build:
-	docker compose build --no-cache --force-rm
+	gcloud run deploy $(CONTAINER_NAME) \
+		--image gcr.io/$(PROJECT_ID)/$(CONTAINER_NAME) \
+		--region $(REGION) \
+		--port $(APP_PORT) \
+		--set-env-vars=$(shell \
+			cat .env | \
+			grep -vE '^\s*($$|#)' | \
+			tr '\n' ',' | \
+			sed 's/,$$//' \
+		) \
+		--platform managed \
+		--service-account $(SERVICE_ACCOUNT) \
+		--project $(PROJECT_ID)
+
+
+## dockerの実行コマンド
+# コンテナのビルド・起動
+.PHONY: up
 up:
-	docker compose up -d --build
-app:
-	docker compose exec app bash
-root:
-	docker compose exec -u root app bash
-create-project:
-	@make build
+	docker compose up --build
+
+# コンテナのビルド・起動（キャッシュを使わない）
+.PHONY: up-no-cache
+up-no-cache:
+	docker compose build --no-cache
+	docker compose up
+
+# コンテナ内のシェル実行
+.PHONY: exec
+exec:
 	@make up
-	@make app
-stop:
-	docker compose stop
+	docker compose exec app bash
+
+# コンテナを停止して削除
+.PHONY: down
 down:
 	docker compose down --remove-orphans
+
+# コンテナを再起動
+.PHONY: restart
 restart:
-	@make down
-	@make up
-	@make app
+	@make --no-print-directory down
+	@make --no-print-directory up
+
+# コンテナを停止して一括削除
+.PHONY: destroy
 destroy:
 	docker compose down --rmi all --volumes --remove-orphans
-destroy-volumes:
-	docker compose down --volumes --remove-orphans
-prune:
-	docker system prune
+
+
+.PHONY: help
+help:
+	@cat $(MAKEFILE_LIST) | python3 -u -c 'import sys, re; rx = re.compile(r"^[a-zA-Z0-9\-_]+:"); lines = [line.rstrip() for line in sys.stdin if not line.startswith(".PHONY")]; [print(f"""{line.split(":")[0]:20s}\t{prev.lstrip("# ")}""") if rx.search(line) and prev.startswith("# ") else print(f"""\n\033[92m{prev.lstrip("## ")}\033[0m""") if prev.startswith("## ") else "" for prev, line in zip([""] + lines, lines)]'

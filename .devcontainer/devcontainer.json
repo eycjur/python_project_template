@@ -1,0 +1,148 @@
+{
+  "name": "Existing Docker Compose (Extend)",
+  "dockerComposeFile": [
+    "../docker-compose.yml",
+    "./docker-compose.override.yml"
+  ],
+  "service": "app",
+  "workspaceFolder": "/app",
+  "shutdownAction": "stopCompose",
+  "overrideCommand": true,
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.profiles.linux": {
+          "bash": {
+            "path": "bash",
+            "icon": "terminal-bash"
+          }
+        },
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "python.pythonPath": "/usr/local/bin/python",
+        "python.linting.pylintEnabled": false,
+        "python.linting.lintOnSave": true,
+        "python.linting.enabled": true,
+        "python.linting.flake8Enabled": false,
+        // ruffの自動フォーマット
+        "[python]": {
+          "editor.defaultFormatter": "ms-python.black-formatter",
+          "editor.formatOnSave": true,
+          "editor.codeActionsOnSave": {
+            "source.fixAll.ruff": false,
+            "source.organizeImports.ruff": true
+          }
+        },
+        "autoDocstring.docstringFormat": "google",
+        "python.linting.mypyEnabled": true,
+        "python.testing.pytestArgs": [
+          "tests",
+          "-vv", // 詳細結果の出力
+          "-s" // print文の出力
+        ],
+        "python.testing.unittestEnabled": false,
+        "python.testing.pytestEnabled": true,
+        "launch": {
+          "version": "0.2.0",
+          // CLI用のargsの入力
+          // "inputs": [
+          //   {
+          //     "type": "promptString",
+          //     "id": "prompt",
+          //     "description": "引数を入力してください",
+          //     "default": "デフォルト"
+          //   }
+          // ],
+          "configurations": [
+            {
+              "name": "CLI: app.pyを実行",
+              "type": "debugpy",
+              "request": "launch",
+              "module": "src.presentation.cli.app",
+              "cwd": "${workspaceFolder}",
+              "console": "internalConsole",
+              "args": [
+                "--help"
+                // "${input:prompt}"
+              ],
+              "justMyCode": false
+            },
+            {
+              "name": "Dash: index.pyを実行",
+              "type": "debugpy",
+              "request": "launch",
+              "module": "src.presentation.dash.index",
+              "cwd": "${workspaceFolder}",
+              "console": "internalConsole",
+              "justMyCode": false
+            },
+            {
+              "name": "FastAPI: app.pyを実行",
+              "type": "debugpy",
+              "request": "launch",
+              "module": "src.presentation.fastapi.app",
+              "cwd": "${workspaceFolder}",
+              "console": "internalConsole",
+              "justMyCode": false
+            },
+            {
+              "name": "Flask: app.pyを実行",
+              "type": "debugpy",
+              "request": "launch",
+              "module": "src.presentation.flask.app",
+              "cwd": "${workspaceFolder}",
+              "console": "internalConsole",
+              "justMyCode": false
+            },
+            {
+              "name": "Streamlit: home.pyを実行",
+              "type": "debugpy",
+              "request": "launch",
+              "module": "streamlit",
+              "cwd": "${workspaceFolder}",
+              "console": "internalConsole",
+              "args": [
+                "run",
+                "src/presentation/streamlit/home.py",
+                "--server.port",
+                "5678",
+                "--browser.gatherUsageStats",
+                "false"
+              ],
+              "justMyCode": false
+            },
+            {
+              "name": "Python: Debug Test",
+              "type": "debugpy",
+              "request": "launch",
+              "purpose": [
+                "debug-test"
+              ],
+              "console": "integratedTerminal",
+              "justMyCode": false
+            }
+          ]
+        }
+      },
+      "extensions": [
+        // vscode全体
+        "ceintl.vscode-language-pack-ja",
+        "editorconfig.editorconfig",
+        "mhutchie.git-graph",
+        "github.copilot",
+        "mosapride.zenkaku",
+        "gruntfuggly.todo-tree",
+        // python関連
+        "ms-python.python",
+        "charliermarsh.ruff",
+        "njpwerner.autodocstring",
+        "ms-python.black-formatter",
+        "ms-toolsai.jupyter",
+        "ms-toolsai.jupyter-keymap",
+        // その他
+        "yzane.markdown-pdf",
+        "janisdd.vscode-edit-csv",
+        "mechatroner.rainbow-csv"
+      ]
+    }
+  }
+}

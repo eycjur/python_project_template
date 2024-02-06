@@ -1,19 +1,43 @@
-# ベースイメージ
 FROM python:3.10-slim-buster
+RUN apt-get update && \
+    apt-get install --no-install-recommends -y curl gcc python3-dev git make vim zsh neovim sudo
+
+RUN curl -sSL https://install.python-poetry.org | python -
+ENV PATH /root/.local/bin:$PATH
+RUN poetry config virtualenvs.create false
+
+RUN mkdir /app
 WORKDIR /app
 
-RUN apt update && apt install -y git vim zsh neovim sudo
-RUN python -m pip install -U pip poetry
-COPY pyproject.toml poetry.lock ./
-RUN python -m poetry install --no-interaction
+COPY ./pyproject.toml /app/pyproject.toml
+COPY ./poetry.lock /app/poetry.lock
+RUN poetry install
 
-ARG ROOT_PASSWORD=pass
-RUN echo "root:${ROOT_PASSWORD}" | chpasswd
+COPY ./src /app/src
 
-ARG DOCKER_UID=1000
-ARG DOCKER_USER=docker_user
-ARG DOCKER_PASSWORD=pass
-RUN useradd -m --uid ${DOCKER_UID} --groups sudo ${DOCKER_USER} \
-    && echo "${DOCKER_USER}:${DOCKER_PASSWORD}" | chpasswd
+EXPOSE ${APP_PORT}
 
-USER ${DOCKER_USER}
+
+# # CLI
+# CMD python -m src.presentation.cli.app --help
+
+# # Dash
+# CMD python -m src.presentation.dash.index
+
+# FastAPI
+CMD	gunicorn \
+        --bind "0.0.0.0:${APP_PORT}" \
+        --log-file - \
+        --access-logfile - \
+        -k uvicorn.workers.UvicornWorker \
+        src.presentation.fastapi.app:app
+
+# # Flask
+# CMD	gunicorn \
+#         --bind "0.0.0.0:${APP_PORT}" \
+#         --log-file - \
+#         --access-logfile - \
+#         src.presentation.flask.app:app
+
+# # Streamlit
+# CMD python -m streamlit run src/presentation/streamlit/home.py --server.port ${APP_PORT}
