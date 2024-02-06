@@ -15,12 +15,29 @@ RUN poetry install
 
 COPY ./src /app/src
 
-EXPOSE ${PORT}
+EXPOSE ${APP_PORT}
 
+
+# # CLI
+# CMD python -m src.presentation.cli.app --help
+
+# # Dash
+# CMD python -m src.presentation.dash.index
+
+# FastAPI
 CMD	gunicorn \
-        --bind "0.0.0.0:${PORT}" \
+        --bind "0.0.0.0:${APP_PORT}" \
         --log-file - \
         --access-logfile - \
         -k uvicorn.workers.UvicornWorker \
-        --timeout 180 \
-        src.app:app
+        src.presentation.fastapi.app:app
+
+# # Flask
+# CMD	gunicorn \
+#         --bind "0.0.0.0:${APP_PORT}" \
+#         --log-file - \
+#         --access-logfile - \
+#         src.presentation.flask.app:app
+
+# # Streamlit
+# CMD python -m streamlit run src/presentation/streamlit/home.py --server.port ${APP_PORT}

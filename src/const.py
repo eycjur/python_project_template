@@ -12,5 +12,5 @@ def get_env_variable(name: str) -> str:
     return env
 
 
-PORT = int(get_env_variable("PORT"))
+APP_PORT = int(get_env_variable("APP_PORT"))
 LOGGER_CONFIG_FILE = get_env_variable("LOGGER_CONFIG_FILE")

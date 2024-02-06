@@ -43,14 +43,71 @@
         "python.testing.pytestEnabled": true,
         "launch": {
           "version": "0.2.0",
+          // CLI用のargsの入力
+          // "inputs": [
+          //   {
+          //     "type": "promptString",
+          //     "id": "prompt",
+          //     "description": "引数を入力してください",
+          //     "default": "デフォルト"
+          //   }
+          // ],
           "configurations": [
             {
-              "name": "Python: app.pyを実行",
+              "name": "CLI: app.pyを実行",
               "type": "debugpy",
               "request": "launch",
-              "module": "src.app",
+              "module": "src.presentation.cli.app",
               "cwd": "${workspaceFolder}",
               "console": "internalConsole",
+              "args": [
+                "--help"
+                // "${input:prompt}"
+              ],
+              "justMyCode": false
+            },
+            {
+              "name": "Dash: index.pyを実行",
+              "type": "debugpy",
+              "request": "launch",
+              "module": "src.presentation.dash.index",
+              "cwd": "${workspaceFolder}",
+              "console": "internalConsole",
+              "justMyCode": false
+            },
+            {
+              "name": "FastAPI: app.pyを実行",
+              "type": "debugpy",
+              "request": "launch",
+              "module": "src.presentation.fastapi.app",
+              "cwd": "${workspaceFolder}",
+              "console": "internalConsole",
+              "justMyCode": false
+            },
+            {
+              "name": "Flask: app.pyを実行",
+              "type": "debugpy",
+              "request": "launch",
+              "module": "src.presentation.flask.app",
+              "cwd": "${workspaceFolder}",
+              "console": "internalConsole",
+              "justMyCode": false
+            },
+            {
+              "name": "Streamlit: home.pyを実行",
+              "type": "debugpy",
+              "request": "launch",
+              "module": "streamlit",
+              "cwd": "${workspaceFolder}",
+              "console": "internalConsole",
+              "args": [
+                "run",
+                "src/presentation/streamlit/home.py",
+                "--server.port",
+                "5678",
+                "--browser.gatherUsageStats",
+                "false"
+              ],
               "justMyCode": false
             },
             {

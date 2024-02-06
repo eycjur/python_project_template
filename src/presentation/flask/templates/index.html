@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>サンプルページ</title>
+</head>
+<body>
+    <h1>サンプルページ</h1>
+    <form method="POST" action="chat">
+        <input type="text" name="user_input" placeholder="テキストを入力してください">
+        <input type="submit" value="Submit">
+    </form>
+    {% if result %}
+    <p>{{ result }}</p>
+    {% endif %}
+</body>
+</html>
