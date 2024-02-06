@@ -42,18 +42,26 @@ jobs:
       - name: install dependencies
         run: poetry install --no-interaction
 
-      - name: Run Tests
-        if: always()
-        run: poetry run pytest -sv
-
-      - name: Run Black
+      - name: run black
         if: always()
         run: poetry run black --check --config=pyproject.toml .
 
-      - name: Run Ruff
+      - name: run ruff
         if: always()
         run: poetry run ruff .
 
-      - name: Run Mypy
+      - name: run mypy
         if: always()
         run: poetry run mypy --config-file=pyproject.toml .
+
+      - name: run tests
+        if: always()
+        run: |
+          set -o pipefail
+          poetry run pytest -sv --cov=src --cov-report=term-missing --junitxml=pytest.xml | tee pytest-coverage.txt
+
+      - name: pytest coverage comment
+        uses: MishaKav/pytest-coverage-comment@v1.1.47
+        with:
+          pytest-coverage-path: ./pytest-coverage.txt
+          junitxml-path: ./pytest.xml

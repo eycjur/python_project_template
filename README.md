@@ -1,7 +1,7 @@
-# About Python Project Template
+# Python Project Template
 pythonでプロジェクトを作成する際のテンプレートです。
 
-# How to Run
+## How to Run
 
 1. .env.sampleを元に.envを作成、credential.jsonを配置
 2. `make up`でDocker Composeを起動
@@ -9,7 +9,7 @@ pythonでプロジェクトを作成する際のテンプレートです。
 4. `make down`でDocker Composeを終了  
    終了せずにDev Containerを起動すると、docker-compose.override.ymlの内容が上書きされずデバッグが利用できません。
 
-# How to Develop
+## How to Develop
 
 1. .env.sampleを元に.envを作成、credential.jsonを配置
 2. pre-commitをインストール(ex. `pip install pre-commit`)
@@ -20,6 +20,6 @@ pythonでプロジェクトを作成する際のテンプレートです。
 7. F5でデバッグ実行が可能
 8. http://localhost:8100/ からアプリにアクセス
 
-# How to Deploy
+## How to Deploy
 
 1. `make deploy`でCloud Runにデプロイ
