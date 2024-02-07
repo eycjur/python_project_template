@@ -8,7 +8,7 @@ Note:
 from pydantic import BaseModel
 
 from fastapi import FastAPI
-from src.const import APP_PORT
+from src.settings import APP_PORT
 from src.usecase.sample import func
 
 app = FastAPI()

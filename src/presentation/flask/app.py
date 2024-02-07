@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-from src.const import APP_PORT
+from src.settings import APP_PORT
 from src.usecase.sample import func
 
 app = Flask(__name__)

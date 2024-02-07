@@ -2,9 +2,9 @@ import dash_bootstrap_components as dbc
 
 from dash import Input, Output, dcc, html
 from dash.development.base_component import Component
-from src.const import APP_PORT
 from src.presentation.dash.app import app
 from src.presentation.dash.pages import home
+from src.settings import APP_PORT
 
 
 def layout() -> Component:
