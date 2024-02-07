@@ -1,5 +1,8 @@
 include .env
 
+.DEFAULT_GOAL := help
+
+
 ## メタ的なコマンド
 # デフォルトコマンド(test lint)
 .PHONY: all
@@ -92,6 +95,24 @@ destroy:
 	docker compose down --rmi all --volumes --remove-orphans
 
 
+define PRINT_HELP_PYSCRIPT
+import sys, re
+command_pattern = re.compile(r"^[a-zA-Z0-9\-_]+:")
+lines = [line.rstrip() for line in sys.stdin if not line.startswith(".PHONY")]
+
+for previous_line, current_line in zip(lines[:-1], lines[1:]):
+	if command_pattern.search(current_line) and previous_line.startswith("# "):
+		# #から始まるコメント行があれば、コマンドとコメントを表示
+		command = current_line.split(":")[0]
+		comment = previous_line.lstrip("# ")
+		print(f"{command:20s}\t{comment}")
+	elif previous_line.startswith("## "):
+		# ##から始まるコメント行があれば、緑字でセクションのタイトルを表示
+		section_title = previous_line.lstrip("## ")
+		print(f"\n\033[92m{section_title}\033[0m")
+endef
+export PRINT_HELP_PYSCRIPT
+
 .PHONY: help
 help:
-	@cat $(MAKEFILE_LIST) | python3 -u -c 'import sys, re; rx = re.compile(r"^[a-zA-Z0-9\-_]+:"); lines = [line.rstrip() for line in sys.stdin if not line.startswith(".PHONY")]; [print(f"""{line.split(":")[0]:20s}\t{prev.lstrip("# ")}""") if rx.search(line) and prev.startswith("# ") else print(f"""\n\033[92m{prev.lstrip("## ")}\033[0m""") if prev.startswith("## ") else "" for prev, line in zip([""] + lines, lines)]'
+	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)

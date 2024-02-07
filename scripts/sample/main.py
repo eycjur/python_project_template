@@ -8,7 +8,7 @@ import sys
 
 sys.path.append("../../")
 
-from src.const import *  # noqa
+from src.settings import *  # noqa
 
 # %autoreload 2
 # %load_ext autoreload

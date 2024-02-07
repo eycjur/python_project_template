@@ -5,7 +5,7 @@ from typing import Any
 
 import yaml  # type: ignore
 
-from src.const import LOGGER_CONFIG_FILE
+from src.settings import LOGGER_CONFIG_FILE
 
 
 class Singleton(object):
