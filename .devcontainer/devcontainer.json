@@ -23,12 +23,8 @@
         "python.linting.flake8Enabled": false,
         // ruffの自動フォーマット
         "[python]": {
-          "editor.defaultFormatter": "ms-python.black-formatter",
-          "editor.formatOnSave": true,
-          "editor.codeActionsOnSave": {
-            "source.fixAll.ruff": true,
-            "source.organizeImports.ruff": true
-          }
+          "editor.defaultFormatter": "charliermarsh.ruff",
+          "editor.formatOnSave": true
         },
         "autoDocstring.docstringFormat": "google",
         "python.testing.pytestArgs": [
@@ -131,7 +127,6 @@
         // python関連
         "ms-python.python",
         "charliermarsh.ruff",
-        "ms-python.black-formatter",
         "ms-python.mypy-type-checker",
         "njpwerner.autodocstring",
         "ms-toolsai.jupyter",

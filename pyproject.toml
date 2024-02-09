@@ -22,32 +22,28 @@ environs = "^10.3.0"
 
 [tool.poetry.group.dev.dependencies]
 mypy = "1.8.0"
-black = "24.1.1"
 pytest = "^8.0.0"
-ruff = "0.2.1"
 types-pyyaml = "^6.0.12.12"
+ruff = "0.2.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
-[tool.black]
-target-version = ['py310']
-include = '\.pyi?$'
-line-length = 88
-preview = true
-
 [tool.ruff]
-lint.select = [
+line-length = 88
+target-version = "py310"
+
+[tool.ruff.lint]
+select = [
     # cf. https://beta.ruff.rs/docs/rules/
     "E",  # pycodestyle error
     "W",  # pycodestyle warning
     "F",  # Pyflakes
     "I",  # isort
 ]
-lint.fixable = ["I"]
-lint.unfixable = ["E", "W", "F"]
-line-length = 88
+fixable = ["I"]
+unfixable = ["E", "W", "F"]
 
 [tool.mypy]
 # チェック項目

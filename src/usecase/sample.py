@@ -1,7 +1,7 @@
 from src.loggers.logging import DefaultLogger
 
-
 logger = DefaultLogger(__name__)
+
 
 def func(user_input: str) -> str:
     logger.info(f"User input: {user_input}")
