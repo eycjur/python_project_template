@@ -7,14 +7,16 @@ from src.usecase.sample import func
 
 
 def layout() -> Component:
-    return html.Div([
-        html.H1("サンプルページ"),
-        dcc.Input(
-            id="user-input", type="text", placeholder="テキストを入力してください"
-        ),
-        html.Button("Submit", id="submit-button", n_clicks=0),
-        html.Div(id="output"),
-    ])
+    return html.Div(
+        [
+            html.H1("サンプルページ"),
+            dcc.Input(
+                id="user-input", type="text", placeholder="テキストを入力してください"
+            ),
+            html.Button("Submit", id="submit-button", n_clicks=0),
+            html.Div(id="output"),
+        ]
+    )
 
 
 @app.callback(

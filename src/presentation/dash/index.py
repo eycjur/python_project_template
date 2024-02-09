@@ -16,6 +16,7 @@ def layout() -> Component:
     )
 
 
+server = app.server
 app.layout = layout
 
 

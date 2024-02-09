@@ -45,13 +45,13 @@ jobs:
       - name: install dependencies
         run: poetry install --no-interaction
 
-      - name: run black
+      - name: run ruff (lint)
         if: always()
-        run: poetry run black --check --config=pyproject.toml .
+        run: poetry run ruff check --output-format=github .
 
-      - name: run ruff
+      - name: run ruff (format)
         if: always()
-        run: poetry run ruff .
+        run: poetry run ruff format --check --diff .
 
       - name: run mypy
         if: always()

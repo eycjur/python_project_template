@@ -20,20 +20,13 @@
         "terminal.integrated.defaultProfile.linux": "bash",
         "python.pythonPath": "/usr/local/bin/python",
         "python.linting.pylintEnabled": false,
-        "python.linting.lintOnSave": true,
-        "python.linting.enabled": true,
         "python.linting.flake8Enabled": false,
         // ruffの自動フォーマット
         "[python]": {
-          "editor.defaultFormatter": "ms-python.black-formatter",
-          "editor.formatOnSave": true,
-          "editor.codeActionsOnSave": {
-            "source.fixAll.ruff": false,
-            "source.organizeImports.ruff": true
-          }
+          "editor.defaultFormatter": "charliermarsh.ruff",
+          "editor.formatOnSave": true
         },
         "autoDocstring.docstringFormat": "google",
-        "python.linting.mypyEnabled": true,
         "python.testing.pytestArgs": [
           "tests",
           "-vv", // 詳細結果の出力
@@ -134,8 +127,8 @@
         // python関連
         "ms-python.python",
         "charliermarsh.ruff",
+        "ms-python.mypy-type-checker",
         "njpwerner.autodocstring",
-        "ms-python.black-formatter",
         "ms-toolsai.jupyter",
         "ms-toolsai.jupyter-keymap",
         // その他

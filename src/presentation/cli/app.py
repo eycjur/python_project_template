@@ -27,7 +27,7 @@ def hello() -> None:
 
 @app.command()
 def sample(
-    text: str = typer.Option("デフォルト", "-t", "--text", help="任意の文字列")
+    text: str = typer.Option("デフォルト", "-t", "--text", help="任意の文字列"),
 ) -> None:
     typer.echo(func(text))
 

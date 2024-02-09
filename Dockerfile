@@ -21,16 +21,20 @@ EXPOSE ${APP_PORT}
 # # CLI
 # CMD python -m src.presentation.cli.app --help
 
-# # Dash
-# CMD python -m src.presentation.dash.index
-
-# FastAPI
+# Dash
 CMD	gunicorn \
         --bind "0.0.0.0:${APP_PORT}" \
         --log-file - \
         --access-logfile - \
-        -k uvicorn.workers.UvicornWorker \
-        src.presentation.fastapi.app:app
+        src.presentation.dash.index:server
+
+# # FastAPI
+# CMD	gunicorn \
+#         --bind "0.0.0.0:${APP_PORT}" \
+#         --log-file - \
+#         --access-logfile - \
+#         -k uvicorn.workers.UvicornWorker \
+#         src.presentation.fastapi.app:app
 
 # # Flask
 # CMD	gunicorn \

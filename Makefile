@@ -18,13 +18,8 @@ test:
 # リンター
 .PHONY: lint
 lint:
-	@make --no-print-directory black
 	@make --no-print-directory ruff
 	@make --no-print-directory mypy
-
-.PHONY: black
-black:
-	black --config=pyproject.toml .
 
 .PHONY: ruff
 ruff:
