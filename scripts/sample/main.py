@@ -10,10 +10,12 @@ import sys
 
 sys.path.append("/app")
 
-from src.settings import *  # noqa
+from src.usecase.sample import func
 
 # %autoreload 2
 # %load_ext autoreload
 
 # %%
-print("Hello, world!")
+print(func("Hello, world!"))
+
+# %%

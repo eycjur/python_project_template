@@ -17,7 +17,6 @@ typer = "^0.4.0"
 dash = "^2.15.0"
 dash-bootstrap-components = "^1.5.0"
 streamlit = "^1.31.0"
-pytest-cov = "^4.1.0"
 environs = "^10.3.0"
 
 [tool.poetry.group.dev.dependencies]
@@ -25,6 +24,8 @@ mypy = "1.8.0"
 pytest = "^8.0.0"
 types-pyyaml = "^6.0.12.12"
 ruff = "0.2.1"
+ipykernel = "^6.29.2"
+pytest-cov = "^4.1.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
