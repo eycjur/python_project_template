@@ -8,7 +8,7 @@ indent_style = space
 indent_size = 4
 trim_trailing_whitespace = true
 
-[*.md]
+[*.{md,go,diff,patch}]
 trim_trailing_whitespace = false
 
 [LICENSE]
@@ -17,14 +17,11 @@ insert_final_newline = false
 [Makefile]
 indent_style = tab
 
-[*.{yml,yaml}]
-indent_size = 2
+[*.{cmd,bat}]
+end_of_line = crlf
 
-[*.{html,js,json,ts,tsx,css,scss}]
+[*.{yml,yaml,html,js,json,ts,tsx,css,sass,scss,vue}]
 indent_size = 2
 
 [*.rst]
 indent_size = 3
-
-[*.{diff,patch}]
-trim_trailing_whitespace = false
