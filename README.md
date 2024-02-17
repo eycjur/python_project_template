@@ -22,4 +22,6 @@ pythonでプロジェクトを作成する際のテンプレートです。
 
 ## How to Deploy
 
+GCPのCloud Runへのデプロイを実施します
+
 1. `make deploy`でCloud Runにデプロイ

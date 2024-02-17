@@ -24,10 +24,11 @@ lint:
 .PHONY: ruff
 ruff:
 	ruff --fix .
+	ruff format .
 
 .PHONY: mypy
 mypy:
-	python -m mypy --config-file=pyproject.toml .
+	mypy --config-file=pyproject.toml .
 
 
 ## デプロイ
@@ -50,6 +51,8 @@ deploy:
 			tr '\n' ',' | \
 			sed 's/,$$//' \
 		) \
+		--cpu 1 \
+		--memory 1Gi \
 		--platform managed \
 		--service-account $(SERVICE_ACCOUNT) \
 		--project $(PROJECT_ID)

@@ -1,3 +1,5 @@
+# ruff: noqa: E402, F401  # import順を無視
+
 """コメント"""
 
 # %%[markdown]
@@ -6,12 +8,14 @@
 # %%
 import sys
 
-sys.path.append("../../")
+sys.path.append("/app")
 
-from src.settings import *  # noqa
+from src.usecase.sample import func
 
 # %autoreload 2
 # %load_ext autoreload
 
 # %%
-print("Hello, world!")
+print(func("Hello, world!"))
+
+# %%

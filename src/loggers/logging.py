@@ -66,7 +66,7 @@ class DefaultLogger(object):
         >>> logger.debug("debug message")
     """
 
-    def __init__(self, logger_name: str = "root") -> None:
+    def __init__(self, logger_name: str) -> None:
         self.log_manager = LoggerManager()
         self.logger_name = logger_name
 
