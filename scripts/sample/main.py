@@ -1,3 +1,5 @@
+# ruff: noqa: E402, F401  # import順を無視
+
 """コメント"""
 
 # %%[markdown]
@@ -6,7 +8,7 @@
 # %%
 import sys
 
-sys.path.append("../../")
+sys.path.append("/app")
 
 from src.settings import *  # noqa
 

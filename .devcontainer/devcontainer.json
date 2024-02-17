@@ -11,13 +11,6 @@
   "customizations": {
     "vscode": {
       "settings": {
-        "terminal.integrated.profiles.linux": {
-          "bash": {
-            "path": "bash",
-            "icon": "terminal-bash"
-          }
-        },
-        "terminal.integrated.defaultProfile.linux": "bash",
         "python.pythonPath": "/usr/local/bin/python",
         "python.linting.pylintEnabled": false,
         "python.linting.flake8Enabled": false,
@@ -46,6 +39,14 @@
           //   }
           // ],
           "configurations": [
+            {
+              "name": "Python: Current File",
+              "type": "debugpy",
+              "request": "launch",
+              "program": "${file}",
+              "console": "internalConsole",
+              "justMyCode": false
+            },
             {
               "name": "CLI: app.pyを実行",
               "type": "debugpy",
