@@ -73,7 +73,6 @@ up-no-cache:
 # コンテナ内のシェル実行
 .PHONY: exec
 exec:
-	@make up
 	docker compose exec app bash
 
 # コンテナを停止して削除

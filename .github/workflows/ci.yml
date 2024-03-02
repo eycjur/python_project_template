@@ -43,7 +43,7 @@ jobs:
             ${{ runner.os }}-poetrydependencies-${{ matrix.python-version }}-
 
       - name: install dependencies
-        run: poetry install --no-interaction
+        run: poetry install --no-root --no-interaction --no-ansi
 
       - name: run ruff (lint)
         if: always()
