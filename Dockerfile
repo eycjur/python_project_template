@@ -46,7 +46,8 @@ CMD	gunicorn \
         --bind "0.0.0.0:${APP_PORT}" \
         --log-file - \
         --access-logfile - \
-        --workers 4 \
+        --workers 1 \
+        --threads 8 \
         --timeout 300 \
         src.presentation.dash.index:server
 
@@ -55,7 +56,8 @@ CMD	gunicorn \
 #         --bind "0.0.0.0:${APP_PORT}" \
 #         --log-file - \
 #         --access-logfile - \
-#         --workers 4 \
+#         --workers 1 \
+#         --threads 8 \
 #         --timeout 300 \
 #         -k uvicorn.workers.UvicornWorker \
 #         src.presentation.fastapi.app:app
@@ -65,7 +67,8 @@ CMD	gunicorn \
 #         --bind "0.0.0.0:${APP_PORT}" \
 #         --log-file - \
 #         --access-logfile - \
-#         --workers 4 \
+#         --workers 1 \
+#         --threads 8 \
 #         --timeout 300 \
 #         src.presentation.flask.app:app
 

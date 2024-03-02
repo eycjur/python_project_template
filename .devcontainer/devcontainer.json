@@ -27,6 +27,10 @@
         ],
         "python.testing.unittestEnabled": false,
         "python.testing.pytestEnabled": true,
+        // コードセルの解析時にシェル割り当て(#!)、行マジック(#!%)およびセルマジック(#!%%)のコメントを解除します。
+        "jupyter.interactiveWindow.textEditor.magicCommandsAsComments": true,
+        // デバッグするときにライブラリコードにステップインできるようにする。
+        "jupyter.debugJustMyCode": false,
         "launch": {
           "version": "0.2.0",
           // CLI用のargsの入力
@@ -40,10 +44,11 @@
           // ],
           "configurations": [
             {
-              "name": "Python: Current File",
+              "name": "Dash: index.pyを実行",
               "type": "debugpy",
               "request": "launch",
-              "program": "${file}",
+              "module": "src.presentation.dash.index",
+              "cwd": "${workspaceFolder}",
               "console": "internalConsole",
               "justMyCode": false
             },
@@ -58,15 +63,6 @@
                 "--help"
                 // "${input:prompt}"
               ],
-              "justMyCode": false
-            },
-            {
-              "name": "Dash: index.pyを実行",
-              "type": "debugpy",
-              "request": "launch",
-              "module": "src.presentation.dash.index",
-              "cwd": "${workspaceFolder}",
-              "console": "internalConsole",
               "justMyCode": false
             },
             {
@@ -102,6 +98,14 @@
                 "--browser.gatherUsageStats",
                 "false"
               ],
+              "justMyCode": false
+            },
+            {
+              "name": "Python: Current File",
+              "type": "debugpy",
+              "request": "launch",
+              "program": "${file}",
+              "console": "internalConsole",
               "justMyCode": false
             },
             {

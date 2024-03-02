@@ -1,17 +1,6 @@
 # ruff: noqa: E402, F401  # import順を無視
 
-"""コメント
-
-推奨設定
-```json:settings.json
-{
-  // コードセルの解析時にシェル割り当て(#!)、行マジック(#!%)およびセルマジック(#!%%)のコメントを解除します。
-  "jupyter.interactiveWindow.textEditor.magicCommandsAsComments": true,
-  // デバッグするときにライブラリコードにステップインできるようにする。
-  "jupyter.debugJustMyCode": false,
-}
-```
-"""  # noqa
+"""コメント"""  # noqa
 
 # %%[markdown]
 # # H1

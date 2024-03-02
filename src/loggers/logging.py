@@ -1,59 +1,11 @@
 import logging
 import os
+import sys
 from logging.config import dictConfig
-from typing import Any
 
 import yaml  # type: ignore
 
 from src.settings import LOGGER_CONFIG_FILE
-
-
-class Singleton(object):
-    """シングルトン（あるクラスのインスタンスがプログラム内で1つだけ存在することを保証する）
-
-    Singleton interface:
-    http://www.python.org/download/releases/2.2.3/descrintro/#__new__
-    """
-
-    def __new__(cls, *args: Any, **kwds: Any) -> "Singleton":
-        it = cls.__dict__.get("__it__")
-        if it is not None:
-            return it  # type: ignore
-        cls.__it__ = it = object.__new__(cls)
-        it.init(*args, **kwds)
-        return it
-
-    def init(self, *args: Any, **kwds: Any) -> None:
-        pass
-
-
-class LoggerManager(Singleton):
-    """ロガーを管理するクラス
-
-    直接は利用しないこと
-    """
-
-    def init(self) -> None:
-        self.logger = logging.getLogger()
-
-        logger_config_path = os.path.join(os.path.dirname(__file__), LOGGER_CONFIG_FILE)
-        dictConfig(yaml.load(open(logger_config_path).read(), Loader=yaml.SafeLoader))
-
-    def debug(self, logger_name: str, msg: object) -> None:
-        self.logger = logging.getLogger(logger_name)
-        self.logger.debug(msg)
-
-    def info(self, logger_name: str, msg: object) -> None:
-        self.logger = logging.getLogger(logger_name)
-        self.logger.info(msg)
-
-    def warning(self, logger_name: str, msg: object) -> None:
-        self.logger = logging.getLogger(logger_name)
-        self.logger.warning(msg)
-
-    def error(self, logger_name: str, msg: object) -> None:
-        self.logger = logging.getLogger(logger_name)
-        self.logger.error(msg)
 
 
 class DefaultLogger(object):
@@ -66,18 +18,27 @@ class DefaultLogger(object):
         >>> logger.debug("debug message")
     """
 
-    def __init__(self, logger_name: str) -> None:
-        self.log_manager = LoggerManager()
-        self.logger_name = logger_name
+    def __init__(self, name: str) -> None:
+        self.logger = logging.getLogger(name)
 
     def debug(self, msg: object) -> None:
-        self.log_manager.debug(self.logger_name, msg)
+        # exc_infoを利用するとなぜかログが出力されずstack_infoのみが出力されるので、
+        # エラーが発生している場合のみstack_infoを出力するようにしている
+        self.logger.debug(msg, stacklevel=2, stack_info=sys.exc_info()[0] is not None)
 
     def info(self, msg: object) -> None:
-        self.log_manager.info(self.logger_name, msg)
+        self.logger.info(msg, stacklevel=2, stack_info=sys.exc_info()[0] is not None)
 
     def warning(self, msg: object) -> None:
-        self.log_manager.warning(self.logger_name, msg)
+        self.logger.warning(msg, stacklevel=2, stack_info=sys.exc_info()[0] is not None)
 
     def error(self, msg: object) -> None:
-        self.log_manager.error(self.logger_name, msg)
+        self.logger.error(msg, stacklevel=2, stack_info=sys.exc_info()[0] is not None)
+
+
+def init_logger() -> None:
+    logger_config_path = os.path.join(os.path.dirname(__file__), LOGGER_CONFIG_FILE)
+    dictConfig(yaml.load(open(logger_config_path).read(), Loader=yaml.SafeLoader))
+
+
+init_logger()

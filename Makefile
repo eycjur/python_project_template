@@ -46,7 +46,7 @@ deploy:
 		--region $(REGION) \
 		--port $(APP_PORT) \
 		--set-env-vars=$(shell \
-			cat .env | \
+			awk 1 .env | \
 			grep -vE '^\s*($$|#)' | \
 			tr '\n' ',' | \
 			sed 's/,$$//' \

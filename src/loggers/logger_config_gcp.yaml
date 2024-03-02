@@ -1,0 +1,25 @@
+version: 1
+
+formatters:
+  simple:
+    format: "%(asctime)s - %(levelname)s - %(name)s:%(lineno)d - %(message)s"
+  cloud_logging_formatter:
+    class: src.loggers.formatter.CloudLoggingFormatter
+
+handlers:
+  console_handler:
+    class: logging.StreamHandler
+    level: DEBUG
+    formatter: cloud_logging_formatter
+
+loggers:
+  src:
+    level: DEBUG
+  __main__:
+    level: DEBUG
+
+root:
+  level: WARNING
+  handlers: [console_handler]
+
+disable_existing_loggers: False
