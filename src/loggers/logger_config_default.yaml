@@ -10,7 +10,7 @@ handlers:
   console_handler:
     class: logging.StreamHandler
     level: DEBUG
-    formatter: cloud_logging_formatter
+    formatter: simple
 
 loggers:
   src:

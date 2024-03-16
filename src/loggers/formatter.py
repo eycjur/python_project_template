@@ -1,5 +1,6 @@
 import json
 import logging
+import traceback
 
 
 class CloudLoggingFormatter(logging.Formatter):
@@ -17,7 +18,8 @@ class CloudLoggingFormatter(logging.Formatter):
                 "line": record.lineno,
                 "function": record.funcName,
             },
-            "stack_trace": record.stack_info,
         }
+        if record.exc_info:
+            log_data["stack_trace"] = traceback.format_exc()
 
-        return json.dumps(log_data)
+        return json.dumps(log_data, ensure_ascii=False)

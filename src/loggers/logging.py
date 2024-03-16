@@ -8,6 +8,10 @@ import yaml  # type: ignore
 from src.settings import LOGGER_CONFIG_FILE
 
 
+def _is_exc_info() -> bool:
+    return sys.exc_info()[0] is not None
+
+
 class DefaultLogger(object):
     """Logger object.
 
@@ -22,18 +26,21 @@ class DefaultLogger(object):
         self.logger = logging.getLogger(name)
 
     def debug(self, msg: object) -> None:
-        # exc_infoを利用するとなぜかログが出力されずstack_infoのみが出力されるので、
-        # エラーが発生している場合のみstack_infoを出力するようにしている
-        self.logger.debug(msg, stacklevel=2, stack_info=sys.exc_info()[0] is not None)
+        # stacklevel=2を指定することで、このメソッドを呼び出したメソッドの情報を出力する
+        # エラーが発生している場合のみexc_infoを付与する
+        self.logger.debug(msg, stacklevel=2, exc_info=_is_exc_info())
 
     def info(self, msg: object) -> None:
-        self.logger.info(msg, stacklevel=2, stack_info=sys.exc_info()[0] is not None)
+        self.logger.info(msg, stacklevel=2, exc_info=_is_exc_info())
 
     def warning(self, msg: object) -> None:
-        self.logger.warning(msg, stacklevel=2, stack_info=sys.exc_info()[0] is not None)
+        self.logger.warning(msg, stacklevel=2, exc_info=_is_exc_info())
 
     def error(self, msg: object) -> None:
-        self.logger.error(msg, stacklevel=2, stack_info=sys.exc_info()[0] is not None)
+        self.logger.error(msg, stacklevel=2, exc_info=_is_exc_info())
+
+    def critical(self, msg: object) -> None:
+        self.logger.critical(msg, stacklevel=2, exc_info=_is_exc_info())
 
 
 def init_logger() -> None:
