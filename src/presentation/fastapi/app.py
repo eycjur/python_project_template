@@ -7,11 +7,34 @@ Note:
 
 from pydantic import BaseModel
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request, status
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
+from src.loggers.logging import DefaultLogger
 from src.settings import APP_PORT
 from src.usecase.sample import func
 
+logger = DefaultLogger(__name__)
 app = FastAPI()
+
+
+@app.exception_handler(Exception)
+async def exception_handler(request: Request, exc: Exception) -> JSONResponse:
+    # Note: 開発用サーバーではエラー時のtraceackがデフォルトで出力されるの重複する
+    logger.error(f"Error: {exc}")
+    return JSONResponse(
+        content={"detail": str(exc)},
+        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+    )
+
+
+@app.exception_handler(RequestValidationError)
+async def handler(request: Request, exc: RequestValidationError) -> JSONResponse:
+    logger.error(f"Error: {exc}")
+    return JSONResponse(
+        content={"detail": str(exc)},
+        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+    )
 
 
 class ChatRequest(BaseModel):
