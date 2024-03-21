@@ -14,8 +14,6 @@ import numpy as np
 import pandas as pd
 from IPython.display import display
 
-# display
-
 sys.path.append("/app")
 
 from src.usecase.sample import func

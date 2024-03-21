@@ -44,7 +44,7 @@ deploy:
 	gcloud run deploy $(CONTAINER_NAME) \
 		--image gcr.io/$(PROJECT_ID)/$(CONTAINER_NAME) \
 		--region $(REGION) \
-		--port $(APP_PORT) \
+		--port $(CONTAINER_PORT) \
 		--set-env-vars=$(shell \
 			awk 1 .env | \
 			grep -vE '^\s*($$|#)' | \

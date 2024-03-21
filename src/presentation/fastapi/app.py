@@ -1,7 +1,7 @@
 """
 Note:
     コマンド例
-    curl -X POST -H "Content-Type: application/json" -d '{"text":"hello"}' http://localhost:${APP_PORT}/chat
+    curl -X POST -H "Content-Type: application/json" -d '{"text":"hello"}' http://localhost:${CONTAINER_PORT}/chat
 
 """
 
@@ -11,7 +11,7 @@ from fastapi import FastAPI, Request, status
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from src.loggers.logging import DefaultLogger
-from src.settings import APP_PORT
+from src.settings import CONTAINER_PORT
 from src.usecase.sample import func
 
 logger = DefaultLogger(__name__)
@@ -59,5 +59,8 @@ if __name__ == "__main__":
     import uvicorn
 
     uvicorn.run(
-        "src.presentation.fastapi.app:app", host="0.0.0.0", port=APP_PORT, reload=True
+        "src.presentation.fastapi.app:app",
+        host="0.0.0.0",
+        port=CONTAINER_PORT,
+        reload=True,
     )

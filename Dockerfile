@@ -43,7 +43,7 @@ RUN poetry install --no-root --no-interaction --no-ansi
 
 COPY ./src /app/src
 
-EXPOSE ${APP_PORT}
+EXPOSE ${CONTAINER_PORT}
 
 
 # # CLI
@@ -51,7 +51,7 @@ EXPOSE ${APP_PORT}
 
 # Dash
 CMD	gunicorn \
-        --bind "0.0.0.0:${APP_PORT}" \
+        --bind "0.0.0.0:${CONTAINER_PORT}" \
         --log-file - \
         --access-logfile - \
         --workers 1 \
@@ -61,7 +61,7 @@ CMD	gunicorn \
 
 # # FastAPI
 # CMD	gunicorn \
-#         --bind "0.0.0.0:${APP_PORT}" \
+#         --bind "0.0.0.0:${CONTAINER_PORT}" \
 #         --log-file - \
 #         --access-logfile - \
 #         --workers 1 \
@@ -72,7 +72,7 @@ CMD	gunicorn \
 
 # # Flask
 # CMD	gunicorn \
-#         --bind "0.0.0.0:${APP_PORT}" \
+#         --bind "0.0.0.0:${CONTAINER_PORT}" \
 #         --log-file - \
 #         --access-logfile - \
 #         --workers 1 \
@@ -81,4 +81,4 @@ CMD	gunicorn \
 #         src.presentation.flask.app:app
 
 # # Streamlit
-# CMD python -m streamlit run src/presentation/streamlit/home.py --server.port ${APP_PORT}
+# CMD python -m streamlit run src/presentation/streamlit/home.py --server.port ${CONTAINER_PORT}
