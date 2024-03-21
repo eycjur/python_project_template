@@ -5,7 +5,7 @@ pythonでプロジェクトを作成する際のテンプレートです。
 
 1. .env.sampleを元に.envを作成、credential.jsonを配置
 2. `make up`でDocker Composeを起動
-3. http://localhost:8100/ からアプリにアクセス
+3. http://localhost:<LOCAL_PORT>/ からアプリにアクセス
 4. `make down`でDocker Composeを終了  
    終了せずにDev Containerを起動すると、docker-compose.override.ymlの内容が上書きされずデバッグが利用できません。
 
@@ -18,7 +18,7 @@ pythonでプロジェクトを作成する際のテンプレートです。
 5. コマンドパレット(`Ctrl+Shift+P`)から`Remote-Containers: Reopen in Container`を実行
 6. (Docker Compose立ち上げ時のみ)拡張機能の依存関係の解決に失敗するので、通知に従ってウィンドウの再読み込みする
 7. F5でデバッグ実行が可能
-8. http://localhost:8100/ からアプリにアクセス
+8. http://localhost:<LOCAL_PORT>/ からアプリにアクセス
 
 ## How to Deploy
 

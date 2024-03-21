@@ -14,5 +14,5 @@ services:
     environment:
       - GOOGLE_APPLICATION_CREDENTIALS=/credential.json
     ports:
-      - 127.0.0.1:8100:${APP_PORT}
+      - 127.0.0.1:${LOCAL_PORT}:${CONTAINER_PORT}
     tty: true

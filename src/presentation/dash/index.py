@@ -4,7 +4,7 @@ from dash import Input, Output, dcc, html
 from dash.development.base_component import Component
 from src.presentation.dash.app import app
 from src.presentation.dash.pages import home
-from src.settings import APP_PORT
+from src.settings import CONTAINER_PORT
 
 
 def layout() -> Component:
@@ -32,4 +32,4 @@ def display_content(pathname: str) -> Component:
 
 
 if __name__ == "__main__":
-    app.run_server(debug=True, host="0.0.0.0", port=APP_PORT)
+    app.run_server(debug=True, host="0.0.0.0", port=CONTAINER_PORT)

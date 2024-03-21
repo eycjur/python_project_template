@@ -8,7 +8,7 @@ IS_GCP = "K_SERVICE" in os.environ
 # HACK: CI環境の場合は環境変数がなくてもエラーとしないように、遅延バリデーションとする
 env = Env(eager=not IS_GITHUB_ACTIONS)
 
-APP_PORT = env.int("APP_PORT")
+CONTAINER_PORT = env.int("CONTAINER_PORT")
 # CI環境でもloggerのinitに必要なため、デフォルト値を設定
 LOGGER_CONFIG_FILE_DEFAULT = env.str(
     "LOGGER_CONFIG_FILE_DEFAULT", default="logger_config_default.yaml"

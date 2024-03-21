@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-from src.settings import APP_PORT
+from src.settings import CONTAINER_PORT
 from src.usecase.sample import func
 
 app = Flask(__name__)
@@ -18,4 +18,4 @@ def submit() -> str:
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=APP_PORT)
+    app.run(debug=True, host="0.0.0.0", port=CONTAINER_PORT)
