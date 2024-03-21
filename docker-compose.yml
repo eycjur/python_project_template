@@ -12,7 +12,8 @@ services:
     env_file:
       - .env
     environment:
-      - GOOGLE_APPLICATION_CREDENTIALS=/credentials/gcp.json
+      - GOOGLE_APPLICATION_CREDENTIALS=/credentials/credential_gcp.json
+      - AWS_CONFIG_FILE=/credentials/credential_aws
     ports:
       - 127.0.0.1:${LOCAL_PORT}:${CONTAINER_PORT}
     tty: true

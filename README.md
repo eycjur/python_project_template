@@ -4,6 +4,8 @@ pythonでプロジェクトを作成する際のテンプレートです。
 ## How to Run
 
 1. .env.sampleを元に.envを作成、利用するクラウドのクレデンシャルファイルをcredentials/を配置
+   1. GCPの場合は、サービスアカウントのcredentialファイルをcredential_gcp.jsonとして保存
+   2. AWSの場合は、クレデンシャルファイルをcredential_awsとして保存
 2. `make up`でDocker Composeを起動
 3. http://localhost:<LOCAL_PORT>/ からアプリにアクセス
 4. `make down`でDocker Composeを終了  
