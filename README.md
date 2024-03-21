@@ -3,7 +3,7 @@ pythonでプロジェクトを作成する際のテンプレートです。
 
 ## How to Run
 
-1. .env.sampleを元に.envを作成、credential.jsonを配置
+1. .env.sampleを元に.envを作成、利用するクラウドのクレデンシャルファイルをcredentials/を配置
 2. `make up`でDocker Composeを起動
 3. http://localhost:<LOCAL_PORT>/ からアプリにアクセス
 4. `make down`でDocker Composeを終了  
@@ -11,7 +11,7 @@ pythonでプロジェクトを作成する際のテンプレートです。
 
 ## How to Develop
 
-1. .env.sampleを元に.envを作成、credential.jsonを配置
+1. .env.sampleを元に.envを作成、利用するクラウドのクレデンシャルファイルをcredentials/を配置
 2. pre-commitをインストール(ex. `pip install pre-commit`)
 3. `pre-commit install`でpre-commitのhookスクリプトを導入
 4. VSCodeでDev Container拡張機能をインストール

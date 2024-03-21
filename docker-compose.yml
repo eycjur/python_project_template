@@ -7,12 +7,12 @@ services:
     container_name: ${CONTAINER_NAME}
     volumes:
       - ./:/app
-      - ./credential.json:/credential.json:ro
+      - ./credentials:/credentials:ro
     working_dir: /app
     env_file:
       - .env
     environment:
-      - GOOGLE_APPLICATION_CREDENTIALS=/credential.json
+      - GOOGLE_APPLICATION_CREDENTIALS=/credentials/gcp.json
     ports:
       - 127.0.0.1:${LOCAL_PORT}:${CONTAINER_PORT}
     tty: true
