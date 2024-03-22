@@ -3,11 +3,11 @@
 Example:
     ヘルプ
 
-    >>> `python cli.py --help`
+    >>> `python -m src.presentation.cli.app --help`
 
     サブコマンドのヘルプ
 
-    >>> `python cli.py [command] --help`
+    >>> `python -m src.presentation.cli.app [command] --help`
 
 Attention:
     _は-で実行する
@@ -15,7 +15,11 @@ Attention:
 
 import typer
 
-from src.usecase.sample import func
+from src.domain.message.message import Message
+from src.presentation.util.init import get_message_repository
+from src.usecase.error import ErrorUsecase
+from src.usecase.history import HistoryUsecase
+from src.usecase.register import RegisterUsecase
 
 app = typer.Typer()
 
@@ -26,10 +30,27 @@ def hello() -> None:
 
 
 @app.command()
-def sample(
-    text: str = typer.Option("デフォルト", "-t", "--text", help="任意の文字列"),
+def history() -> None:
+    message_repository = get_message_repository()
+    messages = HistoryUsecase(message_repository).execute()
+    for m in messages:
+        typer.echo(m.content)
+
+
+@app.command()
+def register(
+    text: str = typer.Option("デフォルト", "-t", "--text", help="登録するテキスト"),
 ) -> None:
-    typer.echo(func(text))
+    message_repository = get_message_repository()
+    message = Message(content=text)
+    RegisterUsecase(message_repository).execute(message)
+    typer.echo(f"登録しました: {text}")
+
+
+@app.command()
+def error() -> None:
+    result = ErrorUsecase().execute()
+    typer.echo(result)
 
 
 if __name__ == "__main__":

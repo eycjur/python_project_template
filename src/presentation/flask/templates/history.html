@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  履歴ページ
+{% endblock %}
+
+{% block body %}
+  <h1>履歴ページ</h1>
+  {% for message in messages %}
+    <div class="card m-2 p-2">{{ message.content }}</div>
+  {% endfor %}
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  登録ページ
+{% endblock %}
+
+{% block body %}
+  <h1>登録ページ</h1>
+  <form method="POST" action="register">
+    <input type="text" name="user_input" placeholder="テキストを入力してください">
+    <input type="submit" value="Submit">
+  </form>
+{% endblock %}
+
