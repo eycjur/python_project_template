@@ -1,0 +1,12 @@
+version: '3'
+services:
+  app:
+    image: ${AWS_ACCOUNT_ID}.dkr.ecr.ap-northeast-1.amazonaws.com/${CONTAINER_NAME}:latest
+    working_dir: /app
+    env_file:
+      - .env
+    environment:
+      - AWS_CONFIG_FILE=/credentials/credential_aws
+    ports:
+      - ${CONTAINER_PORT}:${CONTAINER_PORT}
+    tty: true

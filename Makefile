@@ -3,12 +3,6 @@ include .env
 .DEFAULT_GOAL := help
 
 
-## メタ的なコマンド
-# デフォルトコマンド(test lint)
-.PHONY: all
-all: test lint
-
-
 ## python関連のコマンド
 # テストコードの実行
 .PHONY: test
@@ -32,18 +26,18 @@ mypy:
 
 
 ## デプロイ
-# dockerのサーバーの起動
-.PHONY: deploy
-deploy:
+# GCPへのデプロイ
+.PHONY: deploy-gcp
+deploy-gcp:
 	gcloud builds submit \
-		--region $(REGION) \
-		--tag gcr.io/$(PROJECT_ID)/$(CONTAINER_NAME) \
-		--project $(PROJECT_ID) \
+		--region $(GCP_REGION) \
+		--tag gcr.io/$(GCP_PROJECT_ID)/$(CONTAINER_NAME) \
+		--project $(GCP_PROJECT_ID) \
 		.
 
 	gcloud run deploy $(CONTAINER_NAME) \
-		--image gcr.io/$(PROJECT_ID)/$(CONTAINER_NAME) \
-		--region $(REGION) \
+		--image gcr.io/$(GCP_PROJECT_ID)/$(CONTAINER_NAME) \
+		--region $(GCP_REGION) \
 		--port $(CONTAINER_PORT) \
 		--set-env-vars=$(shell \
 			awk 1 .env | \
@@ -54,9 +48,87 @@ deploy:
 		--cpu 1 \
 		--memory 1Gi \
 		--platform managed \
-		--service-account $(SERVICE_ACCOUNT) \
-		--project $(PROJECT_ID)
+		--service-account $(GCP_SERVICE_ACCOUNT) \
+		--project $(GCP_PROJECT_ID)
 
+ECR_URL = $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com
+ENV_JSON := {$(shell awk 1 .env | grep -vE '^\s*($$|\#)' | sed -E 's/^([^=]+)="{0,1}([^"]*)"{0,1}$$/"\1":"\2"/g' | tr '\n' ',' | sed 's/,$$//')}
+
+.PHONY: build-aws
+build-aws:
+	docker buildx build \
+		--platform linux/amd64 \
+		--tag ${ECR_URL}/$(CONTAINER_NAME):latest \
+		.
+
+# AWSへのデプロイ（App Runner、初回実行時）
+.PHONY: deploy-aws-init
+deploy-aws-init:
+	aws ecr get-login-password --region $(AWS_REGION) | \
+		docker login --username AWS --password-stdin ${ECR_URL}
+	aws ecr create-repository \
+		--repository-name $(CONTAINER_NAME) \
+		--image-scanning-configuration scanOnPush=true \
+		--region $(AWS_REGION)
+	@make --no-print-directory build-aws
+	aws apprunner create-service \
+		--service-name $(CONTAINER_NAME) \
+		--source-configuration '{ \
+				"ImageRepository": { \
+					"ImageIdentifier": "${ECR_URL}/$(CONTAINER_NAME):latest", \
+					"ImageConfiguration": {"RuntimeEnvironmentVariables": $(ENV_JSON), "Port": "$(CONTAINER_PORT)"}, \
+					"ImageRepositoryType": "ECR" \
+				}, \
+				"AuthenticationConfiguration": { \
+					"AccessRoleArn": "arn:aws:iam::$(AWS_ACCOUNT_ID):role/service-role/AppRunnerECRAccessRole" \
+				} \
+			}' \
+		--instance-configuration '{"Cpu":"1024","Memory":"2048"}' \
+		--region "$(AWS_REGION)"
+
+# AWSへのデプロイ（App Runner、2回目以降）
+.PHONY: deploy-aws
+deploy-aws:
+	@make --no-print-directory build-aws
+	aws apprunner update-service \
+		--service-arn "$(AWS_APP_RUNNER_SERVICE_ARN)" \
+		--source-configuration '{ \
+				"ImageRepository": {\
+					"ImageIdentifier": "${ECR_URL}/$(CONTAINER_NAME):latest", \
+					"ImageConfiguration": {"RuntimeEnvironmentVariables": $(ENV_JSON)}, \
+					"ImageRepositoryType": "ECR" \
+				} \
+			}'
+
+# # AWSへのデプロイ（ECS、初回実行時）
+# .PHONY: deploy-aws-init
+# deploy-aws-init:
+# 	aws ecr get-login-password --region $(AWS_REGION) | \
+# 		docker login --username AWS --password-stdin ${ECR_URL}
+# 	docker context create ecs ecs-context
+# 	aws ecr create-repository \
+# 		--repository-name $(CONTAINER_NAME) \
+# 		--image-scanning-configuration scanOnPush=true \
+# 		--region $(AWS_REGION)
+
+# 	@make --no-print-directory deploy-aws
+
+# # AWSへのデプロイ（ECS、2回目以降）
+# .PHONY: deploy-aws
+# deploy-aws:
+# 	@make --no-print-directory build-aws
+# 	$(eval current_context := $(shell docker context ls | grep "\*" | cut -d " " -f 1))
+# 	docker context use ecs-context
+# 	docker compose -f docker-compose.aws.yml up
+# 	docker context use $(current_context)
+
+# Azureへのデプロイ
+.PHONY: deploy-azure
+deploy-azure:
+	az containerapp compose create \
+		--environment containerapps-environment-$(CONTAINER_NAME) \
+		--resource-group $(AZURE_RESOURCE_GROUP) \
+		--location $(AZURE_LOCATION)
 
 ## dockerの実行コマンド
 # コンテナのビルド・起動

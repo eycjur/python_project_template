@@ -24,6 +24,29 @@ pythonでプロジェクトを作成する際のテンプレートです。
 
 ## How to Deploy
 
-GCPのCloud Runへのデプロイを実施します
+### GCP
 
-1. `make deploy`でCloud Runにデプロイ
+Cloud Runへのデプロイを実施します
+
+1. `make deploy-gcp`でCloud Runにデプロイ
+
+### AWS
+
+App Runnerへのデプロイを実施します
+
+1. 初回デプロイ時は、`make deploy-aws-init`でApp Runnerにデプロイ
+2. 2回目以降は、`make deploy-aws`でApp Runnerにデプロイ
+
+> [!NOTE]
+> ※makefileでコメントアウトしている部分を有効化することで、ECSにデプロイすることも可能です
+> デプロイ後、ECS/クラスター/<CONTAINER_NAME>/タスク/\<id>/パブリックIPアドレスに表示されるアドレスにアクセスしてください
+
+### Azure
+
+Container Appsへのデプロイを実施します
+
+1. `make deploy-azure`でContainer Appsにデプロイ
+
+## TODO
+
+- [ ] AWSのサービス実行ロール
