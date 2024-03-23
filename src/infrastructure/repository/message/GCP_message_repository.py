@@ -2,6 +2,7 @@ from google.cloud import firestore
 
 from src.domain.message.message import Message
 from src.domain.message.message_repository import IMessageRepository
+from src.infrastructure.repository.message.util import current_time_iso
 from src.logger.logging import DefaultLogger
 
 logger = DefaultLogger(__name__)
@@ -14,7 +15,7 @@ class GCPMessageRepository(IMessageRepository):
 
     def upsert(self, message: Message) -> None:
         doc = self._collection.document(message.id)
-        doc.set(message.to_repository() | {"update_at": firestore.SERVER_TIMESTAMP})
+        doc.set(message.to_repository() | {"update_at": current_time_iso()})
 
     def find_all(self, limit: int = 10) -> list[Message]:
         result = (

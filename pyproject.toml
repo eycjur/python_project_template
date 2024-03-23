@@ -22,6 +22,9 @@ numpy = "^1.26.4"
 pandas = "^2.2.1"
 tqdm = "^4.66.2"
 google-cloud-firestore = "^2.15.0"
+azure-cosmos = "^4.6.0"
+azure-identity = "^1.15.0"
+boto3 = "^1.34.69"
 
 [tool.poetry.group.dev.dependencies]
 mypy = "1.8.0"

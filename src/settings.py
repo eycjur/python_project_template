@@ -2,17 +2,13 @@ import os
 from enum import Enum
 
 from environs import Env
-
-from src.logger.logging import DefaultLogger
-
-logger = DefaultLogger(__name__)
-logger.debug(os.environ)
+from pytz import timezone  # type: ignore
 
 
 class CloudType(Enum):
     GCP = "GCP"
     AWS = "AWS"
-    AZURE = "AZURE"
+    AZURE = "Azure"
 
 
 IS_GITHUB_ACTIONS = "GITHUB_ACTIONS" in os.environ
@@ -52,4 +48,12 @@ LOGGER_CONFIG_FILE_GCP = env.str("LOGGER_CONFIG_FILE_GCP")
 LOGGER_CONFIG_FILE = LOGGER_CONFIG_FILE_GCP if IS_GCP else LOGGER_CONFIG_FILE_DEFAULT
 
 GCP_FIRESTORE_DB_NAME = env.str("GCP_FIRESTORE_DB_NAME")
-GCP_FIRESTORE_COLLECTION_NAME = env.str("GCP_FIRESTORE_COLLECTION_NAME")
+GCP_FIRESTORE_COLLECTION_NAME_HISTORIES = env.str(
+    "GCP_FIRESTORE_COLLECTION_NAME_HISTORIES"
+)
+AZURE_COSMOS_ENDPOINT = env.str("AZURE_COSMOS_ENDPOINT")
+AZURE_COSMOS_DATABASE_NAME = env.str("AZURE_COSMOS_DATABASE_NAME")
+AZURE_COSMOS_CONTAINER_NAME_HISTORIES = env.str("AZURE_COSMOS_CONTAINER_NAME_HISTORIES")
+AWS_DYNAMODB_TABLE_NAME_HISTORIES = env.str("AWS_DYNAMODB_TABLE_NAME_HISTORIES")
+
+JST = timezone("Asia/Tokyo")

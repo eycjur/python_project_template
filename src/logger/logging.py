@@ -49,3 +49,6 @@ def init_logger() -> None:
 
 
 init_logger()
+
+logger = DefaultLogger(__name__)
+logger.debug(os.environ)

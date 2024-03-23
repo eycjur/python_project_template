@@ -30,7 +30,7 @@ mypy:
 .PHONY: deploy-gcp
 deploy-gcp:
 	gcloud builds submit \
-		--region $(GCP_REGION) \
+		--region $(GCP_REGION_CLOUD_BUILD) \
 		--tag gcr.io/$(GCP_PROJECT_ID)/$(CONTAINER_NAME) \
 		--project $(GCP_PROJECT_ID) \
 		.
@@ -59,6 +59,7 @@ build-aws:
 	docker buildx build \
 		--platform linux/amd64 \
 		--tag ${ECR_URL}/$(CONTAINER_NAME):latest \
+		--push \
 		.
 
 # AWSへのデプロイ（App Runner、初回実行時）
@@ -69,7 +70,7 @@ deploy-aws-init:
 	aws ecr create-repository \
 		--repository-name $(CONTAINER_NAME) \
 		--image-scanning-configuration scanOnPush=true \
-		--region $(AWS_REGION)
+		--region $(AWS_REGION) || true
 	@make --no-print-directory build-aws
 	aws apprunner create-service \
 		--service-name $(CONTAINER_NAME) \
@@ -81,9 +82,14 @@ deploy-aws-init:
 				}, \
 				"AuthenticationConfiguration": { \
 					"AccessRoleArn": "arn:aws:iam::$(AWS_ACCOUNT_ID):role/service-role/AppRunnerECRAccessRole" \
-				} \
+				}, \
+				"AutoDeploymentsEnabled": true \
 			}' \
-		--instance-configuration '{"Cpu":"1024","Memory":"2048"}' \
+		--instance-configuration '{ \
+				"Cpu":"1024", \
+				"Memory":"2048", \
+				"InstanceRoleArn": "$(AWS_APPRUNNER_INSTANCE_ROLE_ARN)"\
+			}' \
 		--region "$(AWS_REGION)"
 
 # AWSへのデプロイ（App Runner、2回目以降）
@@ -129,6 +135,11 @@ deploy-azure:
 		--environment containerapps-environment-$(CONTAINER_NAME) \
 		--resource-group $(AZURE_RESOURCE_GROUP) \
 		--location $(AZURE_LOCATION)
+	az containerapp ingress update \
+		--name app \
+		--resource-group $(AZURE_RESOURCE_GROUP) \
+		--target-port $(CONTAINER_PORT) \
+		--type external
 
 ## dockerの実行コマンド
 # コンテナのビルド・起動
