@@ -1,6 +1,6 @@
 import streamlit as st
 
-from src.presentation.util.init import get_message_repository
+from src.presentation.init import get_message_repository
 from src.usecase.history import HistoryUsecase
 
 st.title("履歴ページ")

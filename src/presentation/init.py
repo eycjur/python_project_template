@@ -1,5 +1,5 @@
 from src.domain.message.message_repository import IMessageRepository
-from src.infrastructure.repository.message.GCP_message_repository import (
+from src.infrastructure.repository.message.gcp_message_repository import (
     GCPMessageRepository,
 )
 from src.settings import (

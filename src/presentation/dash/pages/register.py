@@ -4,7 +4,7 @@ from dash._callback import NoUpdate
 from dash.development.base_component import Component
 from src.domain.message.message import Message
 from src.presentation.dash.app import app
-from src.presentation.util.init import get_message_repository
+from src.presentation.init import get_message_repository
 from src.usecase.register import RegisterUsecase
 
 

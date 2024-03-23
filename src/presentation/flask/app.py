@@ -2,7 +2,7 @@ from werkzeug import Response
 
 from flask import Flask, redirect, render_template, request
 from src.domain.message.message import Message
-from src.presentation.util.init import get_message_repository
+from src.presentation.init import get_message_repository
 from src.settings import CONTAINER_PORT
 from src.usecase.error import ErrorUsecase
 from src.usecase.history import HistoryUsecase
