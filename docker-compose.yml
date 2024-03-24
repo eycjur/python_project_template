@@ -14,7 +14,7 @@ services:
     environment:
       - GOOGLE_APPLICATION_CREDENTIALS=/credentials/credential_gcp.json
       - AWS_CONFIG_FILE=/credentials/config_aws
-      - AWS_SHARED_CREDENTIALS_FILE=/credentials/credential_aws
+      - AWS_SHARED_CREDENTIALS_FILE=/credentials/credentials_aws
     ports:
       - 127.0.0.1:${LOCAL_PORT}:${CONTAINER_PORT}
     tty: true

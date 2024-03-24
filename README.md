@@ -5,7 +5,8 @@ pythonでプロジェクトを作成する際のテンプレートです。
 
 1. .env.sampleを元に.envを作成、利用するクラウドのクレデンシャルファイルをcredentials/を配置
    1. GCPの場合は、サービスアカウントのcredentialファイルをcredential_gcp.jsonとして保存
-   2. AWSの場合は、クレデンシャルファイルをcredential_awsとして保存
+   2. AWSの場合は、credentialsをcredentials_aws、configをconfig_awsとして保存
+   3. Azureの場合は、クレデンシャルファイルは不要（環境変数で指定）
 2. `make up`でDocker Composeを起動
 3. http://localhost:<LOCAL_PORT>/ からアプリにアクセス
 4. `make down`でDocker Composeを終了  
@@ -14,6 +15,9 @@ pythonでプロジェクトを作成する際のテンプレートです。
 ## How to Develop
 
 1. .env.sampleを元に.envを作成、利用するクラウドのクレデンシャルファイルをcredentials/を配置
+   1. GCPの場合は、サービスアカウントのcredentialファイルをcredential_gcp.jsonとして保存
+   2. AWSの場合は、credentialsをcredentials_aws、configをconfig_awsとして保存
+   3. Azureの場合は、クレデンシャルファイルは不要（環境変数で指定）
 2. pre-commitをインストール(ex. `pip install pre-commit`)
 3. `pre-commit install`でpre-commitのhookスクリプトを導入
 4. VSCodeでDev Container拡張機能をインストール
