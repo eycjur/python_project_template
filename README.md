@@ -38,8 +38,8 @@ Cloud Runへのデプロイを実施します
 
 App Runnerへのデプロイを実施します
 
-1. 初回デプロイ時は、`make deploy-aws-init`でApp Runnerにデプロイ
-2. 2回目以降は、`make deploy-aws`でApp Runnerにデプロイ
+1. `make deploy-aws-infra`で、App Runnerに必要なリソースを作成・更新
+2. `make deploy-aws`でApp Runnerにデプロイ
 
 > [!NOTE]
 > ※makefileでコメントアウトしている部分を有効化することで、ECSにデプロイすることも可能です

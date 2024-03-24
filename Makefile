@@ -3,7 +3,7 @@ include .env
 .DEFAULT_GOAL := help
 
 
-## python関連のコマンド
+## Python関連のコマンド
 # テストコードの実行
 .PHONY: test
 test:
@@ -24,6 +24,11 @@ ruff:
 mypy:
 	mypy --config-file=pyproject.toml .
 
+## Terraform関連のコマンド
+# terraformのフォーマット
+.PHONY: fmt-terraform
+fmt-terraform:
+	terraform fmt -recursive
 
 ## デプロイ
 # GCPへのデプロイ
@@ -52,59 +57,24 @@ deploy-gcp:
 		--project $(GCP_PROJECT_ID)
 
 ECR_URL = $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com
-ENV_JSON := {$(shell awk 1 .env | grep -vE '^\s*($$|\#)' | sed -E 's/^([^=]+)="{0,1}([^"]*)"{0,1}$$/"\1":"\2"/g' | tr '\n' ',' | sed 's/,$$//')}
 
-.PHONY: build-aws
-build-aws:
+# AWSへのフルデプロイ（App Runner、環境変数の更新含む）
+.PHONY: deploy-aws-infra
+deploy-aws-infra:
+	tf -chdir=infra/aws init
+	tf -chdir=infra/aws plan
+	tf -chdir=infra/aws apply
+
+# AWSへのデプロイ（App Runner）
+.PHONY: deploy-aws
+deploy-aws:
+	aws ecr get-login-password --region $(AWS_REGION) | \
+		docker login --username AWS --password-stdin ${ECR_URL}
 	docker buildx build \
 		--platform linux/amd64 \
 		--tag ${ECR_URL}/$(CONTAINER_NAME):latest \
 		--push \
 		.
-
-# AWSへのデプロイ（App Runner、初回実行時）
-.PHONY: deploy-aws-init
-deploy-aws-init:
-	aws ecr get-login-password --region $(AWS_REGION) | \
-		docker login --username AWS --password-stdin ${ECR_URL}
-	aws ecr create-repository \
-		--repository-name $(CONTAINER_NAME) \
-		--image-scanning-configuration scanOnPush=true \
-		--region $(AWS_REGION) || true
-	@make --no-print-directory build-aws
-	aws apprunner create-service \
-		--service-name $(CONTAINER_NAME) \
-		--source-configuration '{ \
-				"ImageRepository": { \
-					"ImageIdentifier": "${ECR_URL}/$(CONTAINER_NAME):latest", \
-					"ImageConfiguration": {"RuntimeEnvironmentVariables": $(ENV_JSON), "Port": "$(CONTAINER_PORT)"}, \
-					"ImageRepositoryType": "ECR" \
-				}, \
-				"AuthenticationConfiguration": { \
-					"AccessRoleArn": "arn:aws:iam::$(AWS_ACCOUNT_ID):role/service-role/AppRunnerECRAccessRole" \
-				}, \
-				"AutoDeploymentsEnabled": true \
-			}' \
-		--instance-configuration '{ \
-				"Cpu":"1024", \
-				"Memory":"2048", \
-				"InstanceRoleArn": "$(AWS_APPRUNNER_INSTANCE_ROLE_ARN)"\
-			}' \
-		--region "$(AWS_REGION)"
-
-# AWSへのデプロイ（App Runner、2回目以降）
-.PHONY: deploy-aws
-deploy-aws:
-	@make --no-print-directory build-aws
-	aws apprunner update-service \
-		--service-arn "$(AWS_APP_RUNNER_SERVICE_ARN)" \
-		--source-configuration '{ \
-				"ImageRepository": {\
-					"ImageIdentifier": "${ECR_URL}/$(CONTAINER_NAME):latest", \
-					"ImageConfiguration": {"RuntimeEnvironmentVariables": $(ENV_JSON)}, \
-					"ImageRepositoryType": "ECR" \
-				} \
-			}'
 
 # # AWSへのデプロイ（ECS、初回実行時）
 # .PHONY: deploy-aws-init
