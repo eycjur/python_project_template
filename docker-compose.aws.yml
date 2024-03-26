@@ -1,3 +1,4 @@
+# ECSへのデプロイ用
 version: '3'
 services:
   app:

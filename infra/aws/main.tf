@@ -16,6 +16,12 @@ module "ecr" {
   env = data.dotenv.config.env
 }
 
+module "dynamodb" {
+  source = "./modules/dynamodb"
+
+  env = data.dotenv.config.env
+}
+
 module "app_runner" {
   source = "./modules/app_runner"
 

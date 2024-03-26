@@ -20,7 +20,7 @@ indent_style = tab
 [*.{cmd,bat}]
 end_of_line = crlf
 
-[*.{yml,yaml,html,js,json,ts,tsx,css,sass,scss,vue,tf}]
+[*.{yml,yaml,html,js,json,ts,tsx,css,sass,scss,vue,cpp,tf}]
 indent_size = 2
 
 [*.rst]

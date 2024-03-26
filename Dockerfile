@@ -55,7 +55,7 @@ CMD	gunicorn \
         --log-file - \
         --access-logfile - \
         --workers 1 \
-        --threads 8 \
+        --threads 4 \
         --timeout 300 \
         src.presentation.dash.index:server
 
@@ -65,7 +65,7 @@ CMD	gunicorn \
 #         --log-file - \
 #         --access-logfile - \
 #         --workers 1 \
-#         --threads 8 \
+#         --threads 4 \
 #         --timeout 300 \
 #         -k uvicorn.workers.UvicornWorker \
 #         src.presentation.fastapi.app:app
@@ -76,7 +76,7 @@ CMD	gunicorn \
 #         --log-file - \
 #         --access-logfile - \
 #         --workers 1 \
-#         --threads 8 \
+#         --threads 4 \
 #         --timeout 300 \
 #         src.presentation.flask.app:app
 
