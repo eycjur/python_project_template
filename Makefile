@@ -61,9 +61,8 @@ ECR_URL = $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com
 # AWSへのフルデプロイ（App Runner、環境変数の更新含む）
 .PHONY: deploy-aws-infra
 deploy-aws-infra:
-	tf -chdir=infra/aws init
-	tf -chdir=infra/aws plan
-	tf -chdir=infra/aws apply
+	terraform -chdir=infra/aws init
+	terraform -chdir=infra/aws apply
 
 # AWSへのデプロイ（App Runner）
 .PHONY: deploy-aws

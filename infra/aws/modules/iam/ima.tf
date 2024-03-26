@@ -26,6 +26,11 @@ resource "aws_iam_role_policy_attachment" "role-attach2" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSAppRunnerServicePolicyForECRAccess"
 }
 
+resource "aws_iam_role_policy_attachment" "role-attach3" {
+  role       = aws_iam_role.role.name
+  policy_arn = "arn:aws:iam::aws:policy/CloudWatchFullAccess"
+}
+
 output "role_arn" {
-    value = aws_iam_role.role.arn
+  value = aws_iam_role.role.arn
 }

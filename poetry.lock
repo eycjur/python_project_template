@@ -1885,6 +1885,51 @@ files = [
 ]
 
 [[package]]
+name = "opencensus"
+version = "0.11.4"
+description = "A stats collection and distributed tracing framework"
+optional = false
+python-versions = "*"
+files = [
+    {file = "opencensus-0.11.4-py2.py3-none-any.whl", hash = "sha256:a18487ce68bc19900336e0ff4655c5a116daf10c1b3685ece8d971bddad6a864"},
+    {file = "opencensus-0.11.4.tar.gz", hash = "sha256:cbef87d8b8773064ab60e5c2a1ced58bbaa38a6d052c41aec224958ce544eff2"},
+]
+
+[package.dependencies]
+google-api-core = {version = ">=1.0.0,<3.0.0", markers = "python_version >= \"3.6\""}
+opencensus-context = ">=0.1.3"
+six = ">=1.16,<2.0"
+
+[[package]]
+name = "opencensus-context"
+version = "0.1.3"
+description = "OpenCensus Runtime Context"
+optional = false
+python-versions = "*"
+files = [
+    {file = "opencensus-context-0.1.3.tar.gz", hash = "sha256:a03108c3c10d8c80bb5ddf5c8a1f033161fa61972a9917f9b9b3a18517f0088c"},
+    {file = "opencensus_context-0.1.3-py2.py3-none-any.whl", hash = "sha256:073bb0590007af276853009fac7e4bab1d523c3f03baf4cb4511ca38967c6039"},
+]
+
+[[package]]
+name = "opencensus-ext-azure"
+version = "1.1.13"
+description = "OpenCensus Azure Monitor Exporter"
+optional = false
+python-versions = "*"
+files = [
+    {file = "opencensus-ext-azure-1.1.13.tar.gz", hash = "sha256:aec30472177005379ba56a702a097d618c5f57558e1bb6676ec75f948130692a"},
+    {file = "opencensus_ext_azure-1.1.13-py2.py3-none-any.whl", hash = "sha256:06001fac6f8588ba00726a3a7c6c7f2fc88bc8ad12a65afdca657923085393dd"},
+]
+
+[package.dependencies]
+azure-core = ">=1.12.0,<2.0.0"
+azure-identity = ">=1.5.0,<2.0.0"
+opencensus = ">=0.11.4,<1.0.0"
+psutil = ">=5.6.3"
+requests = ">=2.19.0"
+
+[[package]]
 name = "packaging"
 version = "23.2"
 description = "Core utilities for Python packages"
@@ -3406,6 +3451,23 @@ files = [
 watchmedo = ["PyYAML (>=3.10)"]
 
 [[package]]
+name = "watchtower"
+version = "3.1.0"
+description = "Python CloudWatch Logging"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "watchtower-3.1.0-py3-none-any.whl", hash = "sha256:c9a26d720233ca4fb47acf1218d92a9ab3e52307b31728a407974e89586b70e2"},
+    {file = "watchtower-3.1.0.tar.gz", hash = "sha256:32eacc51cf40b4989a97a181b27c96333466a46cebfb561636e41bbf400a2d10"},
+]
+
+[package.dependencies]
+boto3 = ">=1.9.253,<2"
+
+[package.extras]
+tests = ["build", "coverage", "mypy", "pyyaml", "ruff", "wheel"]
+
+[[package]]
 name = "wcwidth"
 version = "0.2.13"
 description = "Measures the displayed width of unicode strings in a terminal"
@@ -3451,4 +3513,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "059363347d06799c2662852410bc2a8850f85fc1dcc93827d3df2697855f193b"
+content-hash = "8b83c561a62aa0699dcd89eed128cd2c81635ae13238f87d72a18cb62ba56134"

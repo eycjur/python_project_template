@@ -1,5 +1,5 @@
 variable "env" {
-  type = map
+  type = map(any)
 }
 
 variable "instance_role_arn" {

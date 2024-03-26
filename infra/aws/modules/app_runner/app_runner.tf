@@ -37,3 +37,7 @@ resource "aws_apprunner_service" "app_runner" {
     instance_role_arn = var.instance_role_arn
   }
 }
+
+output "app_runner_service_url" {
+  value = aws_apprunner_service.app_runner.service_url
+}
