@@ -10,6 +10,10 @@ repos:
       - id: detect-private-key
       - id: no-commit-to-branch
         args: [--branch, main]
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: v1.88.4
+    hooks:
+      - id: terraform_fmt
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.2.1
     hooks:

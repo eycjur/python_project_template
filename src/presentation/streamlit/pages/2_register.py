@@ -1,7 +1,7 @@
 import streamlit as st
 
 from src.domain.message.message import Message
-from src.presentation.init import get_message_repository
+from src.init import get_message_repository
 from src.usecase.register import RegisterUsecase
 
 st.title("登録ページ")

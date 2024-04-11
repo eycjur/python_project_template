@@ -16,7 +16,7 @@ Attention:
 import typer
 
 from src.domain.message.message import Message
-from src.presentation.init import get_message_repository
+from src.init import get_message_repository
 from src.usecase.error import ErrorUsecase
 from src.usecase.history import HistoryUsecase
 from src.usecase.register import RegisterUsecase

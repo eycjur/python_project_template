@@ -8,6 +8,9 @@ from src.infrastructure.repository.message.azure_message_repository import (
 from src.infrastructure.repository.message.gcp_message_repository import (
     GCPMessageRepository,
 )
+from src.infrastructure.repository.message.sqlite_message_repository import (
+    SQLiteMessageRepository,
+)
 from src.settings import (
     AWS_DYNAMODB_TABLE_NAME_HISTORIES,
     AZURE_COSMOS_CONTAINER_NAME_HISTORIES,
@@ -21,7 +24,9 @@ from src.settings import (
 
 
 def get_message_repository() -> IMessageRepository:
-    if CLOUD == CloudType.GCP:
+    if CLOUD == CloudType.Local:
+        return SQLiteMessageRepository("db.sqlite3")
+    elif CLOUD == CloudType.GCP:
         return GCPMessageRepository(
             GCP_FIRESTORE_DB_NAME, GCP_FIRESTORE_COLLECTION_NAME_HISTORIES
         )

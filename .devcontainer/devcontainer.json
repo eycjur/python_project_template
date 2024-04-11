@@ -115,7 +115,7 @@
               "purpose": [
                 "debug-test"
               ],
-              "console": "integratedTerminal",
+              "console": "internalConsole",
               "justMyCode": false
             }
           ]
@@ -139,7 +139,9 @@
         // その他
         "yzane.markdown-pdf",
         "janisdd.vscode-edit-csv",
-        "mechatroner.rainbow-csv"
+        "ionutvmi.path-autocomplete",
+        "usernamehw.errorlens",
+        "ibm.output-colorizer"
       ]
     }
   }

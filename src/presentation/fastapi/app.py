@@ -15,8 +15,8 @@ from fastapi import FastAPI, Request, status
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from src.domain.message.message import Message
+from src.init import get_message_repository
 from src.logger.logging import DefaultLogger
-from src.presentation.init import get_message_repository
 from src.settings import CONTAINER_PORT
 from src.usecase.error import ErrorUsecase
 from src.usecase.history import HistoryUsecase
@@ -38,6 +38,12 @@ async def exception_handler(request: Request, exc: Exception) -> JSONResponse:
 
 @app.exception_handler(RequestValidationError)
 async def handler(request: Request, exc: RequestValidationError) -> JSONResponse:
+    """RequestValidationErrorの例外ハンドリング
+
+    Note:
+        ログだけでは原因がわからない場合は、以下の箇所をデバッグすると良い
+        /usr/local/lib/python3.12/site-packages/fastapi/dependencies/utils.py::request_body_to_args(756行目付近)
+    """
     logger.error(f"Error: {exc}")
     return JSONResponse(
         content={"detail": str(exc)},

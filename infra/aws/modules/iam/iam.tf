@@ -18,17 +18,7 @@ resource "aws_iam_role" "role" {
 
 resource "aws_iam_role_policy_attachment" "role-attach1" {
   role       = aws_iam_role.role.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess"
-}
-
-resource "aws_iam_role_policy_attachment" "role-attach2" {
-  role       = aws_iam_role.role.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSAppRunnerServicePolicyForECRAccess"
-}
-
-resource "aws_iam_role_policy_attachment" "role-attach3" {
-  role       = aws_iam_role.role.name
-  policy_arn = "arn:aws:iam::aws:policy/CloudWatchFullAccess"
+  policy_arn = "arn:aws:iam::aws:policy/PowerUserAccess"
 }
 
 output "role_arn" {

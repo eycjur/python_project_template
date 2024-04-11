@@ -10,14 +10,6 @@ logger = DefaultLogger(__name__)
 
 
 class AzureMessageRepository(IMessageRepository):
-    """
-
-    Note:
-        Microsoft.DocumentDB/databaseAccounts/readMetadataという権限が必要というエラーが出るので、以下のコマンドで権限を付与する必要がある。
-        az cosmosdb sql role assignment create --account-name <CosmosDBのアカウント名> --resource-group <リソースグループ名> --scope "/" --principal-id <EntraIDのエンタープライズアプリケーションの該当アプリケーションのオブジェクトID> --role-definition-id <ロールid=00000000-0000-0000-0000-000000000002>
-        cf. https://learn.microsoft.com/ja-jp/azure/cosmos-db/how-to-setup-rbac
-    """  # noqa
-
     def __init__(self, endpoint: str, database_name: str, container_name: str) -> None:
         aad_credentials = DefaultAzureCredential()
         client = CosmosClient(endpoint, credential=aad_credentials)

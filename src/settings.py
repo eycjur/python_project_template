@@ -6,6 +6,7 @@ from pytz import timezone  # type: ignore
 
 
 class CloudType(Enum):
+    Local = "Local"
     GCP = "GCP"
     AWS = "AWS"
     AZURE = "Azure"
