@@ -13,8 +13,8 @@ handlers:
   aws_handler:
     class: watchtower.CloudWatchLogHandler
     level: DEBUG
-    log_group_name: /application
-    log_stream_name: python
+    log_group_name: /application  # cloudwatch.tfの設定と合わせる
+    log_stream_name: python  # cloudwatch.tfの設定と合わせる
     send_interval: 10
     formatter: simple
     create_log_group: False

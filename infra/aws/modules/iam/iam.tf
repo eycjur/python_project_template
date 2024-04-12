@@ -1,5 +1,7 @@
+# AppRunnerで使用するIAMロールを作成する
+
 resource "aws_iam_role" "role" {
-  name = "role_strong"
+  name = "apprunner-execution-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"

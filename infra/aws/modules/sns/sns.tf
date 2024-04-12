@@ -1,3 +1,5 @@
+# SNSで使用するトピックと通知先を作成する
+
 resource "aws_sns_topic" "nortification-email" {
   name = "nortification-email"
 }

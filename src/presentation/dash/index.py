@@ -62,6 +62,14 @@ app.layout = layout
     Input("url", "pathname"),
 )
 def display_content(pathname: str) -> Component:
+    """URLに応じてコンテンツを表示する
+
+    Args:
+        pathname (str): URLのパス
+
+    Returns:
+        Component: 表示するコンポーネント
+    """
     page_name = app.strip_relative_path(pathname)
     if not page_name:
         return home.layout()

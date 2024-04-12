@@ -30,14 +30,6 @@ def hello() -> None:
 
 
 @app.command()
-def history() -> None:
-    message_repository = get_message_repository()
-    messages = HistoryUsecase(message_repository).execute()
-    for m in messages:
-        typer.echo(m.content)
-
-
-@app.command()
 def register(
     text: str = typer.Option("デフォルト", "-t", "--text", help="登録するテキスト"),
 ) -> None:
@@ -45,6 +37,14 @@ def register(
     message = Message(content=text)
     RegisterUsecase(message_repository).execute(message)
     typer.echo(f"登録しました: {text}")
+
+
+@app.command()
+def history() -> None:
+    message_repository = get_message_repository()
+    messages = HistoryUsecase(message_repository).execute()
+    for m in messages:
+        typer.echo(m.content)
 
 
 @app.command()

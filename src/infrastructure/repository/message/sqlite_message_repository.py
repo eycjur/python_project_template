@@ -1,4 +1,5 @@
 import sqlite3
+from pathlib import Path
 
 from src.domain.message.message import Message
 from src.domain.message.message_repository import IMessageRepository
@@ -9,11 +10,12 @@ logger = DefaultLogger(__name__)
 
 
 class SQLiteMessageRepository(IMessageRepository):
-    def __init__(self, db_file: str) -> None:
+    def __init__(self, db_file: Path) -> None:
         self._conn = sqlite3.connect(db_file)
         self._create_table()
 
     def _create_table(self) -> None:
+        """メッセージを保存するためのテーブルを作成する"""
         cursor = self._conn.cursor()
         cursor.execute(
             """
@@ -27,6 +29,11 @@ class SQLiteMessageRepository(IMessageRepository):
         self._conn.commit()
 
     def upsert(self, message: Message) -> None:
+        """メッセージを上書きまたは新規作成する
+
+        Args:
+            message (Message): 保存するメッセージ
+        """
         message_dict = message.to_repository()
 
         cursor = self._conn.cursor()
@@ -44,6 +51,14 @@ class SQLiteMessageRepository(IMessageRepository):
         self._conn.commit()
 
     def find_all(self, limit: int = 10) -> list[Message]:
+        """保存されているメッセージを取得する
+
+        Args:
+            limit (int, optional): 取得するメッセージの最大数. Defaults to 10.
+
+        Returns:
+            list[Message]: メッセージのリスト
+        """
         cursor = self._conn.cursor()
         cursor.execute(
             """

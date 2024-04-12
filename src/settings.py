@@ -1,8 +1,14 @@
 import os
 from enum import Enum
+from pathlib import Path
 
 from environs import Env
 from pytz import timezone  # type: ignore
+
+IS_GITHUB_ACTIONS = "GITHUB_ACTIONS" in os.environ
+IS_GCP = "K_SERVICE" in os.environ  # Cloud Run
+IS_AWS = "AWS_EXECUTION_ENV" in os.environ  # App Runner
+IS_AZURE = "CONTAINER_APP_REPLICA_NAME" in os.environ  # Container Apps
 
 
 class CloudType(Enum):
@@ -10,12 +16,6 @@ class CloudType(Enum):
     GCP = "GCP"
     AWS = "AWS"
     AZURE = "Azure"
-
-
-IS_GITHUB_ACTIONS = "GITHUB_ACTIONS" in os.environ
-IS_GCP = "K_SERVICE" in os.environ  # Cloud Run
-IS_AWS = "AWS_EXECUTION_ENV" in os.environ  # App Runner/ECS
-IS_AZURE = "CONTAINER_APP_REPLICA_NAME" in os.environ  # Container Apps
 
 
 def judge_cloud() -> CloudType:
@@ -39,6 +39,11 @@ def judge_cloud() -> CloudType:
 env = Env(eager=not IS_GITHUB_ACTIONS)
 
 CLOUD = judge_cloud()
+
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+JST = timezone("Asia/Tokyo")
+
 
 CONTAINER_PORT = env.int("CONTAINER_PORT")
 # CI環境でもloggerのinitに必要なため、デフォルト値を設定
@@ -65,5 +70,3 @@ AZURE_COSMOS_ENDPOINT = env.str("AZURE_COSMOS_ENDPOINT")
 AZURE_COSMOS_DATABASE_NAME = env.str("AZURE_COSMOS_DATABASE_NAME")
 AZURE_COSMOS_CONTAINER_NAME_HISTORIES = env.str("AZURE_COSMOS_CONTAINER_NAME_HISTORIES")
 AWS_DYNAMODB_TABLE_NAME_HISTORIES = env.str("AWS_DYNAMODB_TABLE_NAME_HISTORIES")
-
-JST = timezone("Asia/Tokyo")

@@ -1,4 +1,6 @@
-# AppRunnerを起動するためにイメージを置いておく
+# App Runner によるコンテナデプロイメントを行うためのモジュール
+
+# 初回実行時はコンテナがないと機動に失敗するため、イメージを置いておく
 resource "null_resource" "tmp_image" {
   provisioner "local-exec" {
     command = <<BASH

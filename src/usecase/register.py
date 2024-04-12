@@ -10,6 +10,14 @@ class RegisterUsecase:
         self._message_repository = message_repository
 
     def execute(self, message: Message) -> str:
+        """メッセージを保存する
+
+        Args:
+            message (Message): 保存するメッセージ
+
+        Returns:
+            str: 保存完了メッセージ
+        """
         self._message_repository.upsert(message)
         logger.info(f"Message: {message.content}")
         return "データの保存が完了しました。"

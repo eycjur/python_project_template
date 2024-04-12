@@ -1,3 +1,5 @@
+# ECRリポジトリを作成するためのモジュール
+
 resource "aws_ecr_repository" "ecr" {
   name                 = var.env["CONTAINER_NAME"]
   image_tag_mutability = "MUTABLE"

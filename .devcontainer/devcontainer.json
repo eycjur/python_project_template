@@ -44,7 +44,7 @@
           // ],
           "configurations": [
             {
-              "name": "Dash: index.pyを実行",
+              "name": "Dash: サーバーを起動",
               "type": "debugpy",
               "request": "launch",
               "module": "src.presentation.dash.index",
@@ -53,7 +53,7 @@
               "justMyCode": false
             },
             {
-              "name": "CLI: app.pyを実行",
+              "name": "CLI: コマンドを実行",
               "type": "debugpy",
               "request": "launch",
               "module": "src.presentation.cli.app",
@@ -66,7 +66,7 @@
               "justMyCode": false
             },
             {
-              "name": "FastAPI: app.pyを実行",
+              "name": "FastAPI: サーバーを起動",
               "type": "debugpy",
               "request": "launch",
               "module": "src.presentation.fastapi.app",
@@ -75,7 +75,7 @@
               "justMyCode": false
             },
             {
-              "name": "Flask: app.pyを実行",
+              "name": "Flask: サーバーを起動",
               "type": "debugpy",
               "request": "launch",
               "module": "src.presentation.flask.app",
@@ -84,7 +84,7 @@
               "justMyCode": false
             },
             {
-              "name": "Streamlit: home.pyを実行",
+              "name": "Streamlit: サーバーを起動",
               "type": "debugpy",
               "request": "launch",
               "module": "streamlit",
@@ -112,9 +112,7 @@
               "name": "Python: Debug Test",
               "type": "debugpy",
               "request": "launch",
-              "purpose": [
-                "debug-test"
-              ],
+              "purpose": ["debug-test"],
               "console": "internalConsole",
               "justMyCode": false
             }
@@ -122,13 +120,15 @@
         }
       },
       "extensions": [
-        // vscode全体
+        // 開発支援
         "ceintl.vscode-language-pack-ja",
-        "editorconfig.editorconfig",
-        "mhutchie.git-graph",
         "github.copilot",
-        "mosapride.zenkaku",
+        "usernamehw.errorlens",
         "gruntfuggly.todo-tree",
+        "ibm.output-colorizer",
+        "editorconfig.editorconfig",
+        "mosapride.zenkaku",
+        "ionutvmi.path-autocomplete",
         // python関連
         "ms-python.python",
         "charliermarsh.ruff",
@@ -136,12 +136,12 @@
         "njpwerner.autodocstring",
         "ms-toolsai.jupyter",
         "ms-toolsai.jupyter-keymap",
-        // その他
+        // Markdown関連
         "yzane.markdown-pdf",
+        // CSV関連
         "janisdd.vscode-edit-csv",
-        "ionutvmi.path-autocomplete",
-        "usernamehw.errorlens",
-        "ibm.output-colorizer"
+        // Git関連
+        "mhutchie.git-graph"
       ]
     }
   }

@@ -7,4 +7,9 @@ class HistoryUsecase:
         self._message_repository = message_repository
 
     def execute(self) -> list[Message]:
+        """メッセージの一覧を取得する
+
+        Returns:
+            list[Message]: メッセージの一覧
+        """
         return self._message_repository.find_all()

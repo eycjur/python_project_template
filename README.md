@@ -1,9 +1,17 @@
 # Python Project Template
 pythonでプロジェクトを作成する際のテンプレートです。
 
-## How to Minimize
+## Initialize Project
 
-各種クラウドでの動作確認等を行うため、最小限+αの構成としています。  
+プロジェクトを初期化する際は、以下の手順で行ってください。
+
+1. このリポジトリをクローン
+2. .env.sampleを元に.envを作成
+3. 不要なファイルを削除
+
+### Minimize Project
+
+本リポジトリは、各種クラウドでの動作確認等を行うため、最小限+αの構成としています。  
 最小限の構成として利用する場合は、以下の手順で不要なファイルを削除してください。
 
 1. credentials/を削除、docker-compose.ymlからcredentialsのマウントを削除
@@ -16,81 +24,68 @@ pythonでプロジェクトを作成する際のテンプレートです。
 8. README.mdを編集
 9. クラウド関係の環境変数を.envから削除
 
-## How to Run
+## Run Application
 
-1. .env.sampleを元に.envを作成
-2. `make up`でDocker Composeを起動
-3. http://localhost:<LOCAL_PORT>/ からアプリにアクセス
-4. `make down`でDocker Composeを終了  
+アプリケーションを実行する際は、以下の手順で行ってください。
+
+1. `make up`でDocker Composeを起動
+2. http://localhost:<LOCAL_PORT>/ からアプリにアクセス
+3. `make down`でDocker Composeを終了  
    終了せずにDev Containerを起動すると、docker-compose.override.ymlの内容が上書きされずデバッグが利用できません。
 
-## How to Develop
+## Development
 
-1. .env.sampleを元に.envを作成
-2. pre-commitをインストール(ex. `pip install pre-commit`)
-3. `pre-commit install`でpre-commitのhookスクリプトを導入
-4. VSCodeでDev Container拡張機能をインストール
-5. コマンドパレット(`Ctrl+Shift+P`)から`Remote-Containers: Reopen in Container`を実行
-6. (Docker Compose立ち上げ時のみ)拡張機能の依存関係の解決に失敗するので、通知に従ってウィンドウの再読み込みする
-7. F5でデバッグ実行が可能
-8. http://localhost:<LOCAL_PORT>/ からアプリにアクセス
+アプリケーションの開発を行う際は、以下の手順で行ってください。
 
-## How to Deploy
+1. pre-commitをインストール(ex. `pip install pre-commit`)
+2. `pre-commit install`でpre-commitのhookスクリプトを導入
+3. VSCodeでDev Container拡張機能をインストール
+4. コマンドパレット(`Ctrl+Shift+P`)から`Remote-Containers: Reopen in Container`を実行
+5. (Docker Compose立ち上げ時のみ)拡張機能の依存関係の解決に失敗することがあるので、ウィンドウの再読み込みする
+6. F5でデバッグ実行が可能
+7. http://localhost:<LOCAL_PORT>/ からアプリにアクセス
+
+## Deploy
+
+各クラウドへのデプロイを行う際は、以下の手順で行ってください。
 
 ### GCP
 
 Cloud Runへのデプロイを実施します
 
 1. サービスアカウントを作成し、そのcredentialファイルをcredentials/credential_gcp.jsonとして保存
-2. `make deploy-gcp`でCloud Runにデプロイ
+2. FirestoreのDBとCollectionを作成
+3. `make deploy-gcp`でCloud Runにデプロイ
+4. (オプション)Cloud Monitoringのアラートから通知チャンネルを作成
+5. (オプション)Cloud Loggingからアラートを設定
 
 ### AWS
 
 App Runnerへのデプロイを実施します
 
-1. credentialsをcredentials/credentials_awsとして保存
+1. credentialsをcredentials/credentials_awsとして保存  
+  ユーザーアカウントを利用する場合は`cp ~/.aws/credentials credentials/credentials_aws`としてください
 2. `make deploy-aws-infra`で、App Runnerに必要なリソースを作成・更新
 3. `make deploy-aws`でApp Runnerにデプロイ
-
-> [!NOTE]
-> ※makefileでコメントアウトしている部分を有効化することで、ECSにデプロイすることも可能です
-> デプロイ後、ECS/クラスター/<CONTAINER_NAME>/タスク/\<id>/パブリックIPアドレスに表示されるアドレスにアクセスしてください
 
 ### Azure
 
 Container Appsへのデプロイを実施します
 
-1. Entra IDからアプリを登録し、クライアントシークレットを発行する
-2. credentialsをcredentials/credentials_azure、configをconfig_azureとして保存
-3. .envのAZURE_CLIENT_ID,AZURE_CLIENT_SECRETに各値を設定
-4. CosmosDBへのアクセス権の付与  
+1. Entra IDのアプリを登録からサービスプリンシパルを登録し、クライアントシークレットを発行する
+2. .envのAZURE_CLIENT_ID,AZURE_CLIENT_SECRETに各値を設定
+3. CosmosDBのデータベースとコレクションを作成
+4. サービスプリンシパルにCosmosDBへのアクセス権の付与  
     ```shell
     az cosmosdb sql role assignment create \
     --account-name <CosmosDBのアカウント名> \
     --resource-group <リソースグループ名> \
     --scope "/" \
-    --principal-id <EntraIDのエンタープライズアプリケーションの該当アプリケーションのオブジェクトID> \
+    --principal-id <EntraIDのエンタープライズアプリケーションの該当アプリケーション（サービスプリンシパル）のオブジェクトID> \
     --role-definition-id <ロールid=00000000-0000-0000-0000-000000000002>
    ```   
     cf. https://learn.microsoft.com/ja-jp/azure/cosmos-db/how-to-setup-rbac
 5. `make deploy-azure`でContainer Appsにデプロイ
-
-## TODO
-
-- [ ] ECS実行時のサービスの実行ロールを付与
-- [ ] Azureのロールベースのアクセス制御
-- [ ] コンテナ内のユーザー設定(UID,GIDを.envに記載する必要がある)
-
-```Dockerfile
-# 参考
-ARG UID=2000
-ARG GID=2000
-ARG USER_NAME=dev
-ARG GROUP_NAME=dev
-
-RUN groupadd -g $GID $GROUP_NAME \
-    && useradd -lm -u $UID -g ${GID} $USER_NAME \
-    && usermod -aG sudo $USER_NAME \
-    && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
-USER ${USER_NAME}
-```
+6. (オプション)Application Insightsを作成
+7. (オプション)Application Insightsなどの監視/ログからアラートを設定  
+  cf. https://yotiky.hatenablog.com/entry/azure_exceptionsalert

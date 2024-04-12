@@ -1,9 +1,11 @@
+# CloudWatchでログを監視するためのリソースを定義する
+
 resource "aws_cloudwatch_log_group" "application" {
-  name = "/application"
+  name = "/application" // logger_config_aws.yamlの設定に合わせる
 }
 
 resource "aws_cloudwatch_log_stream" "python" {
-  name           = "python"
+  name           = "python" // logger_config_aws.yamlの設定に合わせる
   log_group_name = aws_cloudwatch_log_group.application.name
 }
 

@@ -1,3 +1,5 @@
+"""Dependency Injection用のインスタンス生成関数を定義するモジュール"""
+
 from src.domain.message.message_repository import IMessageRepository
 from src.infrastructure.repository.message.aws_message_repository import (
     AWSMessageRepository,
@@ -16,6 +18,7 @@ from src.settings import (
     AZURE_COSMOS_CONTAINER_NAME_HISTORIES,
     AZURE_COSMOS_DATABASE_NAME,
     AZURE_COSMOS_ENDPOINT,
+    BASE_DIR,
     CLOUD,
     GCP_FIRESTORE_COLLECTION_NAME_HISTORIES,
     GCP_FIRESTORE_DB_NAME,
@@ -25,7 +28,7 @@ from src.settings import (
 
 def get_message_repository() -> IMessageRepository:
     if CLOUD == CloudType.Local:
-        return SQLiteMessageRepository("db.sqlite3")
+        return SQLiteMessageRepository(BASE_DIR / "db" / "db.sqlite3")
     elif CLOUD == CloudType.GCP:
         return GCPMessageRepository(
             GCP_FIRESTORE_DB_NAME, GCP_FIRESTORE_COLLECTION_NAME_HISTORIES

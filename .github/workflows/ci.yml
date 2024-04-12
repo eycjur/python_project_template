@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        python-version: ["3.10"]
+        python-version: ["3.12"]
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
     steps:
@@ -57,7 +57,7 @@ jobs:
         if: always()
         run: poetry run mypy --config-file=pyproject.toml .
 
-      - name: run tests
+      - name: run test
         if: always()
         run: |
           set -o pipefail

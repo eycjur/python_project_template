@@ -1,3 +1,10 @@
+# タスクランナー用のMakefile
+#
+# Example:
+#	ヘルプ
+#
+#	$ make
+
 include .env
 
 .DEFAULT_GOAL := help
@@ -58,13 +65,13 @@ deploy-gcp:
 
 ECR_URL = $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com
 
-# AWSへのフルデプロイ（App Runner、環境変数の更新含む）
+# AWSへのフルデプロイ（環境変数の更新含む）
 .PHONY: deploy-aws-infra
 deploy-aws-infra:
 	terraform -chdir=infra/aws init
 	terraform -chdir=infra/aws apply
 
-# AWSへのデプロイ（App Runner）
+# AWSへのデプロイ
 .PHONY: deploy-aws
 deploy-aws:
 	aws ecr get-login-password --region $(AWS_REGION) | \
@@ -74,28 +81,6 @@ deploy-aws:
 		--tag ${ECR_URL}/$(CONTAINER_NAME):latest \
 		--push \
 		.
-
-# # AWSへのデプロイ（ECS、初回実行時）
-# .PHONY: deploy-aws-init
-# deploy-aws-init:
-# 	aws ecr get-login-password --region $(AWS_REGION) | \
-# 		docker login --username AWS --password-stdin ${ECR_URL}
-# 	docker context create ecs ecs-context
-# 	aws ecr create-repository \
-# 		--repository-name $(CONTAINER_NAME) \
-# 		--image-scanning-configuration scanOnPush=true \
-# 		--region $(AWS_REGION)
-
-# 	@make --no-print-directory deploy-aws
-
-# # AWSへのデプロイ（ECS、2回目以降）
-# .PHONY: deploy-aws
-# deploy-aws:
-# 	@make --no-print-directory build-aws
-# 	$(eval current_context := $(shell docker context ls | grep "\*" | cut -d " " -f 1))
-# 	docker context use ecs-context
-# 	docker compose -f docker-compose.aws.yml up
-# 	docker context use $(current_context)
 
 # Azureへのデプロイ
 .PHONY: deploy-azure
