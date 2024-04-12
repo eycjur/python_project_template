@@ -1,10 +1,11 @@
 # Note: 可読性を重視した書き方をしているため、最適化はしていません
-FROM python:3.10-slim-buster
+FROM python:3.12-slim-bookworm
 RUN apt-get update && \
     apt-get install --no-install-recommends -y \
         curl \
         fonts-ipafont-gothic \
         gcc \
+        git \
         locales \
         make \
         neovim \
@@ -15,11 +16,6 @@ RUN apt-get update && \
         zsh && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
-
-# 最新のGitをインストール
-RUN echo "deb http://ftp.debian.org/debian buster-backports main" >> /etc/apt/sources.list && \
-    apt-get update && \
-    apt-get -t buster-backports install --no-install-recommends -y git
 
 # 言語設定
 RUN echo "ja_JP UTF-8" > /etc/locale.gen && \
@@ -55,7 +51,7 @@ CMD	gunicorn \
         --log-file - \
         --access-logfile - \
         --workers 1 \
-        --threads 8 \
+        --threads 4 \
         --timeout 300 \
         src.presentation.dash.index:server
 
@@ -65,7 +61,7 @@ CMD	gunicorn \
 #         --log-file - \
 #         --access-logfile - \
 #         --workers 1 \
-#         --threads 8 \
+#         --threads 4 \
 #         --timeout 300 \
 #         -k uvicorn.workers.UvicornWorker \
 #         src.presentation.fastapi.app:app
@@ -76,7 +72,7 @@ CMD	gunicorn \
 #         --log-file - \
 #         --access-logfile - \
 #         --workers 1 \
-#         --threads 8 \
+#         --threads 4 \
 #         --timeout 300 \
 #         src.presentation.flask.app:app
 

@@ -1,15 +1,16 @@
+# タスクランナー用のMakefile
+#
+# Example:
+#	ヘルプ
+#
+#	$ make
+
 include .env
 
 .DEFAULT_GOAL := help
 
 
-## メタ的なコマンド
-# デフォルトコマンド(test lint)
-.PHONY: all
-all: test lint
-
-
-## python関連のコマンド
+## Python関連のコマンド
 # テストコードの実行
 .PHONY: test
 test:
@@ -30,20 +31,25 @@ ruff:
 mypy:
 	mypy --config-file=pyproject.toml .
 
+## Terraform関連のコマンド
+# terraformのフォーマット
+.PHONY: fmt-terraform
+fmt-terraform:
+	terraform fmt -recursive
 
 ## デプロイ
-# dockerのサーバーの起動
-.PHONY: deploy
-deploy:
+# GCPへのデプロイ
+.PHONY: deploy-gcp
+deploy-gcp:
 	gcloud builds submit \
-		--region $(REGION) \
-		--tag gcr.io/$(PROJECT_ID)/$(CONTAINER_NAME) \
-		--project $(PROJECT_ID) \
+		--region $(GCP_REGION_CLOUD_BUILD) \
+		--tag gcr.io/$(GCP_PROJECT_ID)/$(CONTAINER_NAME) \
+		--project $(GCP_PROJECT_ID) \
 		.
 
 	gcloud run deploy $(CONTAINER_NAME) \
-		--image gcr.io/$(PROJECT_ID)/$(CONTAINER_NAME) \
-		--region $(REGION) \
+		--image gcr.io/$(GCP_PROJECT_ID)/$(CONTAINER_NAME) \
+		--region $(GCP_REGION) \
 		--port $(CONTAINER_PORT) \
 		--set-env-vars=$(shell \
 			awk 1 .env | \
@@ -54,9 +60,40 @@ deploy:
 		--cpu 1 \
 		--memory 1Gi \
 		--platform managed \
-		--service-account $(SERVICE_ACCOUNT) \
-		--project $(PROJECT_ID)
+		--service-account $(GCP_SERVICE_ACCOUNT) \
+		--project $(GCP_PROJECT_ID)
 
+ECR_URL = $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com
+
+# AWSへのフルデプロイ（環境変数の更新含む）
+.PHONY: deploy-aws-infra
+deploy-aws-infra:
+	terraform -chdir=infra/aws init
+	terraform -chdir=infra/aws apply
+
+# AWSへのデプロイ
+.PHONY: deploy-aws
+deploy-aws:
+	aws ecr get-login-password --region $(AWS_REGION) | \
+		docker login --username AWS --password-stdin ${ECR_URL}
+	docker buildx build \
+		--platform linux/amd64 \
+		--tag ${ECR_URL}/$(CONTAINER_NAME):latest \
+		--push \
+		.
+
+# Azureへのデプロイ
+.PHONY: deploy-azure
+deploy-azure:
+	az containerapp compose create \
+		--environment containerapps-environment-$(CONTAINER_NAME) \
+		--resource-group $(AZURE_RESOURCE_GROUP) \
+		--location $(AZURE_LOCATION)
+	az containerapp ingress update \
+		--name app \
+		--resource-group $(AZURE_RESOURCE_GROUP) \
+		--target-port $(CONTAINER_PORT) \
+		--type external
 
 ## dockerの実行コマンド
 # コンテナのビルド・起動

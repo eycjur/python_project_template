@@ -4,7 +4,21 @@ import traceback
 
 
 class CloudLoggingFormatter(logging.Formatter):
+    """Cloud Logging に適したフォーマッター"""
+
     def format(self, record: logging.LogRecord) -> str:
+        """ログレコードを Cloud Logging に適した形式に変換する
+
+        Note:
+            Cloud Loggingで利用できる特殊フィールドは以下のドキュメントを参照
+            https://cloud.google.com/logging/docs/agent/logging/configuration?hl=ja#special-fields
+
+        Args:
+            record (logging.LogRecord): ログレコード
+
+        Returns:
+            str: Cloud Logging に適した形式のログ
+        """
         log_data = {
             "severity": record.levelname,
             "message": f"[Application Log] {record.getMessage()}",

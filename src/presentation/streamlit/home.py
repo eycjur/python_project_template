@@ -1,3 +1,11 @@
-import streamlit as st  # noqa
+import streamlit as st
+from src.init import get_message_repository
+from src.usecase.history import HistoryUsecase
 
-"""ホームです"""
+st.title("履歴ページ")
+
+message_repository = get_message_repository()
+messages = HistoryUsecase(message_repository).execute()
+for m in messages:
+    with st.chat_message("user"):
+        st.write(m.content)
