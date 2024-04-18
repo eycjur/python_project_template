@@ -1,7 +1,9 @@
+from injector import Injector
+
 from dash import Input, Output, State, dcc, html
 from dash.development.base_component import Component
+from src.di import get_di_module
 from src.domain.message.message import Message
-from src.init import get_message_repository
 from src.presentation.dash.app import app
 from src.usecase.register import RegisterUsecase
 
@@ -35,9 +37,9 @@ def update_output(_: int, user_input: str) -> Component:
     Returns:
         Component: 表示するコンポーネント
     """
-    message_repository = get_message_repository()
-    usecase = RegisterUsecase(message_repository)
-    result = usecase.execute(Message(user_input))
+    injector = Injector([get_di_module()])
+    register_usecase = injector.get(RegisterUsecase)
+    result = register_usecase.execute(Message(user_input))
     return html.Div(result)
 
 

@@ -1,3 +1,5 @@
+from injector import inject
+
 from src.domain.message.message import Message
 from src.domain.message.message_repository import IMessageRepository
 from src.logger.logging import DefaultLogger
@@ -6,6 +8,7 @@ logger = DefaultLogger(__name__)
 
 
 class RegisterUsecase:
+    @inject
     def __init__(self, message_repository: IMessageRepository) -> None:
         self._message_repository = message_repository
 

@@ -14,9 +14,10 @@ Attention:
 """
 
 import typer
+from injector import Injector
 
+from src.di import get_di_module
 from src.domain.message.message import Message
-from src.init import get_message_repository
 from src.usecase.error import ErrorUsecase
 from src.usecase.history import HistoryUsecase
 from src.usecase.register import RegisterUsecase
@@ -33,23 +34,27 @@ def hello() -> None:
 def register(
     text: str = typer.Option("デフォルト", "-t", "--text", help="登録するテキスト"),
 ) -> None:
-    message_repository = get_message_repository()
+    injector = Injector([get_di_module()])
+    register_usecase = injector.get(RegisterUsecase)
     message = Message(content=text)
-    RegisterUsecase(message_repository).execute(message)
+    register_usecase.execute(message)
     typer.echo(f"登録しました: {text}")
 
 
 @app.command()
 def history() -> None:
-    message_repository = get_message_repository()
-    messages = HistoryUsecase(message_repository).execute()
+    injector = Injector([get_di_module()])
+    hisotry_usecase = injector.get(HistoryUsecase)
+    messages = hisotry_usecase.execute()
     for m in messages:
         typer.echo(m.content)
 
 
 @app.command()
 def error() -> None:
-    result = ErrorUsecase().execute()
+    injector = Injector([get_di_module()])
+    error_usecase = injector.get(ErrorUsecase)
+    result = error_usecase.execute()
     typer.echo(result)
 
 
