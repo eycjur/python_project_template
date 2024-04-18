@@ -78,6 +78,7 @@ ignore_missing_imports = true
 pretty = true
 show_error_codes = true
 show_error_context = true
+exclude = ["dist"]
 
 [[tool.mypy.overrides]]
 module = ["requests.*"]

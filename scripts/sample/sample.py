@@ -27,8 +27,8 @@ np.set_printoptions(
 )
 plt.rcParams["font.size"] = 14
 
-# # #!%load_ext autoreload
-# # #!%autoreload 2
+#!%load_ext autoreload
+#!%autoreload 2
 
 # %%
 text = "こんにちは"
@@ -39,6 +39,7 @@ message = Message(content=text)
 RegisterUsecase(message_repository).execute(message)
 
 # %%
+#!%%time
 message_repository = get_message_repository()
 messages = HistoryUsecase(message_repository).execute()
 for m in messages:
