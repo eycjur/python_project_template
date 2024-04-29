@@ -9,13 +9,14 @@ Note:
 
 from typing import Any
 
+from injector import Injector
 from pydantic import BaseModel
 
 from fastapi import FastAPI, Request, status
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
+from src.di import get_di_module
 from src.domain.message.message import Message
-from src.init import get_message_repository
 from src.logger.logging import DefaultLogger
 from src.settings import CONTAINER_PORT
 from src.usecase.error import ErrorUsecase
@@ -74,8 +75,9 @@ def read_root() -> str:
 
 @app.get("/history")
 def history() -> HistoryResponse:
-    message_repository = get_message_repository()
-    messages = HistoryUsecase(message_repository).execute()
+    injector = Injector([get_di_module()])
+    history_usecase = injector.get(HistoryUsecase)
+    messages = history_usecase.execute()
     return HistoryResponse(
         messages=[MessageResponse(content=m.content) for m in messages]
     )
@@ -83,15 +85,17 @@ def history() -> HistoryResponse:
 
 @app.post("/register")
 def register(request: RegisterRequest) -> RegisterResponse:
-    message_repository = get_message_repository()
-    usecase = RegisterUsecase(message_repository)
-    result = usecase.execute(Message(request.text))
+    injector = Injector([get_di_module()])
+    register_usecase = injector.get(RegisterUsecase)
+    result = register_usecase.execute(Message(request.text))
     return RegisterResponse(text=result)
 
 
 @app.get("/error")
 def error() -> dict[str, Any]:
-    result = ErrorUsecase().execute()
+    injector = Injector([get_di_module()])
+    error_usecase = injector.get(ErrorUsecase)
+    result = error_usecase.execute()
     return {"detail": result}
 
 

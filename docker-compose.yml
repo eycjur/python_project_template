@@ -7,7 +7,6 @@ services:
     container_name: ${CONTAINER_NAME}
     volumes:
       - ./:/app
-      - ~/.aws:/root/.aws:ro
       - ./credentials:/credentials:ro
     working_dir: /app
     env_file:
