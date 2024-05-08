@@ -16,8 +16,10 @@ from IPython.display import display
 
 sys.path.append("/app")
 
+from injector import Injector
+
+from src.di import get_di_module
 from src.domain.message.message import Message
-from src.init import get_message_repository
 from src.usecase.history import HistoryUsecase
 from src.usecase.register import RegisterUsecase
 
@@ -29,19 +31,27 @@ plt.rcParams["font.size"] = 14
 
 #!%load_ext autoreload
 #!%autoreload 2
+# エラー時に引数も表示する
+#!%xmode Verbose
+
+# %%
+# 有用なマジックコマンド一覧（先頭の#を除いて利用して利用してください）
+# #!%%time  # セルの実行時間を計測
+# #!%load_ext line_profiler
+# #!%lprun  # ラインプロファイリング
 
 # %%
 text = "こんにちは"
 
 # %%
-message_repository = get_message_repository()
+injector = Injector([get_di_module()])
+register_usecase = injector.get(RegisterUsecase)
 message = Message(content=text)
-RegisterUsecase(message_repository).execute(message)
+register_usecase.execute(message)
 
 # %%
-#!%%time
-message_repository = get_message_repository()
-messages = HistoryUsecase(message_repository).execute()
+hisotry_usecase = injector.get(HistoryUsecase)
+messages = hisotry_usecase.execute()
 for m in messages:
     print(m.content)
 

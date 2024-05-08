@@ -10,6 +10,25 @@ include .env
 .DEFAULT_GOAL := help
 
 
+## Project関連のコマンド
+# プロジェクトのミニマイズ
+.PHONY: minimize
+minimize:
+	rm -rf infra/
+	rm -rf credentials/
+	rm -rf .github/
+	rm -rf db/
+	rm -rf src/domain src/infrastructure src/usecase
+	rm -rf \
+		src/logger/logger_config_aws.yaml \
+		src/logger/logger_config_azure.yaml \
+		src/logger/logger_config_gcp.yaml \
+		src/logger/formatter.py
+	rm -rf src/di.py
+	rm -rf tests/domain
+	rm -rf .editorconfig .gcloudignore LICENSE
+
+
 ## Python関連のコマンド
 # テストコードの実行
 .PHONY: test
@@ -24,7 +43,7 @@ lint:
 
 .PHONY: ruff
 ruff:
-	ruff --fix .
+	ruff check --fix .
 	ruff format .
 
 .PHONY: mypy
@@ -129,14 +148,15 @@ destroy:
 	docker compose down --rmi all --volumes --remove-orphans
 
 
+# ヘルプを表示する用のスクリプト
 define PRINT_HELP_PYSCRIPT
 import sys, re
 command_pattern = re.compile(r"^[a-zA-Z0-9\-_]+:")
 lines = [line.rstrip() for line in sys.stdin if not line.startswith(".PHONY")]
 
 for previous_line, current_line in zip(lines[:-1], lines[1:]):
-	if command_pattern.search(current_line) and previous_line.startswith("# "):
-		# #から始まるコメント行があれば、コマンドとコメントを表示
+	if command_pattern.match(current_line) and previous_line.startswith("# "):
+		# コマンド行かつ、前の行が#から始まるコメント行であれば、コマンドとコメントを表示
 		command = current_line.split(":")[0]
 		comment = previous_line.lstrip("# ")
 		print(f"{command:20s}\t{comment}")

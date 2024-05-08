@@ -14,15 +14,12 @@ pythonでプロジェクトを作成する際のテンプレートです。
 本リポジトリは、各種クラウドでの動作確認等を行うため、最小限+αの構成としています。  
 最小限の構成として利用する場合は、以下の手順で不要なファイルを削除してください。
 
-1. credentials/を削除、docker-compose.ymlからcredentialsのマウントを削除
-2. infra/を削除
-3. .github/を削除
-4. src/domain, src/infrastructure, src/usecaseを削除
-5. src/presentation/のサブディレクトリの内、不要なフレームワークのディレクトリを削除
-6. tests/domainを削除
-7. .gcloudignore, docker-compose.aws.yml, LICENSEを削除
-8. README.mdを編集
-9. クラウド関係の環境変数を.envから削除
+1. `make minimize`を実行
+2. docker-compose.ymlからcredentialsのマウントを削除
+3. src/presentation/のサブディレクトリのうち、不要なフレームワークのディレクトリを削除
+4. .devcontainer/devcontainer.jsonのlaunchの設定のうち、不要なフレームワークの設定を削除
+5. README.mdを編集
+6. クラウド関係の環境変数を.envとsrc/settings.pyから削除
 
 ## Run Application
 

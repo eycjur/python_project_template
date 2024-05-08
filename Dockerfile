@@ -5,6 +5,7 @@ RUN apt-get update && \
         curl \
         fonts-ipafont-gothic \
         gcc \
+        g++ \
         git \
         locales \
         make \
@@ -34,7 +35,9 @@ RUN mkdir /app
 WORKDIR /app
 
 # ライブラリのインストール
-COPY ./pyproject.toml ./poetry.lock /app/
+# poetry.lockが存在しないことを許容するため、./poetry.lock*としている
+COPY ./pyproject.toml ./poetry.lock* /app/
+
 RUN poetry install --no-root --no-interaction --no-ansi
 
 COPY ./src /app/src
