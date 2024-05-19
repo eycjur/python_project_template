@@ -161,3 +161,6 @@ cython_debug/
 
 # Mac
 .DS_Store
+
+# Export from jupyter
+*.html
