@@ -1,6 +1,9 @@
 # ruff: noqa: E402, F401  # import順を無視
 
-"""コメント"""  # noqa
+"""コメント
+
+export: インタラクティブ画面側の、エクスポート > HTMLから、Output込みのJupyter形式のファイルをHTMLとしてエクスポートできます
+"""  # noqa
 
 # %%[markdown]
 # # H1

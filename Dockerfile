@@ -10,6 +10,7 @@ RUN apt-get update && \
         locales \
         make \
         neovim \
+        pandoc \
         python3-dev \
         sudo \
         tzdata \

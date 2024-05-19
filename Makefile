@@ -88,7 +88,7 @@ ECR_URL = $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com
 .PHONY: deploy-aws-infra
 deploy-aws-infra:
 	terraform -chdir=infra/aws init
-	terraform -chdir=infra/aws apply
+	terraform -chdir=infra/aws apply --parallelism=30
 
 # AWSへのデプロイ
 .PHONY: deploy-aws
