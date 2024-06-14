@@ -164,3 +164,9 @@ cython_debug/
 
 # Export from jupyter
 *.html
+
+# Data
+data/*
+!data/.gitkeep
+outputs/*
+outputs/.gitkeep

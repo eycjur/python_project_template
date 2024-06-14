@@ -2,11 +2,11 @@
 name = "src"
 version = "1.0.0"
 description = ""
-authors = ["eycjur"]
+authors = ["kmuto"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "3.12"
 fastapi = "^0.109.2"
 google-cloud = "^0.34.0"
 uvicorn = "^0.27.0.post1"
@@ -49,20 +49,24 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.ruff]
 line-length = 88
-target-version = "py310"
+target-version = "py312"
 
 [tool.ruff.lint]
 select = [
     # cf. https://beta.ruff.rs/docs/rules/
+    "B",  # flake8-bugbear
     "E",  # pycodestyle error
-    "W",  # pycodestyle warning
     "F",  # Pyflakes
     "I",  # isort
+    "N",  # pep8-naming
+    "PT", # flake8-pytest-style
+    "W",  # pycodestyle warning
 ]
-fixable = ["I"]
-unfixable = ["E", "W", "F"]
+fixable = ["E", "F", "I"]
+unfixable = ["W", "F401", "F841"]
 
 [tool.mypy]
+python_version = "3.12"
 # チェック項目
 strict = true
 warn_unreachable = true
@@ -82,6 +86,7 @@ pretty = true
 show_error_codes = true
 show_error_context = true
 exclude = ["dist"]
+# cf. https://mypy.readthedocs.io/en/stable/config_file.html
 
 [[tool.mypy.overrides]]
 module = ["requests.*"]
@@ -93,5 +98,5 @@ ignore_errors = true
 
 [tool.pytest]
 minversion = "6.0"
-addopts = "-lsraq -vv --capture=no --full-trace --cache-clear"
+addopts = "-svv --tb=short --capture=no --full-trace"
 testpaths = ["tests/*"]
