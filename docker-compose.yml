@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile
     container_name: ${CONTAINER_NAME}
     volumes:
-      - ./:/app
+      - ./:/app:cached
       - ./credentials:/credentials:ro
     working_dir: /app
     env_file:

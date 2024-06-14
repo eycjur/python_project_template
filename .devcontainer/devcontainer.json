@@ -94,7 +94,8 @@
                 "run",
                 "src/presentation/streamlit/home.py",
                 "--server.port",
-                "5678",
+                // HACK: 公式のエスケープ方法がないので、${env:DUMMY}が""に置き換わることを利用して${env:PORT}をエスケープする
+                "$${env:DUMMY}{env:PORT}",
                 "--browser.gatherUsageStats",
                 "false"
               ],
