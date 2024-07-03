@@ -6,7 +6,7 @@ authors = ["kmuto"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "3.12"
+python = "^3.12"
 fastapi = "^0.109.2"
 google-cloud = "^0.34.0"
 uvicorn = "^0.27.0.post1"
