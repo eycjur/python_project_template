@@ -1,0 +1,22 @@
+{
+  "python.pythonPath": "/usr/local/bin/python",
+  "python.linting.pylintEnabled": false,
+  "python.linting.flake8Enabled": false,
+  // ruffの自動フォーマット
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.formatOnSave": true
+  },
+  "autoDocstring.docstringFormat": "google",
+  "python.testing.pytestArgs": [
+    "tests",
+    "-vv", // 詳細結果の出力
+    "-s" // print文の出力
+  ],
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestEnabled": true,
+  // コードセルの解析時にシェル割り当て(#!)、行マジック(#!%)およびセルマジック(#!%%)のコメントを解除します。
+  "jupyter.interactiveWindow.textEditor.magicCommandsAsComments": true,
+  // デバッグするときにライブラリコードにステップインできるようにする。
+  "jupyter.debugJustMyCode": false
+}
