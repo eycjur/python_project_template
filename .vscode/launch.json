@@ -1,0 +1,87 @@
+{
+  "version": "0.2.0",
+  // CLI用のargsの入力
+  // "inputs": [
+  //   {
+  //     "type": "promptString",
+  //     "id": "prompt",
+  //     "description": "引数を入力してください",
+  //     "default": "デフォルト"
+  //   }
+  // ],
+  "configurations": [
+    {
+      "name": "Dash: サーバーを起動",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "src.presentation.dash.index",
+      "cwd": "${workspaceFolder}",
+      "console": "internalConsole",
+      "justMyCode": false
+    },
+    {
+      "name": "CLI: コマンドを実行",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "src.presentation.cli.app",
+      "cwd": "${workspaceFolder}",
+      "console": "internalConsole",
+      "args": [
+        "--help"
+        // "${input:prompt}"
+      ],
+      "justMyCode": false
+    },
+    {
+      "name": "FastAPI: サーバーを起動",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "src.presentation.fastapi.app",
+      "cwd": "${workspaceFolder}",
+      "console": "internalConsole",
+      "justMyCode": false
+    },
+    {
+      "name": "Flask: サーバーを起動",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "src.presentation.flask.app",
+      "cwd": "${workspaceFolder}",
+      "console": "internalConsole",
+      "justMyCode": false
+    },
+    {
+      "name": "Streamlit: サーバーを起動",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "streamlit",
+      "cwd": "${workspaceFolder}",
+      "console": "internalConsole",
+      "args": [
+        "run",
+        "src/presentation/streamlit/home.py",
+        "--server.port",
+        "${env:PORT}",
+        "--browser.gatherUsageStats",
+        "false"
+      ],
+      "justMyCode": false
+    },
+    {
+      "name": "Python: Current File",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${file}",
+      "console": "internalConsole",
+      "justMyCode": false
+    },
+    {
+      "name": "Python: Debug Test",
+      "type": "debugpy",
+      "request": "launch",
+      "purpose": ["debug-test"],
+      "console": "internalConsole",
+      "justMyCode": false
+    }
+  ]
+}
