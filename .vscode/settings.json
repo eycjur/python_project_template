@@ -1,5 +1,5 @@
 {
-  "python.pythonPath": "/usr/local/bin/python",
+  "python.defaultInterpreterPath": "/usr/local/bin/python",
   "python.linting.pylintEnabled": false,
   "python.linting.flake8Enabled": false,
   // ruffの自動フォーマット
