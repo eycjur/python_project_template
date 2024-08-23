@@ -2,47 +2,27 @@ data "dotenv" "config" {
   filename = "../../.env"
 }
 
-provider "aws" {
-  region = data.dotenv.config.env["AWS_REGION"]
-}
-
 module "iam" {
   source = "./modules/iam"
 }
 
-module "ecr" {
-  source = "./modules/ecr"
+module "application" {
+  source = "./modules/application"
 
-  env = data.dotenv.config.env
+  common  = local.common
+  setting = local.application
+  env     = data.dotenv.config.env
 }
 
-module "dynamodb" {
-  source = "./modules/dynamodb"
+module "db" {
+  source = "./modules/db"
 
-  env = data.dotenv.config.env
+  common  = local.common
+  setting = local.db
 }
 
-module "app_runner" {
-  source = "./modules/app_runner"
+module "monitoring" {
+  source = "./modules/monitoring"
 
-  env                = data.dotenv.config.env
-  instance_role_arn  = module.iam.role_arn
-  ecr_repository_url = module.ecr.ecr_repository_url
-}
-
-module "sns" {
-  source = "./modules/sns"
-
-  env = data.dotenv.config.env
-}
-
-module "cloudwatch" {
-  source = "./modules/cloudwatch"
-
-  env           = data.dotenv.config.env
-  sns_topic_arn = module.sns.sns_topic_arn
-}
-
-output "app_runner_service_url" {
-  value = module.app_runner.app_runner_service_url
+  common = local.common
 }
