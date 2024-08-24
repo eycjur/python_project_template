@@ -1,4 +1,4 @@
-# AWS Infrastructure
+# GCP Infrastructure
 
 Terraformを用いたAWSのインフラ構築
 
