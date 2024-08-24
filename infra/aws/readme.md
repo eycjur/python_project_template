@@ -13,7 +13,7 @@ Terraformを用いたAWSのインフラ構築
 ### Terraformコマンドの実行
 
 ```bash
-make deploy-aws-infra
+make create-infra-aws
 ```
 
 ### 後処理

@@ -1,0 +1,6 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    # repositoryとimageは同じ名前とする
+    args: [ 'build', '-t', '${_LOCATION}-docker.pkg.dev/$PROJECT_ID/${_IMAGE}/${_IMAGE}', '.']
+images:
+  - '${_LOCATION}-docker.pkg.dev/$PROJECT_ID/${_IMAGE}/${_IMAGE}'

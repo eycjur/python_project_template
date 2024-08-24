@@ -57,17 +57,23 @@ fmt-terraform:
 	terraform fmt -recursive
 
 ## デプロイ
+# GCPのインフラ作成
+.PHONY: create-infra-gcp
+create-infra-gcp:
+	terraform -chdir=infra/gcp init
+	terraform -chdir=infra/gcp apply --parallelism=30
+
 # GCPへのデプロイ
 .PHONY: deploy-gcp
 deploy-gcp:
 	gcloud builds submit \
 		--region $(GCP_REGION_CLOUD_BUILD) \
-		--tag gcr.io/$(GCP_PROJECT_ID)/$(CONTAINER_NAME) \
 		--project $(GCP_PROJECT_ID) \
+		--config cloudbuild.yaml \
+		--substitutions=_LOCATION="$(GCP_REGION)",_IMAGE="$(CONTAINER_NAME)" \
 		.
-
 	gcloud run deploy $(CONTAINER_NAME) \
-		--image gcr.io/$(GCP_PROJECT_ID)/$(CONTAINER_NAME) \
+		--image $(GCP_REGION)-docker.pkg.dev/$(GCP_PROJECT_ID)/$(CONTAINER_NAME)/$(CONTAINER_NAME) \
 		--region $(GCP_REGION) \
 		--port $(CONTAINER_PORT) \
 		--set-env-vars=$(shell \
@@ -79,14 +85,15 @@ deploy-gcp:
 		--cpu 1 \
 		--memory 1Gi \
 		--platform managed \
+		--ingress internal-and-cloud-load-balancing \
 		--service-account $(GCP_SERVICE_ACCOUNT) \
 		--project $(GCP_PROJECT_ID)
 
 ECR_URL = $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com
 
-# AWSへのフルデプロイ（環境変数の更新含む）
-.PHONY: deploy-aws-infra
-deploy-aws-infra:
+# AWSのインフラ作成
+.PHONY: create-infra-aws
+create-infra-aws:
 	terraform -chdir=infra/aws init
 	terraform -chdir=infra/aws apply --parallelism=30
 
