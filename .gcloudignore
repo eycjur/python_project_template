@@ -3,6 +3,11 @@
 .ruff_cache/
 .venv/
 tests/
+data/
+output/
+dist/
+db/
+infra/
 .git/
 .DS_Store
 

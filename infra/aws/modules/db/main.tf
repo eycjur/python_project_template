@@ -1,7 +1,7 @@
 # DynamoDBで使用するテーブルを作成する
 
 resource "aws_dynamodb_table" "dynamodb_table_histories" {
-  name           = var.env["AWS_DYNAMODB_TABLE_NAME_HISTORIES"]
+  name           = var.setting.table_name_histories
   billing_mode   = "PROVISIONED"
   read_capacity  = 1
   write_capacity = 1

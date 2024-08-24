@@ -1,8 +1,8 @@
 {
   "name": "Existing Docker Compose (Extend)",
   "dockerComposeFile": [
-    "../docker-compose.yml",
-    "./docker-compose.override.yml"
+    "../compose.yml",
+    "./compose.override.yml"
   ],
   "service": "app",
   "workspaceFolder": "/app",
