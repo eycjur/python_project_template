@@ -2,7 +2,7 @@ from fastapi import APIRouter
 from injector import inject
 from pydantic import BaseModel
 
-from src.di import ingector
+from src.di import injector
 from src.usecase.history import HistoryUsecase
 
 router = APIRouter()
@@ -30,5 +30,5 @@ class HistoryController:
 
 @router.get("/history")
 def get_history() -> HistoryResponse:
-    controller = ingector.get(HistoryController)
+    controller = injector.get(HistoryController)
     return controller.execute()

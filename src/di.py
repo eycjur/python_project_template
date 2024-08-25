@@ -122,4 +122,4 @@ def get_di_module(
     raise ValueError("Invalid cloud type")
 
 
-ingector = Injector(get_di_module())
+injector = Injector(get_di_module())

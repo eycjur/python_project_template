@@ -2,7 +2,7 @@ from fastapi import APIRouter
 from injector import inject
 from pydantic import BaseModel
 
-from src.di import ingector
+from src.di import injector
 from src.domain.message.message import Message
 from src.usecase.register import RegisterUsecase
 
@@ -29,5 +29,5 @@ class RegisterController:
 
 @router.post("/register")
 def register(request: RegisterRequest) -> RegisterResponse:
-    controller = ingector.get(RegisterController)
+    controller = injector.get(RegisterController)
     return controller.execute(request)

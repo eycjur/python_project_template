@@ -1,8 +1,7 @@
-from injector import Injector
 from werkzeug import Response
 
 from flask import Flask, redirect, render_template, request
-from src.di import get_di_module
+from src.di import injector
 from src.domain.message.message import Message
 from src.settings import CONTAINER_PORT
 from src.usecase.error import ErrorUsecase
@@ -14,7 +13,6 @@ app = Flask(__name__)
 
 @app.route("/")
 def history() -> str:
-    injector = Injector([get_di_module()])
     history_usecase = injector.get(HistoryUsecase)
     messages = history_usecase.execute()
     return render_template("history.html", messages=messages)
@@ -29,7 +27,6 @@ def register() -> str:
 def submit() -> Response:
     user_input = request.form["user_input"]
 
-    injector = Injector([get_di_module()])
     register_usecase = injector.get(RegisterUsecase)
     register_usecase.execute(Message(user_input))
     return redirect("/")
@@ -37,7 +34,6 @@ def submit() -> Response:
 
 @app.route("/error")
 def error() -> str:
-    injector = Injector([get_di_module()])
     error_usecase = injector.get(ErrorUsecase)
     result = error_usecase.execute()
     return render_template("error.html", message=result)

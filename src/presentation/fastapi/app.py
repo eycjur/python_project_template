@@ -7,12 +7,9 @@ Note:
 
 """
 
-from injector import Injector
-
 from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
-from src.di import get_di_module
 from src.presentation.fastapi.controller.error_controller import router as error_router
 from src.presentation.fastapi.controller.history_controller import (
     router as history_router,
@@ -25,8 +22,6 @@ from src.presentation.fastapi.exception_handlers import (
     validation_exception_handler,
 )
 from src.settings import CONTAINER_PORT
-
-injector = Injector([get_di_module()])
 
 
 def create_app() -> FastAPI:

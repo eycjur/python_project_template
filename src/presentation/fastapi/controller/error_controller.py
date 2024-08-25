@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from injector import inject
 
-from src.di import ingector
+from src.di import injector
 from src.usecase.error import ErrorUsecase
 
 router = APIRouter()
@@ -19,5 +19,5 @@ class ErrorController:
 
 @router.get("/error")
 def get_error() -> dict:
-    controller = ingector.get(ErrorController)
+    controller = injector.get(ErrorController)
     return controller.execute()
