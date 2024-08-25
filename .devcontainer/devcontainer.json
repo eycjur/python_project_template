@@ -32,7 +32,8 @@
         // CSV関連
         "janisdd.vscode-edit-csv",
         // Git関連
-        "mhutchie.git-graph"
+        "mhutchie.git-graph",
+        "ritwickdey.liveserver"
       ]
     }
   }
