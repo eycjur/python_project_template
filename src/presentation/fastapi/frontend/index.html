@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Frontend</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .form-container {
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            padding: 8px;
+            margin-right: 10px;
+            width: 300px;
+        }
+        button {
+            padding: 8px 16px;
+        }
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <h1>API Frontend</h1>
+
+    <div class="form-container">
+        <h2>Register</h2>
+        <input type="text" id="registerText" placeholder="Enter text to register">
+        <button onclick="register()">Submit</button>
+    </div>
+
+    <div class="form-container">
+        <h2>History</h2>
+        <button onclick="getHistory()">Get History</button>
+        <pre id="historyResult"></pre>
+    </div>
+
+    <div class="form-container">
+        <h2>Error</h2>
+        <button onclick="getError()">Get Error</button>
+        <pre id="errorResult"></pre>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

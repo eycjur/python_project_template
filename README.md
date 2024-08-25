@@ -42,6 +42,14 @@ pythonでプロジェクトを作成する際のテンプレートです。
 6. F5でデバッグ実行が可能
 7. http://localhost:<LOCAL_PORT>/ からアプリにアクセス
 
+### FastAPI
+
+FastAPIを利用する場合は、以下の手順で行ってください。
+
+1. 上記手順でAPIサーバーを起動
+2. live-server拡張機能で、src/presentation/fastapi/frontend/index.htmlを開く
+3. http://localhost:5500/src/presentation/fastapi/frontend/ からフロントエンドにアクセス
+
 ## Deploy
 
 各クラウドへのデプロイを行う際は、以下の手順で行ってください。

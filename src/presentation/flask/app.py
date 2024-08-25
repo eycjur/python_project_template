@@ -1,47 +1,9 @@
-from injector import Injector
-from werkzeug import Response
-
-from flask import Flask, redirect, render_template, request
-from src.di import get_di_module
-from src.domain.message.message import Message
+from flask import Flask
+from src.presentation.flask.routes import router
 from src.settings import CONTAINER_PORT
-from src.usecase.error import ErrorUsecase
-from src.usecase.history import HistoryUsecase
-from src.usecase.register import RegisterUsecase
 
 app = Flask(__name__)
-
-
-@app.route("/")
-def history() -> str:
-    injector = Injector([get_di_module()])
-    history_usecase = injector.get(HistoryUsecase)
-    messages = history_usecase.execute()
-    return render_template("history.html", messages=messages)
-
-
-@app.route("/register", methods=["GET"])
-def register() -> str:
-    return render_template("register.html")
-
-
-@app.route("/register", methods=["POST"])
-def submit() -> Response:
-    user_input = request.form["user_input"]
-
-    injector = Injector([get_di_module()])
-    register_usecase = injector.get(RegisterUsecase)
-    register_usecase.execute(Message(user_input))
-    return redirect("/")
-
-
-@app.route("/error")
-def error() -> str:
-    injector = Injector([get_di_module()])
-    error_usecase = injector.get(ErrorUsecase)
-    result = error_usecase.execute()
-    return render_template("error.html", message=result)
-
+app.register_blueprint(router)
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=CONTAINER_PORT)

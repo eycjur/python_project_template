@@ -7,97 +7,45 @@ Note:
 
 """
 
-from typing import Any
-
-from injector import Injector
-from pydantic import BaseModel
-
-from fastapi import FastAPI, Request, status
+from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError
-from fastapi.responses import JSONResponse
-from src.di import get_di_module
-from src.domain.message.message import Message
-from src.logger.logging import DefaultLogger
+from fastapi.middleware.cors import CORSMiddleware
+from src.presentation.fastapi.controller.error_controller import router as error_router
+from src.presentation.fastapi.controller.history_controller import (
+    router as history_router,
+)
+from src.presentation.fastapi.controller.register_controller import (
+    router as register_router,
+)
+from src.presentation.fastapi.exception_handlers import (
+    exception_handler,
+    validation_exception_handler,
+)
 from src.settings import CONTAINER_PORT
-from src.usecase.error import ErrorUsecase
-from src.usecase.history import HistoryUsecase
-from src.usecase.register import RegisterUsecase
-
-logger = DefaultLogger(__name__)
-app = FastAPI()
 
 
-@app.exception_handler(Exception)
-async def exception_handler(request: Request, exc: Exception) -> JSONResponse:
-    # Note: 開発用サーバーではエラー時のtraceackがデフォルトで出力されるの重複する
-    logger.error(f"Error: {exc}")
-    return JSONResponse(
-        content={"detail": str(exc)},
-        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+def create_app() -> FastAPI:
+    app = FastAPI()
+
+    app.add_exception_handler(Exception, exception_handler)
+    app.add_exception_handler(RequestValidationError, validation_exception_handler)
+
+    app.include_router(register_router)
+    app.include_router(history_router)
+    app.include_router(error_router)
+
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
     )
 
-
-@app.exception_handler(RequestValidationError)
-async def handler(request: Request, exc: RequestValidationError) -> JSONResponse:
-    """RequestValidationErrorの例外ハンドリング
-
-    Note:
-        ログだけでは原因がわからない場合は、以下の箇所をデバッグすると良い
-        /usr/local/lib/python3.12/site-packages/fastapi/dependencies/utils.py::request_body_to_args(756行目付近)
-    """
-    logger.error(f"Error: {exc}")
-    return JSONResponse(
-        content={"detail": str(exc)},
-        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-    )
+    return app
 
 
-class RegisterRequest(BaseModel):
-    text: str
-
-
-class RegisterResponse(BaseModel):
-    text: str
-
-
-class MessageResponse(BaseModel):
-    content: str
-
-
-class HistoryResponse(BaseModel):
-    messages: list[MessageResponse]
-
-
-@app.get("/")
-def read_root() -> str:
-    return "Hello World"
-
-
-@app.get("/history")
-def history() -> HistoryResponse:
-    injector = Injector([get_di_module()])
-    history_usecase = injector.get(HistoryUsecase)
-    messages = history_usecase.execute()
-    return HistoryResponse(
-        messages=[MessageResponse(content=m.content) for m in messages]
-    )
-
-
-@app.post("/register")
-def register(request: RegisterRequest) -> RegisterResponse:
-    injector = Injector([get_di_module()])
-    register_usecase = injector.get(RegisterUsecase)
-    result = register_usecase.execute(Message(request.text))
-    return RegisterResponse(text=result)
-
-
-@app.get("/error")
-def error() -> dict[str, Any]:
-    injector = Injector([get_di_module()])
-    error_usecase = injector.get(ErrorUsecase)
-    result = error_usecase.execute()
-    return {"detail": result}
-
+app = create_app()
 
 if __name__ == "__main__":
     import uvicorn

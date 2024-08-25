@@ -16,4 +16,5 @@ services:
       - AWS_DEFAULT_REGION=${AWS_REGION}
     ports:
       - 127.0.0.1:${LOCAL_PORT}:${CONTAINER_PORT}
+      - 127.0.0.1:5500:5500  # for live server
     tty: true

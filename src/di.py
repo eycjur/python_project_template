@@ -2,7 +2,7 @@
 
 from typing import Any, Optional
 
-from injector import Module, provider, singleton
+from injector import Injector, Module, provider, singleton
 
 from src.domain.message.message_repository import IMessageRepository
 from src.infrastructure.repository.message.aws_message_repository import (
@@ -28,9 +28,12 @@ from src.settings import (
     GCP_FIRESTORE_DB_NAME,
     CloudType,
 )
+from src.usecase.error import ErrorUsecase
+from src.usecase.history import HistoryUsecase
+from src.usecase.register import RegisterUsecase
 
 
-class LocalModule(Module):
+class CommonModule(Module):
     def configure(self, binder: Any) -> None:
         """DIコンテナに登録するクラスを設定する
 
@@ -44,18 +47,28 @@ class LocalModule(Module):
             >>>     def __init__(self, instance_B: interface_B):
             >>>         pass
             >>>
-            >>> injector = Injector([LocalModule()])
+            >>> injector = Injector([CommonModule()])
             >>> instance_A = injector.get(class_A)
         """
+        binder.bind(RegisterUsecase, to=RegisterUsecase)
+        binder.bind(HistoryUsecase, to=HistoryUsecase)
+        binder.bind(ErrorUsecase, to=ErrorUsecase)
+
+
+class LocalModule(CommonModule):
+    def configure(self, binder: Any) -> None:
+        super().configure(binder)
         binder.bind(IMessageRepository, to=self.provide_message_repository)
 
     @provider
+    @singleton
     def provide_message_repository(self) -> IMessageRepository:
         return SQLiteMessageRepository(BASE_DIR / "db" / "db.sqlite3")
 
 
-class GCPModule(Module):
+class GCPModule(CommonModule):
     def configure(self, binder: Any) -> None:
+        super().configure(binder)
         binder.bind(IMessageRepository, to=self.provide_message_repository)
 
     @provider
@@ -66,8 +79,9 @@ class GCPModule(Module):
         )
 
 
-class AWSModule(Module):
+class AWSModule(CommonModule):
     def configure(self, binder: Any) -> None:
+        super().configure(binder)
         binder.bind(IMessageRepository, to=self.provide_message_repository)
 
     @provider
@@ -76,8 +90,9 @@ class AWSModule(Module):
         return AWSMessageRepository(AWS_DYNAMODB_TABLE_NAME_HISTORIES)
 
 
-class AzureModule(Module):
+class AzureModule(CommonModule):
     def configure(self, binder: Any) -> None:
+        super().configure(binder)
         binder.bind(IMessageRepository, to=self.provide_message_repository)
 
     @provider
@@ -105,3 +120,6 @@ def get_di_module(
     elif cloud == CloudType.AZURE:
         return AzureModule()
     raise ValueError("Invalid cloud type")
+
+
+injector = Injector(get_di_module())
