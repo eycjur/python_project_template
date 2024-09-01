@@ -53,8 +53,8 @@ message = Message(content=text)
 register_usecase.execute(message)
 
 # %%
-hisotry_usecase = injector.get(HistoryUsecase)
-messages = hisotry_usecase.execute()
+history_usecase = injector.get(HistoryUsecase)
+messages = history_usecase.execute()
 for m in messages:
     print(m.content)
 
