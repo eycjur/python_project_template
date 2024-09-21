@@ -38,7 +38,7 @@ plt.rcParams["font.size"] = 14
 #!%xmode Verbose
 
 # %%
-# 有用なマジックコマンド一覧（先頭の#を除いて利用して利用してください）
+# 有用なマジックコマンド一覧(先頭の#を除いて利用して利用してください)
 # #!%%time  # セルの実行時間を計測
 # #!%load_ext line_profiler
 # #!%lprun  # ラインプロファイリング
@@ -53,8 +53,8 @@ message = Message(content=text)
 register_usecase.execute(message)
 
 # %%
-hisotry_usecase = injector.get(HistoryUsecase)
-messages = hisotry_usecase.execute()
+history_usecase = injector.get(HistoryUsecase)
+messages = history_usecase.execute()
 for m in messages:
     print(m.content)
 

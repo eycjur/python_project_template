@@ -23,10 +23,10 @@ from src.settings import (
     AZURE_COSMOS_DATABASE_NAME,
     AZURE_COSMOS_ENDPOINT,
     BASE_DIR,
-    CLOUD,
     GCP_FIRESTORE_COLLECTION_NAME_HISTORIES,
     GCP_FIRESTORE_DB_NAME,
-    CloudType,
+    RUN_ENV,
+    RunEnv,
 )
 from src.usecase.error import ErrorUsecase
 from src.usecase.history import HistoryUsecase
@@ -61,7 +61,7 @@ class LocalModule(CommonModule):
         binder.bind(IMessageRepository, to=self.provide_message_repository)
 
     @provider
-    @singleton
+    # @singleton  # sqlite3は異なるスレッドからのアクセスができない
     def provide_message_repository(self) -> IMessageRepository:
         return SQLiteMessageRepository(BASE_DIR / "db" / "db.sqlite3")
 
@@ -106,20 +106,22 @@ class AzureModule(CommonModule):
 
 
 def get_di_module(
-    cloud: Optional[CloudType] = None,
+    cloud: Optional[RunEnv] = None,
 ) -> LocalModule | GCPModule | AWSModule | AzureModule:
     if cloud is None:
-        cloud = CLOUD
+        cloud = RUN_ENV
 
-    if cloud == CloudType.Local:
-        return LocalModule()
-    elif cloud == CloudType.GCP:
-        return GCPModule()
-    elif cloud == CloudType.AWS:
-        return AWSModule()
-    elif cloud == CloudType.AZURE:
-        return AzureModule()
-    raise ValueError("Invalid cloud type")
+    match cloud:
+        case RunEnv.LOCAL | RunEnv.GITHUB_ACTIONS:  # CI環境もローカルと同じ扱いにする
+            return LocalModule()
+        case RunEnv.GCP:
+            return GCPModule()
+        case RunEnv.AWS:
+            return AWSModule()
+        case RunEnv.AZURE:
+            return AzureModule()
+        case _:
+            raise ValueError("Invalid cloud type")
 
 
 injector = Injector(get_di_module())

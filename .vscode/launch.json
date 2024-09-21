@@ -59,11 +59,13 @@
       "console": "internalConsole",
       "args": [
         "run",
-        "src/presentation/streamlit/home.py",
+        "src/presentation/streamlit/index.py",
         "--server.port",
-        "${env:PORT}",
+        "${env:CONTAINER_PORT}",
         "--browser.gatherUsageStats",
-        "false"
+        "false",
+        "--server.runOnSave",
+        "true"
       ],
       "justMyCode": false
     },
