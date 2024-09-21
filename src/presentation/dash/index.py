@@ -71,9 +71,7 @@ def display_content(pathname: str) -> Component:
         Component: 表示するコンポーネント
     """
     page_name = app.strip_relative_path(pathname)
-    if not page_name:
-        return home.layout()
-    elif page_name == "home":
+    if not page_name or page_name == "home":
         return home.layout()
     elif page_name == "register":
         return register.layout()

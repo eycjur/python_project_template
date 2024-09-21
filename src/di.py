@@ -23,10 +23,10 @@ from src.settings import (
     AZURE_COSMOS_DATABASE_NAME,
     AZURE_COSMOS_ENDPOINT,
     BASE_DIR,
-    CLOUD,
     GCP_FIRESTORE_COLLECTION_NAME_HISTORIES,
     GCP_FIRESTORE_DB_NAME,
-    CloudType,
+    RUN_ENV,
+    RunEnv,
 )
 from src.usecase.error import ErrorUsecase
 from src.usecase.history import HistoryUsecase
@@ -106,18 +106,20 @@ class AzureModule(CommonModule):
 
 
 def get_di_module(
-    cloud: Optional[CloudType] = None,
+    cloud: Optional[RunEnv] = None,
 ) -> LocalModule | GCPModule | AWSModule | AzureModule:
     if cloud is None:
-        cloud = CLOUD
+        cloud = RUN_ENV
 
-    if cloud == CloudType.Local:
+    if cloud == RunEnv.LOCAL:
         return LocalModule()
-    elif cloud == CloudType.GCP:
+    if cloud == RunEnv.GITHUB_ACTIONS:  # CI環境の場合は適当にローカルとする
+        return LocalModule()
+    if cloud == RunEnv.GCP:
         return GCPModule()
-    elif cloud == CloudType.AWS:
+    if cloud == RunEnv.AWS:
         return AWSModule()
-    elif cloud == CloudType.AZURE:
+    if cloud == RunEnv.AZURE:
         return AzureModule()
     raise ValueError("Invalid cloud type")
 

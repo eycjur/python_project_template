@@ -46,7 +46,9 @@ class DefaultLogger(object):
 def init_logger() -> None:
     """Loggerを初期化する"""
     logger_config_path = os.path.join(os.path.dirname(__file__), LOGGER_CONFIG_FILE)
-    dictConfig(yaml.load(open(logger_config_path).read(), Loader=yaml.SafeLoader))
+    with open(logger_config_path) as f:
+        logger_config = yaml.safe_load(f)
+    dictConfig(logger_config)
 
 
 init_logger()

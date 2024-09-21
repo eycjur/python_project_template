@@ -49,14 +49,18 @@ target-version = "py312"
 
 [tool.ruff.lint]
 select = [
-    # cf. https://beta.ruff.rs/docs/rules/
-    "B",  # flake8-bugbear
-    "E",  # pycodestyle error
-    "F",  # Pyflakes
-    "I",  # isort
-    "N",  # pep8-naming
-    "PT", # flake8-pytest-style
-    "W",  # pycodestyle warning
+    # cf. https://docs.astral.sh/ruff/rules/
+    "B",  # flake8-bugbear（潜在的なバグやパフォーマンス上の問題を検知）
+    "C4",  # flake8-comprehensions（list/set/dictのコードの最適化や改善）
+    "C90",  # mccabe（複雑度を測定）
+    "E",  # pycodestyle error（PEP8に準拠したコーディングスタイル）
+    "F",  # Pyflakes（バグや不要なインポートの検出）
+    "I",  # isort（インポート文をソート）
+    "N",  # pep8-naming（PEP8に準拠した命名ルール）
+    "PT", # flake8-pytest-style（Pytestのテストコードのスタイルチェック）
+    "RUF",  # ruff-specific rules（ruff特有のルール）
+    "SIM",  # flake8-simplify（冗長なコードや非効率なコードを簡潔な形に改善）
+    "W",  # pycodestyle warning（PEP8に準拠したコーディングスタイル）
 ]
 fixable = ["E", "F", "I"]
 unfixable = ["W", "F401", "F841"]
