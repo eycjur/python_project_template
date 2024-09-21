@@ -61,7 +61,7 @@ class LocalModule(CommonModule):
         binder.bind(IMessageRepository, to=self.provide_message_repository)
 
     @provider
-    @singleton
+    # @singleton  # sqlite3は異なるスレッドからのアクセスができない
     def provide_message_repository(self) -> IMessageRepository:
         return SQLiteMessageRepository(BASE_DIR / "db" / "db.sqlite3")
 
@@ -111,17 +111,17 @@ def get_di_module(
     if cloud is None:
         cloud = RUN_ENV
 
-    if cloud == RunEnv.LOCAL:
-        return LocalModule()
-    if cloud == RunEnv.GITHUB_ACTIONS:  # CI環境の場合は適当にローカルとする
-        return LocalModule()
-    if cloud == RunEnv.GCP:
-        return GCPModule()
-    if cloud == RunEnv.AWS:
-        return AWSModule()
-    if cloud == RunEnv.AZURE:
-        return AzureModule()
-    raise ValueError("Invalid cloud type")
+    match cloud:
+        case RunEnv.LOCAL | RunEnv.GITHUB_ACTIONS:  # CI環境もローカルと同じ扱いにする
+            return LocalModule()
+        case RunEnv.GCP:
+            return GCPModule()
+        case RunEnv.AWS:
+            return AWSModule()
+        case RunEnv.AZURE:
+            return AzureModule()
+        case _:
+            raise ValueError("Invalid cloud type")
 
 
 injector = Injector(get_di_module())

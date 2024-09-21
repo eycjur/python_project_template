@@ -3,9 +3,9 @@ from streamlit.navigation.page import StreamlitPage
 
 
 def page_component() -> StreamlitPage:
-    history_page = st.Page(page="pages/top.py", title="履歴")
-    register_page = st.Page(page="pages/register.py", title="登録")
-    error_page = st.Page(page="pages/error.py", title="エラー")
+    history_page = st.Page(page="layouts/top.py", title="履歴")
+    register_page = st.Page(page="layouts/register.py", title="登録")
+    error_page = st.Page(page="layouts/error.py", title="エラー")
     return st.navigation(
         [
             history_page,
