@@ -25,6 +25,8 @@ class RunEnv(Enum):
             return cls.AWS
         if "CONTAINER_APP_REPLICA_NAME" in os.environ:  # Container Apps
             return cls.AZURE
+        if "CLOUD" in os.environ:
+            return cls(os.environ["CLOUD"])
         return cls.LOCAL
 
 

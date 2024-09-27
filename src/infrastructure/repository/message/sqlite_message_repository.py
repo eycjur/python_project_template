@@ -72,6 +72,10 @@ class SQLiteMessageRepository(IMessageRepository):
 
         messages = []
         for row in result:
-            message = Message(row[1], id=row[0])
-            messages.append(message)
+            try:
+                message = Message(row[1], id=row[0])
+                messages.append(message)
+            except Exception as e:
+                logger.error(f"SQLiteからのデータの読み込みに失敗しました。: {e}")
+                continue
         return messages
