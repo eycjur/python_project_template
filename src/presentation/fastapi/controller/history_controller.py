@@ -24,7 +24,7 @@ class HistoryController:
     def execute(self) -> HistoryResponse:
         messages = self._history_usecase.execute()
         return HistoryResponse(
-            messages=[MessageResponse(content=m._content) for m in messages]
+            messages=[MessageResponse(content=m.content) for m in messages]
         )
 
 
