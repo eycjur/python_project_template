@@ -24,9 +24,9 @@ jobs:
         id: poetry-cache
         with:
           path: ~/.local
-          key: poetry-${{ runner.os }}-${{ matrix.python-version }}
+          key: ${{ runner.os }}-poetry-Python${{ matrix.python-version }}
           restore-keys: |
-            poetry-${{ runner.os }}-
+            ${{ runner.os }}-poetry-
 
       - name: install poetry
         if: steps.poetry-cache.outputs.cache-hit != 'true'
@@ -40,9 +40,9 @@ jobs:
         id: dependencies-cache
         with:
           path: ~/.cache/pypoetry
-          key: poetrydependencies-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('**/poetry.lock') }}
+          key: ${{ runner.os }}-poetry-dependencies-Python${{ matrix.python-version }}-${{ hashFiles('**/poetry.lock') }}
           restore-keys: |
-            poetrydependencies-${{ runner.os }}-${{ matrix.python-version }}-
+            ${{ runner.os }}-poetry-dependencies-Python${{ matrix.python-version }}-
 
       - name: install dependencies
         if: steps.dependencies-cache.outputs.cache-hit != 'true'
