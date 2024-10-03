@@ -13,11 +13,9 @@ class ID:
 class Message:
     """メッセージを表すエンティティ"""
 
-    def __init__(self, content: str, *, id: Optional[ID] = None) -> None:
-        if id is None:
-            id = ID()
-        self.content = content
-        self._id = id
+    def __init__(self, content: str, *, id: Optional[ID] = None) -> None:  # noqa: A002
+        self._content = content
+        self._id = id if id is not None else ID()
 
     def __eq__(self, obj: Any) -> bool:
         if isinstance(obj, Message):
@@ -28,6 +26,10 @@ class Message:
     @property
     def id(self) -> str:
         return self._id.value
+
+    @property
+    def content(self) -> str:
+        return self._content
 
     @classmethod
     def from_repository(cls, data: dict[str, str]) -> "Message":

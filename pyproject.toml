@@ -50,6 +50,7 @@ target-version = "py312"
 [tool.ruff.lint]
 select = [
     # cf. https://docs.astral.sh/ruff/rules/
+    "A",  # flake8-builtins（組み込み変数の使用をチェック）
     "B",  # flake8-bugbear（潜在的なバグやパフォーマンス上の問題を検知）
     "C4",  # flake8-comprehensions（list/set/dictのコードの最適化や改善）
     "C90",  # mccabe（複雑度を測定）
@@ -100,3 +101,6 @@ ignore_errors = true
 minversion = "6.0"
 addopts = "-svv --tb=short --capture=no --full-trace"
 testpaths = ["tests/*"]
+
+[tool.bandit]
+exclude_dirs = ["tests"]

@@ -25,9 +25,11 @@ class AzureMessageRepository(IMessageRepository):
         )
 
     def find_all(self, limit: int = 10) -> list[Message]:
-        query = f"SELECT TOP {limit} * FROM c ORDER BY c.update_at DESC"
+        query = "SELECT TOP @limit * FROM c ORDER BY c.update_at DESC"
         result = self._container.query_items(
-            query=query, enable_cross_partition_query=True
+            query=query,
+            parameters=[{"name": "@limit", "value": limit}],
+            enable_cross_partition_query=True,
         )
 
         messages = []

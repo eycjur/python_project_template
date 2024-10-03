@@ -20,11 +20,13 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: cache poetry
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         id: poetry-cache
         with:
           path: ~/.local
-          key: ${{ runner.os }}-poetry
+          key: poetry-${{ runner.os }}-${{ matrix.python-version }}
+          restore-keys: |
+            poetry-${{ runner.os }}-
 
       - name: install poetry
         if: steps.poetry-cache.outputs.cache-hit != 'true'
@@ -34,16 +36,17 @@ jobs:
         run: echo "{HOME}/.local/bin" >> $GITHUB_PATH
 
       - name: dependencies cache
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         id: dependencies-cache
         with:
           path: ~/.cache/pypoetry
-          key: ${{ runner.os }}-poetrydependencies-${{ matrix.python-version }}-${{ hashFiles('**/poetry.lock') }}
+          key: poetrydependencies-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('**/poetry.lock') }}
           restore-keys: |
-            ${{ runner.os }}-poetrydependencies-${{ matrix.python-version }}-
+            poetrydependencies-${{ runner.os }}-${{ matrix.python-version }}-
 
       - name: install dependencies
-        run: poetry install --no-root --no-interaction --no-ansi
+        if: steps.dependencies-cache.outputs.cache-hit != 'true'
+        run: poetry install --no-interaction --no-ansi
 
       - name: run ruff (lint)
         if: always()
