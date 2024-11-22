@@ -10,6 +10,7 @@ Note:
 from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
+
 from src.presentation.fastapi.controller.error_controller import router as error_router
 from src.presentation.fastapi.controller.history_controller import (
     router as history_router,

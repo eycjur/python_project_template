@@ -1,7 +1,9 @@
 import os
 from enum import Enum
+from io import StringIO
 from pathlib import Path
 
+import dotenv
 from environs import Env
 from pytz import timezone  # type: ignore
 
@@ -32,6 +34,25 @@ class RunEnv(Enum):
 
 RUN_ENV = RunEnv.judge_from_env()
 
+try:
+    if RUN_ENV == RunEnv.GCP:
+        dotenv.load_dotenv(dotenv_path="/secrets/.env")
+    elif RUN_ENV == RunEnv.AWS:
+        import botocore
+        import botocore.session
+        from aws_secretsmanager_caching import SecretCache, SecretCacheConfig
+
+        client = botocore.session.get_session().create_client("secretsmanager")
+        cache_config = SecretCacheConfig()
+        cache = SecretCache(config=cache_config, client=client)
+
+        secret = cache.get_secret_string(os.environ["AWS_SECRET_MANAGER_SECRET_NAME"])
+        dotenv.load_dotenv(stream=StringIO(secret.replace("\\n", "\n")))
+except Exception as e:
+    # ローカルでクラウドを模す場合のため、エラーを握りつぶす
+    print(f"Failed to load cloud's .env: {e}")
+
+
 # HACK: CI環境の場合は環境変数がなくてもエラーとしないように、遅延バリデーションとする
 env = Env(eager=RUN_ENV != RunEnv.GITHUB_ACTIONS)
 
@@ -49,6 +70,7 @@ AZURE_COSMOS_ENDPOINT = env.str("AZURE_COSMOS_ENDPOINT")
 AZURE_COSMOS_DATABASE_NAME = env.str("AZURE_COSMOS_DATABASE_NAME")
 AZURE_COSMOS_CONTAINER_NAME_HISTORIES = env.str("AZURE_COSMOS_CONTAINER_NAME_HISTORIES")
 AWS_DYNAMODB_TABLE_NAME_HISTORIES = env.str("AWS_DYNAMODB_TABLE_NAME_HISTORIES")
+AWS_API_GATEWAY_STAGE_NAME = env.str("AWS_API_GATEWAY_STAGE_NAME")
 
 match RUN_ENV:
     case RunEnv.LOCAL:

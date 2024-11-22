@@ -1,4 +1,5 @@
 from flask import Flask
+
 from src.presentation.flask.routes import router
 from src.settings import CONTAINER_PORT
 

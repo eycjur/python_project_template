@@ -15,4 +15,4 @@ def register_post() -> Response:
 
     register_usecase = injector.get(RegisterUsecase)
     register_usecase.execute(Message(user_input))
-    return redirect("/")
+    return redirect("home")

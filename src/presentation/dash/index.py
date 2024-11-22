@@ -1,7 +1,7 @@
 import dash_bootstrap_components as dbc
-
 from dash import Input, Output, dcc, html
 from dash.development.base_component import Component
+
 from src.presentation.dash.app import app
 from src.presentation.dash.pages import error, home, register
 from src.settings import CONTAINER_PORT
@@ -22,9 +22,9 @@ def layout() -> Component:
             html.P("A simple sidebar layout with navigation links", className="lead"),
             dbc.Nav(
                 [
-                    dbc.NavLink("Home", href="/", active="exact"),
-                    dbc.NavLink("投稿", href="/register", active="exact"),
-                    dbc.NavLink("エラー", href="/error", active="exact"),
+                    dbc.NavLink("Home", href="home", active="exact"),
+                    dbc.NavLink("投稿", href="register", active="exact"),
+                    dbc.NavLink("エラー", href="error", active="exact"),
                 ],
                 vertical=True,
                 pills=True,
