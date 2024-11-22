@@ -9,5 +9,7 @@ resource "google_service_account" "main" {
 resource "google_project_iam_member" "main" {
   project = var.common.project_id
   member  = "serviceAccount:${google_service_account.main.email}"
-  role    = var.setting.role
+
+  for_each = toset(var.setting.roles)
+  role     = each.value
 }

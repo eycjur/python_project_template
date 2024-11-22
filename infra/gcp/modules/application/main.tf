@@ -1,13 +1,34 @@
 resource "google_cloud_run_v2_service" "main" {
   name     = var.setting.service_name
   location = var.common.region
-  ingress  = "INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER"
+  ingress  = var.setting.ingress
 
   template {
+    volumes {
+      name = "secret-volume"
+      secret {
+        secret = var.setting.secret_id
+        items {
+          version = "latest"
+          path    = ".env"
+
+        }
+      }
+    }
     containers {
       image = var.setting.container_image
       ports {
         container_port = var.setting.container_port
+      }
+      resources {
+        limits = {
+          cpu    = "1000m"
+          memory = "512Mi"
+        }
+      }
+      volume_mounts {
+        name       = "secret-volume"
+        mount_path = "/secrets"
       }
     }
   }
