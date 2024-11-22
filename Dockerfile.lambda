@@ -1,0 +1,19 @@
+FROM public.ecr.aws/lambda/python:3.12
+
+# poetryのインストール
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+ENV PATH=/root/.local/bin:$PATH
+RUN curl -sSL https://install.python-poetry.org | python - && \
+    poetry config virtualenvs.create false
+
+WORKDIR /var/task
+
+# ライブラリのインストール
+# poetry.lockが存在しないことを許容するため、./poetry.lock*としている
+COPY ./pyproject.toml ./poetry.lock* /var/task/
+
+RUN poetry install --no-root --no-interaction --no-ansi
+
+COPY ./src /var/task/src
+
+CMD ["src.lambda_app.handler"]

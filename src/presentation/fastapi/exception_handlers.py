@@ -1,5 +1,6 @@
 from fastapi import Request, status
 from fastapi.responses import JSONResponse
+
 from src.logger.logging import DefaultLogger
 
 logger = DefaultLogger(__name__)

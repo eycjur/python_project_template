@@ -30,25 +30,11 @@ module "db" {
   setting = local.db
 }
 
-module "ip_restriction" {
-  source = "./modules/ip_restriction"
+module "secret_manager" {
+  source = "./modules/secret_manager"
 
   common  = local.common
-  setting = local.ip_restriction
-}
-
-module "dns" {
-  source = "./modules/dns"
-
-  common  = local.common
-  setting = local.dns
-}
-
-module "load_balancer" {
-  source = "./modules/load_balancer"
-
-  common  = local.common
-  setting = local.load_balancer
+  setting = local.secret_manager
 }
 
 module "monitoring" {
@@ -57,3 +43,24 @@ module "monitoring" {
   common  = local.common
   setting = local.monitoring
 }
+
+# module "ip_restriction" {
+#   source = "./modules/ip_restriction"
+
+#   common  = local.common
+#   setting = local.ip_restriction
+# }
+
+# module "dns" {
+#   source = "./modules/dns"
+
+#   common  = local.common
+#   setting = local.dns
+# }
+
+# module "load_balancer" {
+#   source = "./modules/load_balancer"
+
+#   common  = local.common
+#   setting = local.load_balancer
+# }

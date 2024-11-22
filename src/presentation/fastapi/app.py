@@ -10,6 +10,7 @@ Note:
 from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
+
 from src.presentation.fastapi.controller.error_controller import router as error_router
 from src.presentation.fastapi.controller.history_controller import (
     router as history_router,
@@ -52,7 +53,7 @@ if __name__ == "__main__":
 
     uvicorn.run(
         "src.presentation.fastapi.app:app",
-        host="0.0.0.0",  # nosec
+        host="0.0.0.0",  # nosec  # noqa: S104
         port=CONTAINER_PORT,
         reload=True,
     )

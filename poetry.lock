@@ -104,6 +104,31 @@ tests-mypy = ["mypy (>=1.6)", "pytest-mypy-plugins"]
 tests-no-zope = ["attrs[tests-mypy]", "cloudpickle", "hypothesis", "pympler", "pytest (>=4.3.0)", "pytest-xdist[psutil]"]
 
 [[package]]
+name = "aws-secretsmanager-caching"
+version = "1.1.3"
+description = "Client-side AWS Secrets Manager caching library"
+optional = false
+python-versions = ">3.5"
+files = [
+    {file = "aws_secretsmanager_caching-1.1.3-py3-none-any.whl", hash = "sha256:5dd8588520335ca5cc7f5ae5948e5e85f2f5b58c1341bda0db4acf6399806f78"},
+    {file = "aws_secretsmanager_caching-1.1.3.tar.gz", hash = "sha256:f6d6ec9d43e0dbe4f6d5debdf36b4cb691d15a967b358b2575f5d91974a6c0ff"},
+]
+
+[package.dependencies]
+botocore = "*"
+
+[[package]]
+name = "aws-wsgi"
+version = "0.2.7"
+description = "WSGI adapter for AWS API Gateway/Lambda Proxy Integration"
+optional = false
+python-versions = "*"
+files = [
+    {file = "aws-wsgi-0.2.7.tar.gz", hash = "sha256:eb0b00970e80d96b52c0806ceae2ff98ab96c90f67651765755c5236f9e6e50d"},
+    {file = "aws_wsgi-0.2.7-py2.py3-none-any.whl", hash = "sha256:37e16b6a211f251d9f72ab85018c4127a59dc0fc81263c19f312a6a8333f9908"},
+]
+
+[[package]]
 name = "azure-core"
 version = "1.30.2"
 description = "Microsoft Azure Core Library for Python"
@@ -207,17 +232,17 @@ files = [
 
 [[package]]
 name = "boto3"
-version = "1.34.138"
+version = "1.35.67"
 description = "The AWS SDK for Python"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "boto3-1.34.138-py3-none-any.whl", hash = "sha256:81518aa95fad71279411fb5c94da4b4a554a5d53fc876faca62b7b5c8737f1cb"},
-    {file = "boto3-1.34.138.tar.gz", hash = "sha256:f79c15e33eb7706f197d98d828b193cf0891966682ad3ec5e900f6f9e7362e35"},
+    {file = "boto3-1.35.67-py3-none-any.whl", hash = "sha256:db4d8736ef9b0f1972740d464d77edbdf35cd9dcddf9291c645691920f8fa50d"},
+    {file = "boto3-1.35.67.tar.gz", hash = "sha256:4eb793c45123fbca1b2b152ce0d18272d19126cf89809cd6698bf2dfc66270fb"},
 ]
 
 [package.dependencies]
-botocore = ">=1.34.138,<1.35.0"
+botocore = ">=1.35.67,<1.36.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.10.0,<0.11.0"
 
@@ -226,13 +251,13 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.34.138"
+version = "1.35.67"
 description = "Low-level, data-driven core of boto 3."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "botocore-1.34.138-py3-none-any.whl", hash = "sha256:84e96a954c39a6f09cae4ea95b2ae582b5ae01b5040c92507b60509c9be5377a"},
-    {file = "botocore-1.34.138.tar.gz", hash = "sha256:f558bbea96c4a4abbaeeedc477dabb00902311ba1ca6327974a6819b9f384920"},
+    {file = "botocore-1.35.67-py3-none-any.whl", hash = "sha256:c83983c196b4452dd7f298e68a9a224bc8fd58075b60133532848813826611af"},
+    {file = "botocore-1.35.67.tar.gz", hash = "sha256:d782e02f2949889cf97a140a89cd5e9363d0e4b0153db51faf7fc16305c6e0e1"},
 ]
 
 [package.dependencies]
@@ -241,7 +266,7 @@ python-dateutil = ">=2.1,<3.0.0"
 urllib3 = {version = ">=1.25.4,<2.2.0 || >2.2.0,<3", markers = "python_version >= \"3.10\""}
 
 [package.extras]
-crt = ["awscrt (==0.20.11)"]
+crt = ["awscrt (==0.22.0)"]
 
 [[package]]
 name = "cachetools"
@@ -1725,6 +1750,20 @@ optional = ["IPython (>=7.14.0)", "IPython (>=7.18.0)", "IPython (>=8.12.2)", "I
 optional-strict = ["IPython (==7.14.0)", "IPython (==7.18.0)", "IPython (==8.12.2)", "IPython (==8.14.0)", "rich (==12.3.0)"]
 tests = ["coverage[toml] (>=6.1.1)", "coverage[toml] (>=6.5.0)", "coverage[toml] (>=6.5.0)", "coverage[toml] (>=6.5.0)", "coverage[toml] (>=6.5.0)", "coverage[toml] (>=7.3.0)", "pytest (>=6.2.5)", "pytest (>=7.4.4)", "pytest (>=7.4.4)", "pytest (>=7.4.4)", "pytest (>=7.4.4)", "pytest (>=7.4.4)", "pytest (>=7.4.4)", "pytest (>=7.4.4)", "pytest-cov (>=3.0.0)", "ubelt (>=1.3.4)", "xdoctest (>=1.1.3)"]
 tests-strict = ["coverage[toml] (==6.1.1)", "coverage[toml] (==6.5.0)", "coverage[toml] (==6.5.0)", "coverage[toml] (==6.5.0)", "coverage[toml] (==6.5.0)", "coverage[toml] (==7.3.0)", "pytest (==6.2.5)", "pytest (==7.4.4)", "pytest (==7.4.4)", "pytest (==7.4.4)", "pytest (==7.4.4)", "pytest (==7.4.4)", "pytest (==7.4.4)", "pytest (==7.4.4)", "pytest-cov (==3.0.0)", "ubelt (==1.3.4)", "xdoctest (==1.1.3)"]
+
+[[package]]
+name = "mangum"
+version = "0.19.0"
+description = "AWS Lambda support for ASGI applications"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "mangum-0.19.0-py3-none-any.whl", hash = "sha256:e500b35f495d5e68ac98bc97334896d6101523f2ee2c57ba6a61893b65266e59"},
+    {file = "mangum-0.19.0.tar.gz", hash = "sha256:e388e7c491b7b67970f8234e46fd4a7b21ff87785848f418de08148f71cf0bd6"},
+]
+
+[package.dependencies]
+typing-extensions = "*"
 
 [[package]]
 name = "markdown-it-py"
@@ -3846,4 +3885,4 @@ test = ["big-O", "importlib-resources", "jaraco.functools", "jaraco.itertools", 
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "7c904064e2adf4ad6e8ee8bd088922534b74ac78f29178e09d8700680618c2d6"
+content-hash = "c5794fc9ee3fac907c5a02c87d44198fdf9197bc3035ad9b3c6bfed8d3afe91c"

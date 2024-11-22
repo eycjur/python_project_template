@@ -3,7 +3,7 @@ terraform {
 
   backend "s3" {
     bucket = "eycjur-terraform-state-bucket"
-    key    = "terraform/state/terraform.tfstate"
+    key    = "terraform_apprunner/state/terraform.tfstate"
     region = "ap-northeast-1"
   }
 
