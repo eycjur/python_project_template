@@ -22,6 +22,8 @@ def layout() -> Component:
             html.P("A simple sidebar layout with navigation links", className="lead"),
             dbc.Nav(
                 [
+                    # サブディレクトリでも利用できるように相対パスを利用
+                    # Note: 本来は絶対パスの方が良い
                     dbc.NavLink("Home", href="home", active="exact"),
                     dbc.NavLink("投稿", href="register", active="exact"),
                     dbc.NavLink("エラー", href="error", active="exact"),

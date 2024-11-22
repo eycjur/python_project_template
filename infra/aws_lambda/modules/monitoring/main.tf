@@ -1,7 +1,7 @@
 # SNSで使用するトピックと通知先を作成する
 
-resource "aws_sns_topic" "nortification-email" {
-  name = "nortification-email"
+resource "aws_sns_topic" "notification-email" {
+  name = "notification-email"
 }
 
 
@@ -39,5 +39,5 @@ resource "aws_cloudwatch_metric_alarm" "error_alarm" {
   threshold                 = 1
   alarm_description         = "This metric monitors the error logs"
   insufficient_data_actions = []
-  alarm_actions             = [aws_sns_topic.nortification-email.arn]
+  alarm_actions             = [aws_sns_topic.notification-email.arn]
 }

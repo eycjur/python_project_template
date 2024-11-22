@@ -11,12 +11,13 @@ locals {
   }
 
   application = {
-    repository_name  = local.app_name
-    function_name    = local.app_name
-    lambda_role_arn  = module.iam.role_arn
-    api_gateway_name = join("-", [local.app_name, "api-gateway"])
-    stage_name       = "dev"
-    secret_name      = module.secret_manager.secret_name
+    repository_name            = local.app_name
+    function_name              = local.app_name
+    lambda_role_arn            = module.iam.role_arn
+    api_gateway_name           = join("-", [local.app_name, "api-gateway"])
+    stage_name                 = "dev"
+    secret_name                = module.secret_manager.secret_name
+    api_gateway_log_group_name = "/api-gateway-log"
   }
 
   secret_manager = {

@@ -78,7 +78,7 @@ resource "aws_apigatewayv2_route" "other" {
 }
 
 resource "aws_cloudwatch_log_group" "api_gateway_log" {
-  name = "/api-gateway-log"
+  name = var.setting.api_gateway_log_group_name
 
   retention_in_days = 7
 }
@@ -105,7 +105,6 @@ resource "aws_apigatewayv2_stage" "main" {
   }
 
   default_route_settings {
-    data_trace_enabled       = true
     detailed_metrics_enabled = true
 
     throttling_burst_limit = 500
