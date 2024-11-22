@@ -1,5 +1,6 @@
 from dash import html
 from dash.development.base_component import Component
+
 from src.di import injector
 from src.usecase.error import ErrorUsecase
 
