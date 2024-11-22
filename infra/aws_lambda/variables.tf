@@ -1,8 +1,12 @@
+data "dotenv" "config" {
+  filename = "../../.env"
+}
+
 locals {
   app_name = "python-project-template"
 
   common = {
-    aws_account_id = "389376010567"
+    aws_account_id = data.dotenv.config.env["AWS_ACCOUNT_ID"]
     aws_region     = "ap-northeast-1"
   }
 
@@ -18,6 +22,10 @@ locals {
     stage_name                 = "dev"
     secret_name                = module.secret_manager.secret_name
     api_gateway_log_group_name = "/api-gateway-log"
+  }
+
+  monitoring = {
+    email_address = data.dotenv.config.env["EMAIL_ADDRESS"]
   }
 
   secret_manager = {

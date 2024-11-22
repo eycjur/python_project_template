@@ -109,9 +109,6 @@ make create-infra-aws-apprunner
 1. credentialsをcredentials/credentials_awsとして保存  
    ユーザーアカウントを利用する場合は`cp ~/.aws/credentials credentials/credentials_aws`としてください
 1. `make deploy-aws-apprunner`でApp Runnerにデプロイ
-1. SNSトピックにサブスクリプションを追加
-    - Amazon SNS > 該当トピック > サブスクリプション の画面から、プロトコルはEメール、エンドポイントは通知を受け取るメールアドレスを入力してサブスクリプションを追加
-    - ※メールアドレスをTerraformで管理したくないので、手動で追加する
 
 #### リソースの削除
 
@@ -138,9 +135,6 @@ make create-infra-aws-lambda
 1. credentialsをcredentials/credentials_awsとして保存  
    ユーザーアカウントを利用する場合は`cp ~/.aws/credentials credentials/credentials_aws`としてください
 1. `make deploy-aws-lambda`でLambdaにデプロイ
-1. SNSトピックにサブスクリプションを追加
-    - Amazon SNS > 該当トピック > サブスクリプション の画面から、プロトコルはEメール、エンドポイントは通知を受け取るメールアドレスを入力してサブスクリプションを追加
-    - ※メールアドレスをTerraformで管理したくないので、手動で追加する
 
 #### リソースの削除
 

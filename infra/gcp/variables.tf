@@ -1,8 +1,12 @@
+data "dotenv" "config" {
+  filename = "../../.env"
+}
+
 locals {
   app_name = "python-project-template"
 
   common = {
-    project_id = "arcane-splicer-301208"
+    project_id = data.dotenv.config.env["GCP_PROJECT_ID"]
     region     = "asia-northeast1"
   }
 
@@ -42,6 +46,7 @@ locals {
     alert_policy_name      = "Error Alert Policy"
     condition_display_name = "Cloud Run Error"
     filter                 = "resource.type=\"cloud_run_revision\" AND severity=\"ERROR\""
+    email_address          = data.dotenv.config.env["EMAIL_ADDRESS"]
   }
 
   secret_manager = {
@@ -56,7 +61,7 @@ locals {
 
   # ip_restriction = {
   #   name          = "ip-restriction"
-  #   src_ip_ranges = ["106.73.131.161"]
+  #   src_ip_ranges = [data.dotenv.config.env["IP_ADDRESS"]]
   # }
 
   # load_balancer = {

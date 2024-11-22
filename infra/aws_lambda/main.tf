@@ -1,7 +1,3 @@
-data "dotenv" "config" {
-  filename = "../../.env"
-}
-
 module "iam" {
   source = "./modules/iam"
 }
@@ -24,7 +20,8 @@ module "db" {
 module "monitoring" {
   source = "./modules/monitoring"
 
-  common = local.common
+  common  = local.common
+  setting = local.monitoring
 }
 
 module "secret_manager" {

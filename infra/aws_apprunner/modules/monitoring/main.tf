@@ -4,6 +4,12 @@ resource "aws_sns_topic" "notification-email" {
   name = "notification-email"
 }
 
+resource "aws_sns_topic_subscription" "main" {
+  topic_arn = aws_sns_topic.notification-email.arn
+  protocol  = "email"
+  endpoint  = var.setting.email_address
+}
+
 
 # CloudWatchでログを監視するためのリソースを定義する
 
