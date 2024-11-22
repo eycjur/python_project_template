@@ -56,22 +56,97 @@ FastAPIを利用する場合は、以下の手順で行ってください。
 
 ### GCP
 
-Cloud Runへのデプロイを実施します
+#### 前準備
 
-1. サービスアカウントを作成し、そのcredentialファイルをcredentials/credential_gcp.jsonとして保存
-2. FirestoreのDBとCollectionを作成
-3. `make deploy-gcp`でCloud Runにデプロイ
-4. (オプション)Cloud Monitoringのアラートから通知チャンネルを作成
-5. (オプション)Cloud Loggingからアラートを設定
+1. Terraform State用のGCSバケット作成
+    - Cloud Storage > バケット の画面から、terraform-state保存用のGCSバケット（ex. `<app_name>-terraform-state-bucket`）を作成  
+        保存場所やストレージクラスは任意、公開アクセスの防止はオンを選択
 
-### AWS
+#### Terraformコマンドの実行
 
-App Runnerへのデプロイを実施します
+```bash
+make create-infra-gcp
+```
+
+#### 後処理
+
+1. サービスアカウントキーの発行
+    - IAMと管理 > サービスアカウント > 作成したサービスアカウント > キー の画面から、 鍵を追加 > 新しい鍵の作成 > JSON > 作成 で鍵を作成してダウンロード
+    - credentials/credential_gcp.jsonとして保存
+1. ドメインの発行
+    - Cloud Domains > ドメインを登録 からドメインを発行
+    - DNSはterraformで作成したCloud DNSのゾーンを指定
+1. SSL証明書のプロビジョニング
+    - セキュリティ > Certificate Manager > 従来の証明書 の画面からステータスが完了になるまで待つ
+1. makeコマンドでデプロイ
+    - `make deploy-gcp`コマンドを実行すると、アプリケーションのデプロイが行われます
+1. 通知チャンネルの作成
+    - Monitoring > アラート > EDIT NOTIFICATION CHANNELS から、Emailの通知チャンネルを作成
+    - アラートポリシーを編集し、作成した通知チャンネルを追加
+
+#### リソースの削除
+
+```bash
+make destroy-gcp
+```
+
+### AWS App Runner
+
+#### 前準備
+
+1. Terraform State用のS3バケット作成
+    - Amazon S3 > バケットを作成 の画面から、terraform-state保存用のS3バケット（ex. `<app_name>-terraform-state-bucket`）を作成  
+        バケットタイプは汎用、ACLは無効、パブリックアクセスはブロック、バージョニングは無効、暗号化はS3マネージドキーを選択
+
+#### Terraformコマンドの実行
+
+```bash
+make create-infra-aws-apprunner
+```
+
+#### 後処理
 
 1. credentialsをcredentials/credentials_awsとして保存  
-  ユーザーアカウントを利用する場合は`cp ~/.aws/credentials credentials/credentials_aws`としてください
-2. `make deploy-aws-infra`で、App Runnerに必要なリソースを作成・更新
-3. `make deploy-aws`でApp Runnerにデプロイ
+   ユーザーアカウントを利用する場合は`cp ~/.aws/credentials credentials/credentials_aws`としてください
+1. `make deploy-aws-apprunner`でApp Runnerにデプロイ
+1. SNSトピックにサブスクリプションを追加
+    - Amazon SNS > 該当トピック > サブスクリプション の画面から、プロトコルはEメール、エンドポイントは通知を受け取るメールアドレスを入力してサブスクリプションを追加
+    - ※メールアドレスをTerraformで管理したくないので、手動で追加する
+
+#### リソースの削除
+
+```bash
+make destroy-aws-apprunner
+```
+
+### AWS Lambda
+
+#### 前準備
+
+1. Terraform State用のS3バケット作成
+    - Amazon S3 > バケットを作成 の画面から、terraform-state保存用のS3バケット（ex. `<app_name>-terraform-state-bucket`）を作成  
+        バケットタイプは汎用、ACLは無効、パブリックアクセスはブロック、バージョニングは無効、暗号化はS3マネージドキーを選択
+
+#### Terraformコマンドの実行
+    
+```bash
+make create-infra-aws-lambda
+```
+
+#### 後処理
+
+1. credentialsをcredentials/credentials_awsとして保存  
+   ユーザーアカウントを利用する場合は`cp ~/.aws/credentials credentials/credentials_aws`としてください
+1. `make deploy-aws-lambda`でLambdaにデプロイ
+1. SNSトピックにサブスクリプションを追加
+    - Amazon SNS > 該当トピック > サブスクリプション の画面から、プロトコルはEメール、エンドポイントは通知を受け取るメールアドレスを入力してサブスクリプションを追加
+    - ※メールアドレスをTerraformで管理したくないので、手動で追加する
+
+#### リソースの削除
+
+```bash
+make destroy-aws-lambda
+```
 
 ### Azure
 
