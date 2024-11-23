@@ -1,4 +1,9 @@
 # lambdaの関数とECRリポジトリとAPI Gatewayを作成するためのモジュール
+#
+# aws_api_gateway_rest_apiは/stage/resoureceがパスになるが/resourceでルーティングされる謎仕様
+# aws_apigatewayv2_apiはHTTP APIの未対応で、WAFと併用できない
+# cf. https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/http-api-vs-rest.html
+
 
 resource "aws_ecr_repository" "main" {
   name = var.setting.repository_name
@@ -25,7 +30,7 @@ resource "aws_lambda_function" "main" {
   function_name = var.setting.function_name
   package_type  = "Image"
   image_uri     = "${aws_ecr_repository.main.repository_url}:latest"
-  role          = var.setting.lambda_role_arn
+  role          = var.setting.role_arn
   memory_size   = 512
   timeout       = 600
 
@@ -92,6 +97,7 @@ resource "aws_apigatewayv2_stage" "main" {
     destination_arn = aws_cloudwatch_log_group.api_gateway_log.arn
     format = jsonencode({
       requestId               = "$context.requestId"
+      extendedRequestId       = "$context.extendedRequestId",
       sourceIp                = "$context.identity.sourceIp"
       requestTime             = "$context.requestTime"
       protocol                = "$context.protocol"
@@ -101,6 +107,9 @@ resource "aws_apigatewayv2_stage" "main" {
       status                  = "$context.status"
       responseLength          = "$context.responseLength"
       integrationErrorMessage = "$context.integrationErrorMessage"
+      errorMessage            = "$context.error.message",
+      errorResponseType       = "$context.error.responseType",
+      integrationError        = "$context.integration.error",
     })
   }
 
