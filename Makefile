@@ -139,6 +139,12 @@ deploy-aws-lambda:
 		docker login --username AWS --password-stdin ${ECR_URL}
 	docker buildx build \
 		--platform linux/amd64 \
+		--tag $(CONTAINER_NAME):latest \
+		--provenance=false \
+		.
+	docker buildx build \
+		--build-arg BASE_IMAGE=$(CONTAINER_NAME) \
+		--platform linux/amd64 \
 		--tag ${ECR_URL}/$(CONTAINER_NAME):latest \
 		--push \
 		--provenance=false \
@@ -147,6 +153,8 @@ deploy-aws-lambda:
 	aws lambda update-function-code \
 		--function-name $(CONTAINER_NAME) \
 		--image-uri ${ECR_URL}/$(CONTAINER_NAME):latest
+	# ローカルのイメージを参照できない場合は、以下のコマンドを実行する
+	# docker context use default
 
 # AWSのインフラ削除(Lambda)
 .PHONY: destroy-aws-lambda
