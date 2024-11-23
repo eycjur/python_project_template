@@ -91,7 +91,7 @@ deploy-gcp:
 # GCPのインフラ削除
 .PHONY: destroy-gcp
 destroy-gcp:
-	terraform -chdir=infra/gcp destroy --parallelism=30
+	-terraform -chdir=infra/gcp destroy --parallelism=30
 	# 保護されたDBを削除
 	gcloud alpha firestore databases update --database='$(GCP_FIRESTORE_DB_NAME)' --no-delete-protection
 	gcloud alpha firestore databases delete --database='$(GCP_FIRESTORE_DB_NAME)'
@@ -108,6 +108,10 @@ create-infra-aws-apprunner:
 # AWSへのデプロイ(AppRunner)
 .PHONY: deploy-aws-apprunner
 deploy-aws-apprunner:
+	# 改行を含む文字列をシークレットマネージャーに登録するために、\\nに置き換える
+	aws secretsmanager put-secret-value \
+		--secret-id $(AWS_SECRET_MANAGER_SECRET_NAME) \
+		--secret-string "$(shell cat .env | sed 's/"/\\"/g' | sed -e ':L' -e 'N' -e '$$!bL' -e 's/\n/\\n/g')"
 	aws ecr get-login-password --region $(AWS_REGION) | \
 		docker login --username AWS --password-stdin ${ECR_URL}
 	docker buildx build \
@@ -119,8 +123,9 @@ deploy-aws-apprunner:
 # AWSのインフラ削除(AppRunner)
 .PHONY: destroy-aws-apprunner
 destroy-aws-apprunner:
-	terraform -chdir=infra/aws_apprunner destroy --parallelism=30
-	aws ecr delete-repository --repository-name $(CONTAINER_NAME) --force
+	-terraform -chdir=infra/aws_apprunner destroy --parallelism=30
+	-aws ecr delete-repository --repository-name $(CONTAINER_NAME) --force
+	-aws secretsmanager delete-secret --secret-id $(AWS_SECRET_MANAGER_SECRET_NAME) --force-delete-without-recovery
 
 # AWSのインフラ作成(Lambda)
 .PHONY: create-infra-aws-lambda
@@ -159,8 +164,9 @@ deploy-aws-lambda:
 # AWSのインフラ削除(Lambda)
 .PHONY: destroy-aws-lambda
 destroy-aws-lambda:
-	terraform -chdir=infra/aws_lambda destroy --parallelism=30
-	aws ecr delete-repository --repository-name $(CONTAINER_NAME) --force
+	-terraform -chdir=infra/aws_lambda destroy --parallelism=30
+	-aws ecr delete-repository --repository-name $(CONTAINER_NAME) --force
+	-aws secretsmanager delete-secret --secret-id $(AWS_SECRET_MANAGER_SECRET_NAME) --force-delete-without-recovery
 
 # Azureへのデプロイ
 .PHONY: deploy-azure

@@ -17,6 +17,12 @@ resource "null_resource" "tmp_image" {
       aws ecr get-login-password --region ${var.common.aws_region} | docker login --username AWS --password-stdin ${var.common.aws_account_id}.dkr.ecr.${var.common.aws_region}.amazonaws.com
       docker buildx build \
         --platform linux/amd64 \
+        --tag ${var.setting.repository_name}:latest \
+        --provenance=false \
+        ../../.
+      docker buildx build \
+    		--build-arg BASE_IMAGE=${var.setting.repository_name} \
+        --platform linux/amd64 \
         --tag ${var.common.aws_account_id}.dkr.ecr.${var.common.aws_region}.amazonaws.com/${var.setting.repository_name}:latest \
         --push \
         --provenance=false \

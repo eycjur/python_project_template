@@ -7,7 +7,6 @@ module "application" {
 
   common  = local.common
   setting = local.application
-  env     = data.dotenv.config.env
 }
 
 module "db" {
@@ -22,4 +21,11 @@ module "monitoring" {
 
   common  = local.common
   setting = local.monitoring
+}
+
+module "secret_manager" {
+  source = "./modules/secret_manager"
+
+  common  = local.common
+  setting = local.secret_manager
 }

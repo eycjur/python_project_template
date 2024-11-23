@@ -13,3 +13,7 @@ output "AWS_REGION" {
 output "AWS_DYNAMODB_TABLE_NAME_HISTORIES" {
   value = local.db.table_name_histories
 }
+
+output "AWS_SECRET_MANAGER_SECRET_NAME" {
+  value = module.secret_manager.secret_name
+}
