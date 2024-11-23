@@ -22,6 +22,7 @@ locals {
     stage_name                 = "dev"
     secret_name                = module.secret_manager.secret_name
     api_gateway_log_group_name = "/api-gateway-log"
+    env                        = data.dotenv.config.env
   }
 
   ip_restriction = {

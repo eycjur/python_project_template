@@ -31,6 +31,10 @@ def create_app() -> FastAPI:
     app.add_exception_handler(Exception, exception_handler)
     app.add_exception_handler(RequestValidationError, validation_exception_handler)
 
+    @app.get("/")
+    async def health_check() -> dict[str, str]:
+        return {"message": "success"}
+
     app.include_router(register_router)
     app.include_router(history_router)
     app.include_router(error_router)

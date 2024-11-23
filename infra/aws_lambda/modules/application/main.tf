@@ -37,6 +37,17 @@ resource "aws_lambda_function" "main" {
   environment {
     variables = {
       AWS_SECRET_MANAGER_SECRET_NAME = var.setting.secret_name
+      CONTAINER_PORT                 = var.setting.env["CONTAINER_PORT"]
+      # Lambda Web Adapter用の環境変数を設定
+      # https://github.com/awslabs/aws-lambda-web-adapter/tree/main?tab=readme-ov-file#configurations
+      # トラフィックが送られる先のポート
+      AWS_LWA_PORT = var.setting.env["CONTAINER_PORT"]
+      # ヘルスチェックのパス
+      AWS_LWA_READINESS_CHECK_PATH = "/${var.setting.stage_name}/"
+      # ルーティングに削除されるプレフィックス
+      AWS_LWA_REMOVE_BASE_PATH = "/${var.setting.stage_name}"
+      # Dash用の静的ファイルのルーティングパス
+      DASH_REQUESTS_PATHNAME_PREFIX = "/${var.setting.stage_name}/"
     }
   }
 
