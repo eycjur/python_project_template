@@ -1,6 +1,68 @@
 # Python Project Template
 pythonでプロジェクトを作成する際のテンプレートです。
 
+## About
+
+本リポジトリは、PythonでWebアプリケーションを開発する際のテンプレートです。
+
+サンプルとして、メッセージ管理アプリケーションを実装しています。
+
+### ユースケース図
+
+![ユースケース図](docs/usecase/usecase.png)
+
+### 機能要件
+
+| 機能 | 詳細 | ユースケース |
+| --- | --- | --- |
+| メッセージの登録 | メッセージを登録する | メッセージ登録 |
+| メッセージの閲覧 | メッセージを閲覧する | メッセージ閲覧 |
+
+#### 画面遷移図
+
+![画面遷移図](docs/requirements/screen_transition.png)
+
+#### API仕様(FastAPI)
+
+| メソッド | パス | 説明 |
+| --- | --- | --- |
+| GET | /messages | メッセージ一覧を取得 |
+| POST | /messages | メッセージを登録 |
+
+## Features
+
+以下の機能を提供しています。
+
+- UI
+    - CLI(typer)
+    - API(FastAPI)
+    - サーバーサイドレンダリング(Flask)
+    - UIフレームワーク(streamlit, dash)
+- データベース
+    - SQLite
+    - Firestore
+    - DynamoDB
+    - CosmosDB
+- クラウド
+    - GCP(Cloud Run)
+    - AWS(App Runner, Lambda)
+    - Azure(Container Apps)
+- CI/CD
+    - GitHub Actions
+- テスト
+    - unit test
+    - e2e test
+- ログ
+- モニタリング
+
+## Architecture
+
+Onion Architectureを採用しています。
+
+UIフレームワークによって詳細は異なりますが、FastAPIを利用する場合のアーキテクチャ図を以下に示します。
+
+![アーキテクチャ図(FastAPI)](docs/architecture/architecture_fastapi.png)
+
 ## Initialize Project
 
 プロジェクトを初期化する際は、以下の手順で行ってください。
