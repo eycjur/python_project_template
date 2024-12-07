@@ -1,19 +1,11 @@
 from fastapi import APIRouter
 from injector import inject
-from pydantic import BaseModel
 
 from src.di import injector
+from src.presentation.fastapi.view_model.history_view_model import HistoryResponse
 from src.usecase.history import HistoryUsecase
 
 router = APIRouter()
-
-
-class MessageResponse(BaseModel):
-    content: str
-
-
-class HistoryResponse(BaseModel):
-    messages: list[MessageResponse]
 
 
 class HistoryController:
@@ -23,12 +15,10 @@ class HistoryController:
 
     def execute(self) -> HistoryResponse:
         messages = self._history_usecase.execute()
-        return HistoryResponse(
-            messages=[MessageResponse(content=m.content) for m in messages]
-        )
+        return HistoryResponse.from_messages(messages)
 
 
-@router.get("/history")
+@router.get("/messages")
 def get_history() -> HistoryResponse:
     controller = injector.get(HistoryController)
     return controller.execute()

@@ -39,7 +39,3 @@ def update_output(_: int, user_input: str) -> Component:
     register_usecase = injector.get(RegisterUsecase)
     result = register_usecase.execute(Message(user_input))
     return html.Div(result)
-
-
-if __name__ == "__main__":
-    app.run_server(debug=True)
