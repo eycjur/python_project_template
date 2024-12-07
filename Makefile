@@ -14,6 +14,7 @@ include .env
 # プロジェクトのミニマイズ
 .PHONY: minimize
 minimize:
+	rm -rf docs/
 	rm -rf infra/
 	rm -rf credentials/
 	rm -rf .github/
