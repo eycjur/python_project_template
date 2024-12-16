@@ -1,1 +1,2 @@
 variable "common" {}
+variable "setting" {}

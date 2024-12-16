@@ -1,42 +1,42 @@
 const API_BASE_URL = "http://localhost:8100"; // LOCAL_PORTに合わせて変更。
 
-async function register() {
-    const text = document.getElementById("registerText").value;
+async function postMessage() {
+    const content = document.getElementById("postMessageText").value;
 
     try {
-        const response = await fetch(`${API_BASE_URL}/register`, {
+        const response = await fetch(`${API_BASE_URL}/messages`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ text: text }),
+            body: JSON.stringify({ content: content }),
         });
 
         if (response.ok) {
             const data = await response.json();
-            alert(`Register successful: ${data.text}`);
+            alert(`Post message successful: ${data.text}`);
         } else {
             const errorData = await response.json();
-            alert(`Register failed: ${errorData.detail || 'Unknown error'}`);
+            alert(`Post message failed: ${errorData.detail || 'Unknown error'}`);
         }
     } catch (error) {
-        console.error("Error during registration:", error);
+        console.error("Error during posting message:", error);
     }
 }
 
-async function getHistory() {
+async function getMessages() {
     try {
-        const response = await fetch(`${API_BASE_URL}/history`);
+        const response = await fetch(`${API_BASE_URL}/messages`);
 
         if (response.ok) {
             const data = await response.json();
-            const historyResult = document.getElementById("historyResult");
-            historyResult.textContent = JSON.stringify(data.messages, null, 2);
+            const getMessagesResult = document.getElementById("getMessagesResult");
+            getMessagesResult.textContent = JSON.stringify(data.messages, null, 2);
         } else {
-            alert("Failed to fetch history.");
+            alert("Failed to fetch messages.");
         }
     } catch (error) {
-        console.error("Error fetching history:", error);
+        console.error("Error fetching messages:", error);
     }
 }
 

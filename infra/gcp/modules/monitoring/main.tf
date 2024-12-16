@@ -6,6 +6,8 @@ resource "google_monitoring_alert_policy" "main" {
     content = "Cloud Runでエラーが発生しました"
   }
 
+  notification_channels = [google_monitoring_notification_channel.main.name]
+
   conditions {
     display_name = var.setting.condition_display_name
     condition_matched_log {
@@ -19,9 +21,11 @@ resource "google_monitoring_alert_policy" "main" {
     }
     auto_close = "604800s" # 7 days
   }
+}
 
-  lifecycle {
-    # メアドはterraformで管理しないので、手動で追加する
-    ignore_changes = [notification_channels]
+resource "google_monitoring_notification_channel" "main" {
+  type = "email"
+  labels = {
+    email_address = var.setting.email_address
   }
 }

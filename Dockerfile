@@ -57,4 +57,4 @@ CMD ["sh", "-c", "gunicorn --bind 0.0.0.0:${CONTAINER_PORT} --log-file - --acces
 # CMD ["sh", "-c", "gunicorn --bind 0.0.0.0:${CONTAINER_PORT} --log-file - --access-logfile - --workers 1 --threads 4 --timeout 300 src.presentation.flask.app:app"]
 
 # # Streamlit
-# CMD ["sh", "-c", "python -m streamlit run src/presentation/streamlit/home.py --server.port ${CONTAINER_PORT}"]
+# CMD ["sh", "-c", "python -m streamlit run src/presentation/streamlit/index.py --server.port ${CONTAINER_PORT}"]

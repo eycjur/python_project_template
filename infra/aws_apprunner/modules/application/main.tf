@@ -33,8 +33,11 @@ resource "aws_apprunner_service" "app_runner" {
     }
     image_repository {
       image_configuration {
-        port                          = var.setting.container_port
-        runtime_environment_variables = var.env
+        port = var.setting.container_port
+        runtime_environment_variables = {
+          CONTAINER_PORT                 = var.setting.container_port
+          AWS_SECRET_MANAGER_SECRET_NAME = var.setting.secret_name
+        }
       }
       image_identifier      = "${aws_ecr_repository.ecr.repository_url}:latest"
       image_repository_type = "ECR"

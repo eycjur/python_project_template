@@ -14,14 +14,16 @@ Attention:
 """
 
 import typer
+from injector import Injector
 
-from src.di import injector
+from src.di import get_di_module
 from src.domain.message.message import Message
 from src.usecase.error import ErrorUsecase
 from src.usecase.history import HistoryUsecase
 from src.usecase.register import RegisterUsecase
 
 app = typer.Typer()
+injector = Injector(get_di_module())
 
 
 @app.command()

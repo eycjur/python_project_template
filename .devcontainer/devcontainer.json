@@ -33,7 +33,8 @@
         "janisdd.vscode-edit-csv",
         // Git関連
         "mhutchie.git-graph",
-        "ritwickdey.liveserver"
+        "ritwickdey.liveserver",
+        "hashicorp.terraform"
       ]
     }
   }

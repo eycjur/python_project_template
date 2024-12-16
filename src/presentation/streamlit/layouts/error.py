@@ -1,6 +1,6 @@
 import streamlit as st
 
-from src.di import injector
+from src.presentation.streamlit.layouts.injector import injector
 from src.usecase.error import ErrorUsecase
 
 

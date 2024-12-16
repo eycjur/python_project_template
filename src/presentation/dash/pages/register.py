@@ -1,9 +1,9 @@
 from dash import Input, Output, State, dcc, html
 from dash.development.base_component import Component
 
-from src.di import injector
 from src.domain.message.message import Message
 from src.presentation.dash.app import app
+from src.presentation.dash.injector import injector
 from src.usecase.register import RegisterUsecase
 
 
@@ -39,7 +39,3 @@ def update_output(_: int, user_input: str) -> Component:
     register_usecase = injector.get(RegisterUsecase)
     result = register_usecase.execute(Message(user_input))
     return html.Div(result)
-
-
-if __name__ == "__main__":
-    app.run_server(debug=True)

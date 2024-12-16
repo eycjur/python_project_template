@@ -1,20 +1,16 @@
-from fastapi import APIRouter
-from injector import inject
-from pydantic import BaseModel
+from typing import Annotated
 
-from src.di import injector
-from src.domain.message.message import Message
+from fastapi import APIRouter, Depends
+from injector import Injector, inject
+
+from src.presentation.fastapi.controller.get_injector import get_injector
+from src.presentation.fastapi.view_model.register_view_model import (
+    RegisterRequest,
+    RegisterResponse,
+)
 from src.usecase.register import RegisterUsecase
 
 router = APIRouter()
-
-
-class RegisterRequest(BaseModel):
-    text: str
-
-
-class RegisterResponse(BaseModel):
-    text: str
 
 
 class RegisterController:
@@ -23,11 +19,13 @@ class RegisterController:
         self._register_usecase = register_usecase
 
     def execute(self, request: RegisterRequest) -> RegisterResponse:
-        result = self._register_usecase.execute(Message(request.text))
+        result = self._register_usecase.execute(request.to_message())
         return RegisterResponse(text=result)
 
 
-@router.post("/register")
-def register(request: RegisterRequest) -> RegisterResponse:
+@router.post("/messages")
+def register(
+    request: RegisterRequest, injector: Annotated[Injector, Depends(get_injector)]
+) -> RegisterResponse:
     controller = injector.get(RegisterController)
     return controller.execute(request)

@@ -1,7 +1,3 @@
-data "dotenv" "config" {
-  filename = "../../.env"
-}
-
 module "iam" {
   source = "./modules/iam"
 }
@@ -14,6 +10,14 @@ module "application" {
   env     = data.dotenv.config.env
 }
 
+# HTTP APIでは利用できないためコメントアウト
+# module "ip_restriction" {
+#   source = "./modules/ip_restriction"
+
+#   common  = local.common
+#   setting = local.ip_restriction
+# }
+
 module "db" {
   source = "./modules/db"
 
@@ -24,7 +28,8 @@ module "db" {
 module "monitoring" {
   source = "./modules/monitoring"
 
-  common = local.common
+  common  = local.common
+  setting = local.monitoring
 }
 
 module "secret_manager" {

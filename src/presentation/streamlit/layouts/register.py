@@ -1,7 +1,7 @@
 import streamlit as st
 
-from src.di import injector
 from src.domain.message.message import Message
+from src.presentation.streamlit.layouts.injector import injector
 from src.usecase.register import RegisterUsecase
 
 
