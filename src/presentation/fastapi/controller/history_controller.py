@@ -1,7 +1,9 @@
-from fastapi import APIRouter
-from injector import inject
+from typing import Annotated
 
-from src.di import injector
+from fastapi import APIRouter, Depends
+from injector import Injector, inject
+
+from src.presentation.fastapi.controller.get_injector import get_injector
 from src.presentation.fastapi.view_model.history_view_model import HistoryResponse
 from src.usecase.history import HistoryUsecase
 
@@ -19,6 +21,8 @@ class HistoryController:
 
 
 @router.get("/messages")
-def get_history() -> HistoryResponse:
+def get_history(
+    injector: Annotated[Injector, Depends(get_injector)],
+) -> HistoryResponse:
     controller = injector.get(HistoryController)
     return controller.execute()

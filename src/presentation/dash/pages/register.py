@@ -1,9 +1,9 @@
 from dash import Input, Output, State, dcc, html
 from dash.development.base_component import Component
 
-from src.di import injector
 from src.domain.message.message import Message
 from src.presentation.dash.app import app
+from src.presentation.dash.injector import injector
 from src.usecase.register import RegisterUsecase
 
 

@@ -10,7 +10,7 @@ logger = DefaultLogger(__name__)
 
 
 class SQLiteMessageRepository(IMessageRepository):
-    def __init__(self, db_file: Path) -> None:
+    def __init__(self, db_file: Path | str) -> None:
         self._conn = sqlite3.connect(db_file)
         self._create_table()
 

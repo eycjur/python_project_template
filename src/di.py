@@ -2,7 +2,7 @@
 
 from typing import Any, Optional
 
-from injector import Injector, Module, provider, singleton
+from injector import Module, provider, singleton
 
 from src.domain.message.message_repository import IMessageRepository
 from src.infrastructure.repository.message.aws_message_repository import (
@@ -66,6 +66,17 @@ class LocalModule(CommonModule):
         return SQLiteMessageRepository(BASE_DIR / "db" / "db.sqlite3")
 
 
+class TestModule(CommonModule):
+    def configure(self, binder: Any) -> None:
+        super().configure(binder)
+        binder.bind(IMessageRepository, to=self.provide_message_repository)
+
+    @provider
+    @singleton
+    def provide_message_repository(self) -> IMessageRepository:
+        return SQLiteMessageRepository(":memory:")
+
+
 class GCPModule(CommonModule):
     def configure(self, binder: Any) -> None:
         super().configure(binder)
@@ -122,6 +133,3 @@ def get_di_module(
             return AzureModule()
         case _:
             raise ValueError("Invalid cloud type")
-
-
-injector = Injector(get_di_module())

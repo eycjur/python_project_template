@@ -4,10 +4,10 @@ from src.domain.message.message import Message
 
 
 class RegisterRequest(BaseModel):
-    text: str
+    content: str
 
     def to_message(self) -> Message:
-        return Message(self.text)
+        return Message(self.content)
 
 
 class RegisterResponse(BaseModel):

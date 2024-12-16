@@ -1,7 +1,7 @@
 const API_BASE_URL = "http://localhost:8100"; // LOCAL_PORTに合わせて変更。
 
 async function postMessage() {
-    const text = document.getElementById("postMessageText").value;
+    const content = document.getElementById("postMessageText").value;
 
     try {
         const response = await fetch(`${API_BASE_URL}/messages`, {
@@ -9,7 +9,7 @@ async function postMessage() {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ text: text }),
+            body: JSON.stringify({ content: content }),
         });
 
         if (response.ok) {

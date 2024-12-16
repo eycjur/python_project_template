@@ -1,16 +1,16 @@
 from flask import redirect, render_template, request
+from injector import Injector
 from werkzeug import Response
 
-from src.di import injector
 from src.domain.message.message import Message
 from src.usecase.register import RegisterUsecase
 
 
-def register_get() -> str:
+def register_get(injector: Injector) -> str:
     return render_template("register.html")
 
 
-def register_post() -> Response:
+def register_post(injector: Injector) -> Response:
     user_input = request.form["user_input"]
 
     register_usecase = injector.get(RegisterUsecase)

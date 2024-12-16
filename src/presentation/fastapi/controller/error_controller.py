@@ -1,7 +1,9 @@
-from fastapi import APIRouter
-from injector import inject
+from typing import Annotated
 
-from src.di import injector
+from fastapi import APIRouter, Depends
+from injector import Injector, inject
+
+from src.presentation.fastapi.controller.get_injector import get_injector
 from src.presentation.fastapi.view_model.error_view_model import ErrorResponse
 from src.usecase.error import ErrorUsecase
 
@@ -19,6 +21,6 @@ class ErrorController:
 
 
 @router.get("/error")
-def get_error() -> ErrorResponse:
+def get_error(injector: Annotated[Injector, Depends(get_injector)]) -> ErrorResponse:
     controller = injector.get(ErrorController)
     return controller.execute()
