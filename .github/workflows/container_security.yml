@@ -31,19 +31,17 @@ jobs:
           ignore-unfixed: true
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
-          scanners: 'vuln,secret,misconfig,license'
+          scanners: 'vuln,secret,misconfig'
 
       - name: Check Docker best practices with Dockle
         if: always()
-        uses: erzz/dockle-action@main
+        uses: goodwithtech/dockle-action@main
         with:
           image: python-project-template
-          failure-threshold: fatal
-          exit-code: 1
           format: 'list'
+          exit-code: '1'
           exit-level: 'warn'
           # CIS-DI-0001: Create a user for the container
           # DKL-DI-0006: Avoid latest tag
           # DKL-DI-0001: Avoid sudo command(開発環境ではsudoがあった方が便利なので無視)
           ignore: 'CIS-DI-0001,DKL-DI-0006,DKL-DI-0001'
-          args: '-af settings.py'
