@@ -1,7 +1,8 @@
 # ECRリポジトリの作成とApp Runnerのアプリケーション構築を行うためのモジュール
 
 resource "aws_ecr_repository" "ecr" {
-  name                 = var.setting.container_name
+  name = var.setting.container_name
+  #trivy:ignore:AVD-AWS-0031  # latestを使いまわしたい
   image_tag_mutability = "MUTABLE"
 
   image_scanning_configuration {

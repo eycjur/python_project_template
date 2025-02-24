@@ -30,6 +30,13 @@ minimize:
 	rm -rf .editorconfig .gcloudignore LICENSE
 
 
+## Pre-commit関連のコマンド
+# pre-commitの実行（全てのファイル）
+.PHONY: pre-commit-run-all
+pre-commit-run-all:
+	pre-commit run --all-files
+
+
 ## Python関連のコマンド
 # テストコードの実行
 .PHONY: test
@@ -53,9 +60,13 @@ mypy:
 
 ## Terraform関連のコマンド
 # terraformのフォーマット
-.PHONY: fmt-terraform
-fmt-terraform:
+.PHONY: terraform-fmt
+terraform-fmt:
 	terraform fmt -recursive
+
+.PHONY: tflint
+tflint:
+	tflint --recursive --config=$(pwd)/.tflint.hcl
 
 ## デプロイ
 # GCPのインフラ作成

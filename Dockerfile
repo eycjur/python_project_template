@@ -1,6 +1,7 @@
 # Note: 可読性を重視した書き方をしているため、最適化はしていません
 FROM python:3.12-slim-bookworm
 
+# hadolint ignore=DL3008
 RUN apt-get update && \
     apt-get install --no-install-recommends -y \
         curl \

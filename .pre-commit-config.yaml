@@ -9,7 +9,6 @@ repos:
       - id: check-toml
       - id: check-yaml
       - id: detect-private-key
-      - id: detect-aws-credentials
       - id: no-commit-to-branch
         args: ["--branch", "main"]
 
@@ -17,19 +16,6 @@ repos:
     rev: 5357e18
     hooks:
       - id: git-secrets
-
-  - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.88.4
-    hooks:
-      - id: terraform_fmt
-      - id: terraform_tflint
-        args:
-          - --args=--config=.tflint.hcl
-          - --args=--call-module-type=all
-      # - id: terraform_trivy
-      - id: terraform_validate
-      # - id: terrascan
-      # - id: terraform_checkov
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.2.1
@@ -51,3 +37,49 @@ repos:
     rev: 'v1.90.0'
     hooks:
       - id: semgrep-ci
+
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: v1.88.4
+    hooks:
+      - id: terraform_fmt
+        args:
+          - --args=-diff
+      - id: terraform_tflint
+        args:
+          - --args=--config=__GIT_WORKING_DIR__/.tflint.hcl
+          - --args=--fix
+      - id: terraform_trivy
+        args:
+          - --args=--severity=HIGH,CRITICAL
+          - --hook-config=--parallelism-ci-cpu-cores=1
+      # - id: terraform_validate  # 遅い
+      # # 重大度での絞り込みにはAPI KEYが必要
+      # - id: terraform_checkov
+      #   args:
+      #     - "--args=--quiet"
+      #     - "--args=--check MEDIUM"
+
+  - repo: https://github.com/terraform-docs/terraform-docs
+    rev: v0.17.0
+    hooks:
+      - id: terraform-docs-go
+        args: ["markdown", "--output-file=README.md", "infra/aws_lambda"]
+      - id: terraform-docs-go
+        args: ["markdown", "--output-file=README.md", "infra/aws_apprunner"]
+      - id: terraform-docs-go
+        args: ["markdown", "--output-file=README.md", "infra/gcp"]
+
+  - repo: local
+    hooks:
+      - id: hadolint
+        name: hadolint
+        entry: hadolint
+        args: ["Dockerfile"]
+        language: system
+        files: ^Dockerfile$
+      - id: hadolint
+        name: hadolint
+        entry: hadolint
+        args: ["Dockerfile.lambda"]
+        language: system
+        files: ^Dockerfile.lambda$
