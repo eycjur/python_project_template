@@ -17,6 +17,7 @@ from src.infrastructure.repository.message.gcp_message_repository import (
 from src.infrastructure.repository.message.sqlite_message_repository import (
     SQLiteMessageRepository,
 )
+from src.logger.logging import DefaultLogger
 from src.settings import (
     AWS_DYNAMODB_TABLE_NAME_HISTORIES,
     AZURE_COSMOS_CONTAINER_NAME_HISTORIES,
@@ -31,6 +32,8 @@ from src.settings import (
 from src.usecase.error import ErrorUsecase
 from src.usecase.history import HistoryUsecase
 from src.usecase.register import RegisterUsecase
+
+logger = DefaultLogger(__name__)
 
 
 class CommonModule(Module):
@@ -74,7 +77,8 @@ class TestModule(CommonModule):
     @provider
     @singleton
     def provide_message_repository(self) -> IMessageRepository:
-        return SQLiteMessageRepository(":memory:")
+        # :memory: はスレッド間で共有できずエラーになることがある
+        return SQLiteMessageRepository(BASE_DIR / "db" / "test.sqlite3")
 
 
 class GCPModule(CommonModule):
@@ -122,6 +126,7 @@ def get_di_module(
     if cloud is None:
         cloud = RUN_ENV
 
+    logger.info(f"DI module: {cloud}")
     match cloud:
         case RunEnv.LOCAL | RunEnv.GITHUB_ACTIONS:  # CI環境もローカルと同じ扱いにする
             return LocalModule()

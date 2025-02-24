@@ -7,6 +7,13 @@
 
 resource "aws_ecr_repository" "main" {
   name = var.setting.repository_name
+
+  #trivy:ignore:AVD-AWS-0031  # latestを使いまわしたい
+  image_tag_mutability = "MUTABLE"
+
+  image_scanning_configuration {
+    scan_on_push = true
+  }
 }
 
 # 初回実行時はコンテナがないと起動に失敗するため、イメージを置いておく

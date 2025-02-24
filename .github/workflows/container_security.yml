@@ -1,0 +1,48 @@
+name: Container Security
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: 'container_security'
+  cancel-in-progress: true
+
+jobs:
+  container-security:
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        python-version: ["3.12"]
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build an image from Dockerfile
+        run: docker build -t python-project-template .
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: python-project-template
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
+          scanners: 'vuln,secret,misconfig'
+
+      - name: Check Docker best practices with Dockle
+        if: always()
+        uses: goodwithtech/dockle-action@main
+        with:
+          image: python-project-template
+          format: 'list'
+          exit-code: '1'
+          exit-level: 'warn'
+          # CIS-DI-0001: Create a user for the container
+          # DKL-DI-0006: Avoid latest tag
+          # DKL-DI-0001: Avoid sudo command(開発環境ではsudoがあった方が便利なので無視)
+          # CIS-DI-0010: Do not store credential in environment variables/files(settings.pyに機密情報はない)
+          ignore: 'CIS-DI-0001,DKL-DI-0006,DKL-DI-0001,CIS-DI-0010'

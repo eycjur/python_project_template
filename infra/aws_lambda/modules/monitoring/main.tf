@@ -2,6 +2,8 @@
 
 resource "aws_sns_topic" "notification-email" {
   name = "notification-email"
+  #trivy:ignore:AVD-AWS-0136  # マネージドキーで十分
+  kms_master_key_id = "alias/aws/sns"
 }
 
 resource "aws_sns_topic_subscription" "main" {

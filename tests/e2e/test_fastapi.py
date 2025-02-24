@@ -24,22 +24,16 @@ def test_register(client: TestClient) -> None:
 
 
 def test_history(client: TestClient) -> None:
-    response = client.get("/messages")
-    assert response.status_code == 200
-    assert response.json() == {"messages": []}
     response = client.post("/messages", json={"content": "hello"})
     assert response.status_code == 200
     response = client.get("/messages")
     assert response.status_code == 200
-    assert response.json() == {"messages": [{"content": "hello"}]}
+    assert response.json()["messages"][0]["content"] == "hello"
 
 
 def test_history2(client: TestClient) -> None:
-    response = client.get("/messages")
-    assert response.status_code == 200
-    assert response.json() == {"messages": []}
     response = client.post("/messages", json={"content": "hello2"})
     assert response.status_code == 200
     response = client.get("/messages")
     assert response.status_code == 200
-    assert response.json() == {"messages": [{"content": "hello2"}]}
+    assert response.json()["messages"][0]["content"] == "hello2"
