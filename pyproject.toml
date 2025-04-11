@@ -58,19 +58,18 @@ target-version = "py312"
 [tool.ruff.lint]
 select = [
     # cf. https://docs.astral.sh/ruff/rules/
-    "A",  # flake8-builtins（組み込み変数の使用をチェック）
-    "B",  # flake8-bugbear（潜在的なバグやパフォーマンス上の問題を検知）
+    "A",  # flake8-builtins（組み込み関数を変数やパラメーターとして利用していないかをチェック）
+    "B",  # flake8-bugbear（プログラム内の潜在的なバグや設計上の問題を検知）
     "C4",  # flake8-comprehensions（list/set/dictのコードの最適化や改善）
-    "C90",  # mccabe（複雑度を測定）
+    "C90",  # mccabe（複雑度をチェック）
     "E",  # pycodestyle error（PEP8に準拠したコーディングスタイル）
-    "F",  # Pyflakes（バグや不要なインポートの検出）
+    "F",  # Pyflakes（文法エラーのチェックや不要なインポートの検出）
     "I",  # isort（インポート文をソート）
-    "N",  # pep8-naming（PEP8に準拠した命名ルール）
+    "N",  # pep8-naming（PEP8に準拠した命名規則）
     "PERF", # Perflint（パフォーマンス上の問題を検知）
     "PIE",  # flake8-pie（その他のルール）
     "PT", # flake8-pytest-style（Pytestのテストコードのスタイルチェック）
     "RUF",  # ruff-specific rules（ruff特有のルール）
-    "RUF100",  # unused noqa
     "S",  # flake8-bandit（セキュリティ上の問題を検知）
     "SIM",  # flake8-simplify（冗長なコードや非効率なコードを簡潔な形に改善）
     "W",  # pycodestyle warning（PEP8に準拠したコーディングスタイル）
