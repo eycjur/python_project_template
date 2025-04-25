@@ -1,5 +1,5 @@
 # Note: 可読性を重視した書き方をしているため、最適化はしていません
-FROM python:3.12-slim-bookworm
+FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim
 
 # hadolint ignore=DL3008
 RUN apt-get update && \
@@ -28,19 +28,18 @@ ENV LANG=ja_JP.UTF-8
 ENV LC_ALL=ja_JP.UTF-8
 ENV TZ=Asia/Tokyo
 
-# poetryのインストール
-SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-ENV PATH=/root/.local/bin:$PATH
-RUN curl -sSL https://install.python-poetry.org | python - && \
-    poetry config virtualenvs.create false
-
 WORKDIR /app
 
 # ライブラリのインストール
-# poetry.lockが存在しないことを許容するため、./poetry.lock*としている
-COPY ./pyproject.toml ./poetry.lock* /app/
+# uv.lockが存在しないことを許容するため、./uv.lock*としている
+COPY ./pyproject.toml ./uv.lock* /app/
 
-RUN poetry install --no-root --no-interaction --no-ansi
+ENV UV_PROJECT_ENVIRONMENT="/usr/local/"
+ENV PYTHONDONTWRITEBYTECODE=True
+ENV PYTHONUNBUFFERED=True
+ENV UV_LINK_MODE=copy
+
+RUN uv sync --frozen --no-install-project
 
 COPY ./src /app/src
 
