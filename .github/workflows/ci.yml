@@ -10,7 +10,7 @@ concurrency:
 
 jobs:
   ci:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         python-version: ["3.12"]
@@ -24,63 +24,46 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: install tflint, trivy, hadolint
+      - name: install terraform, tflint, trivy, hadolint
         run: |
           set -o pipefail
+          wget -O - https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+          sudo apt update && sudo apt install terraform
           curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
           wget https://github.com/aquasecurity/trivy/releases/download/v0.59.1/trivy_0.59.1_Linux-64bit.deb
           sudo dpkg -i trivy_0.59.1_Linux-64bit.deb
           wget -O /usr/local/bin/hadolint https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64
           sudo chmod +x /usr/local/bin/hadolint
 
-      - name: cache poetry
-        uses: actions/cache@v4
-        id: poetry-cache
+      - name: install uv
+        uses: astral-sh/setup-uv@v5
         with:
-          path: ~/.local
-          key: ${{ runner.os }}-poetry-Python${{ matrix.python-version }}
-          restore-keys: |
-            ${{ runner.os }}-poetry-
-
-      - name: install poetry
-        if: steps.poetry-cache.outputs.cache-hit != 'true'
-        run: curl -sSL https://install.python-poetry.org/ | python3 -
-
-      - name: add poetry to path
-        run: echo "{HOME}/.local/bin" >> $GITHUB_PATH
-
-      - name: dependencies cache
-        uses: actions/cache@v4
-        id: dependencies-cache
-        with:
-          path: ~/.cache/pypoetry
-          key: ${{ runner.os }}-poetry-dependencies-Python${{ matrix.python-version }}-${{ hashFiles('**/poetry.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-poetry-dependencies-Python${{ matrix.python-version }}-
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
 
       - name: install dependencies
-        if: steps.dependencies-cache.outputs.cache-hit != 'true'
-        run: poetry install --no-interaction --no-ansi
+        run: uv sync --frozen --no-install-project
 
       # pre-commitで一括でチェックする
       - name: pre-commit
         if: always()
-        run: poetry run pre-commit run --all-files
+        run: uv run pre-commit run --all-files
       # - name: run ruff (lint)
       #   if: always()
-      #   run: poetry run ruff check --output-format=github .
+      #   run: uv run ruff check --output-format=github .
       # - name: run ruff (format)
       #   if: always()
-      #   run: poetry run ruff format --check --diff .
+      #   run: uv run ruff format --check --diff .
       # - name: run mypy
       #   if: always()
-      #   run: poetry run mypy --config-file=pyproject.toml .
+      #   run: uv run mypy --config-file=pyproject.toml .
 
       - name: run test
         if: always()
         run: |
           set -o pipefail
-          poetry run pytest -sv --cov=src --cov-report=term-missing --junitxml=pytest.xml | tee pytest-coverage.txt
+          uv run pytest -sv --cov=src --cov-report=term-missing --junitxml=pytest.xml | tee pytest-coverage.txt
 
       - name: pytest coverage comment
         uses: MishaKav/pytest-coverage-comment@v1.1.47
