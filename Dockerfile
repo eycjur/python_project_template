@@ -41,20 +41,20 @@ ENV UV_LINK_MODE=copy
 
 RUN uv sync --frozen --no-install-project
 
-COPY ./src /app/src
+COPY ./app /app/app
 
 
 # # CLI
-# CMD ["python", "-m", "src.presentation.cli.app", "--help"]
+# CMD ["python", "-m", "app.presentation.cli.app", "--help"]
 
 # Dash
-CMD ["sh", "-c", "gunicorn --bind 0.0.0.0:${CONTAINER_PORT} --log-file - --access-logfile - --workers 1 --threads 4 --timeout 300 src.presentation.dash.index:server"]
+CMD ["sh", "-c", "gunicorn --bind 0.0.0.0:${CONTAINER_PORT} --log-file - --access-logfile - --workers 1 --threads 4 --timeout 300 app.presentation.dash.index:server"]
 
 # # FastAPI
-# CMD ["sh", "-c", "gunicorn --bind 0.0.0.0:${CONTAINER_PORT} --log-file - --access-logfile - --workers 1 --threads 4 --timeout 300 -k uvicorn.workers.UvicornWorker src.presentation.fastapi.app:app"]
+# CMD ["sh", "-c", "gunicorn --bind 0.0.0.0:${CONTAINER_PORT} --log-file - --access-logfile - --workers 1 --threads 4 --timeout 300 -k uvicorn.workers.UvicornWorker app.presentation.fastapi.app:app"]
 
 # # Flask
-# CMD ["sh", "-c", "gunicorn --bind 0.0.0.0:${CONTAINER_PORT} --log-file - --access-logfile - --workers 1 --threads 4 --timeout 300 src.presentation.flask.app:app"]
+# CMD ["sh", "-c", "gunicorn --bind 0.0.0.0:${CONTAINER_PORT} --log-file - --access-logfile - --workers 1 --threads 4 --timeout 300 app.presentation.flask.app:app"]
 
 # # Streamlit
-# CMD ["sh", "-c", "python -m streamlit run src/presentation/streamlit/index.py --server.port ${CONTAINER_PORT}"]
+# CMD ["sh", "-c", "python -m streamlit run app/presentation/streamlit/index.py --server.port ${CONTAINER_PORT}"]

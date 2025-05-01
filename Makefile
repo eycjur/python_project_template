@@ -8,6 +8,7 @@
 include .env
 
 .DEFAULT_GOAL := help
+SHELL := /bin/bash
 
 
 ## Project関連のコマンド
@@ -19,13 +20,13 @@ minimize:
 	rm -rf credentials/
 	rm -rf .github/
 	rm -rf db/
-	rm -rf src/domain src/infrastructure src/usecase
+	rm -rf app/domain app/infrastructure app/usecase
 	rm -rf \
-		src/logger/logger_config_aws.yaml \
-		src/logger/logger_config_azure.yaml \
-		src/logger/logger_config_gcp.yaml \
-		src/logger/formatter.py
-	rm -rf src/di.py
+		app/logger/logger_config_aws.yaml \
+		app/logger/logger_config_azure.yaml \
+		app/logger/logger_config_gcp.yaml \
+		app/logger/formatter.py
+	rm -rf app/di.py
 	rm -rf tests/domain
 	rm -rf .editorconfig .gcloudignore LICENSE
 

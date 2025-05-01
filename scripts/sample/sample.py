@@ -21,10 +21,10 @@ sys.path.append("/app")
 
 from injector import Injector
 
-from src.di import get_di_module
-from src.domain.message.message import Message
-from src.usecase.history import HistoryUsecase
-from src.usecase.register import RegisterUsecase
+from app.di import get_di_module
+from app.domain.message.message import Message
+from app.usecase.history import HistoryUsecase
+from app.usecase.register import RegisterUsecase
 
 np.set_printoptions(
     edgeitems=3,  # 表示する要素数の最大

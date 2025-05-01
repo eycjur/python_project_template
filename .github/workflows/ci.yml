@@ -63,7 +63,7 @@ jobs:
         if: always()
         run: |
           set -o pipefail
-          uv run pytest -sv --cov=src --cov-report=term-missing --junitxml=pytest.xml | tee pytest-coverage.txt
+          uv run pytest -sv --cov=app --cov-report=term-missing --junitxml=pytest.xml | tee pytest-coverage.txt
 
       - name: pytest coverage comment
         uses: MishaKav/pytest-coverage-comment@v1.1.47

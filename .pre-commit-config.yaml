@@ -69,17 +69,9 @@ repos:
       - id: terraform-docs-go
         args: ["markdown", "--output-file=README.md", "infra/gcp"]
 
-  - repo: local
+  - repo: https://github.com/hadolint/hadolint
+    rev: v2.12.0
     hooks:
       - id: hadolint
-        name: hadolint
-        entry: hadolint
-        args: ["Dockerfile"]
         language: system
-        files: ^Dockerfile$
-      - id: hadolint
-        name: hadolint
-        entry: hadolint
-        args: ["Dockerfile.lambda"]
-        language: system
-        files: ^Dockerfile.lambda$
+        files: "Dockerfile"
