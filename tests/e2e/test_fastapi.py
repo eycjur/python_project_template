@@ -2,9 +2,9 @@ import pytest
 from fastapi.testclient import TestClient
 from injector import Injector
 
-from src.di import TestModule
-from src.presentation.fastapi.app import app
-from src.presentation.fastapi.controller.get_injector import get_injector
+from app.di import TestModule
+from app.presentation.fastapi.app import app
+from app.presentation.fastapi.controller.get_injector import get_injector
 
 
 @pytest.fixture()

@@ -74,4 +74,4 @@ repos:
     hooks:
       - id: hadolint
         language: system
-        files: ^Dockerfile
+        files: "Dockerfile"

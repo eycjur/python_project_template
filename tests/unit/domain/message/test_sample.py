@@ -1,6 +1,6 @@
 import pytest
 
-from src.domain.message.message import Message
+from app.domain.message.message import Message
 
 
 @pytest.mark.parametrize(

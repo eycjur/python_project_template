@@ -14,7 +14,7 @@
       "name": "Dash: サーバーを起動",
       "type": "debugpy",
       "request": "launch",
-      "module": "src.presentation.dash.index",
+      "module": "app.presentation.dash.index",
       "cwd": "${workspaceFolder}",
       "console": "internalConsole",
       "justMyCode": false
@@ -23,7 +23,7 @@
       "name": "CLI: コマンドを実行",
       "type": "debugpy",
       "request": "launch",
-      "module": "src.presentation.cli.app",
+      "module": "app.presentation.cli.app",
       "cwd": "${workspaceFolder}",
       "console": "internalConsole",
       "args": [
@@ -36,7 +36,7 @@
       "name": "FastAPI: サーバーを起動",
       "type": "debugpy",
       "request": "launch",
-      "module": "src.presentation.fastapi.app",
+      "module": "app.presentation.fastapi.app",
       "cwd": "${workspaceFolder}",
       "console": "internalConsole",
       "justMyCode": false
@@ -45,7 +45,7 @@
       "name": "Flask: サーバーを起動",
       "type": "debugpy",
       "request": "launch",
-      "module": "src.presentation.flask.app",
+      "module": "app.presentation.flask.app",
       "cwd": "${workspaceFolder}",
       "console": "internalConsole",
       "justMyCode": false
@@ -59,7 +59,7 @@
       "console": "internalConsole",
       "args": [
         "run",
-        "src/presentation/streamlit/index.py",
+        "app/presentation/streamlit/index.py",
         "--server.port",
         "${env:CONTAINER_PORT}",
         "--browser.gatherUsageStats",

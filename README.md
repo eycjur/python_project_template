@@ -78,10 +78,10 @@ UIフレームワークによって詳細は異なりますが、FastAPIを利�
 
 1. `make minimize`を実行
 2. docker-compose.ymlからcredentialsのマウントを削除
-3. src/presentation/のサブディレクトリのうち、不要なフレームワークのディレクトリを削除
+3. app/presentation/のサブディレクトリのうち、不要なフレームワークのディレクトリを削除
 4. .devcontainer/devcontainer.jsonのlaunchの設定のうち、不要なフレームワークの設定を削除
 5. README.mdを編集
-6. クラウド関係の環境変数を.envとsrc/settings.pyから削除
+6. クラウド関係の環境変数を.envとapp/settings.pyから削除
 
 ## Run Application
 
@@ -109,8 +109,8 @@ UIフレームワークによって詳細は異なりますが、FastAPIを利�
 FastAPIを利用する場合は、以下の手順で行ってください。
 
 1. 上記手順でAPIサーバーを起動
-2. live-server拡張機能で、src/presentation/fastapi/frontend/index.htmlを開く
-3. http://localhost:5500/src/presentation/fastapi/frontend/ からフロントエンドにアクセス
+2. live-server拡張機能で、app/presentation/fastapi/frontend/index.htmlを開く
+3. http://localhost:5500/app/presentation/fastapi/frontend/ からフロントエンドにアクセス
 
 ## Deploy
 
