@@ -34,6 +34,8 @@ WORKDIR /app
 # uv.lockが存在しないことを許容するため、./uv.lock*としている
 COPY ./pyproject.toml ./uv.lock* /app/
 
+# システムのPythonを使用する
+# cf. https://docs.astral.sh/uv/concepts/projects/config/#project-environment-path
 ENV UV_PROJECT_ENVIRONMENT="/usr/local/"
 ENV PYTHONDONTWRITEBYTECODE=True
 ENV PYTHONUNBUFFERED=True
