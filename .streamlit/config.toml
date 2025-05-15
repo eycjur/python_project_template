@@ -1,5 +1,4 @@
 [server]
-enableCORS = false
 runOnSave = true
 
 [browser]
