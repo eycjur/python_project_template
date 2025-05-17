@@ -9,16 +9,12 @@ ENV DEBIAN_FRONTEND=noninteractive
 # hadolint ignore=DL3008
 RUN apt-get update && \
     apt-get install --no-install-recommends -y \
-        curl \
         fonts-ipafont-gothic \
         gcc \
-        g++ \
         git \
         locales \
         make \
         neovim \
-        pandoc \
-        python3-dev \
         sudo \
         tzdata \
         vim \
