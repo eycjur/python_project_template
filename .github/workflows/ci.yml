@@ -17,10 +17,12 @@ jobs:
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: Kesin11/actions-timeline@v2
+
+      - uses: actions/checkout@v4
 
       - name: set up python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
 
