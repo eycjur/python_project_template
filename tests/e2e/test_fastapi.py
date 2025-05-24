@@ -7,12 +7,12 @@ from app.presentation.fastapi.app import app
 from app.presentation.fastapi.controller.get_injector import get_injector
 
 
-@pytest.fixture()
+@pytest.fixture
 def injector() -> Injector:
     return Injector(TestModule())
 
 
-@pytest.fixture()
+@pytest.fixture
 def client(injector: Injector) -> TestClient:
     app.dependency_overrides[get_injector] = lambda: injector
     return TestClient(app)
