@@ -1,12 +1,12 @@
 from flask import Flask
-from injector import Injector
 
-from app.di import get_di_module
 from app.presentation.flask.routes import get_router
 from app.settings import CONTAINER_PORT
+from app.shared.injector_factory import get_shared_injector
 
-injector = Injector(get_di_module())
 app = Flask(__name__)
+app.secret_key = "your-secret-key-here"  # セッション用のシークレットキー
+injector = get_shared_injector()
 app.register_blueprint(get_router(injector))
 
 
