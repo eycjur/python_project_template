@@ -14,10 +14,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1) ZIP を解凍するための依存ライブラリをインストール
+      - name: Install unzip library
+        run: npm install adm-zip
+
       - name: Post failure details to PR
         uses: actions/github-script@v7
         with:
           script: |
+            const AdmZip = require('adm-zip');
             const run = context.payload.workflow_run;
             const prs = run.pull_requests;
             if (prs.length === 0) {
@@ -25,7 +30,16 @@ jobs:
               return;
             }
 
-            // 失敗ジョブをリストアップ
+            // 2) 全ログの ZIP を取得
+            const zipResp = await github.rest.actions.downloadWorkflowRunLogs({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: run.id,
+            });
+            // zipResp.data は ArrayBuffer 相当のバイナリ
+            const zip = new AdmZip(Buffer.from(await zipResp.data.arrayBuffer()));
+
+            // 3) 失敗ジョブをリストアップ
             const jobsResp = await github.rest.actions.listJobsForWorkflowRun({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -33,16 +47,19 @@ jobs:
             });
             const failedJobs = jobsResp.data.jobs.filter(j => j.conclusion === 'failure');
 
-            // コメント本文を組み立て
+            // 4) コメント本文を組み立て
             let body = `🚨 **Workflow '${run.name}' failed** 🚨\n\n`;
             for (const job of failedJobs) {
-              // ログをフェッチして末尾 50 行を取得
-              const logResp = await fetch(job.logs_url, {
-                headers: { 'Authorization': `token ${process.env.GITHUB_TOKEN}` }
-              });
-              const logText = await logResp.text();
-              const lines = logText.split('\n');
-              const tail = lines.slice(-50).join('\n');
+              // ジョブ名にマッチするエントリを抽出（例: "CI/1234567890/xyz/job_name.txt"）
+              const entry = zip.getEntries().find(e =>
+                e.entryName.endsWith(`/${job.name.replace(/\s+/g, '_')}.txt`)
+              );
+              let tail = '(ログ取得エラー)';
+              if (entry) {
+                const text = entry.getData().toString('utf8');
+                const lines = text.split('\n');
+                tail = lines.slice(-50).join('\n');
+              }
 
               body += `### ❌ ${job.name}\n`;
               body += `- [View full logs](${job.html_url})\n\n`;
