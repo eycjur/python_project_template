@@ -21,6 +21,11 @@ jobs:
 
       - uses: actions/checkout@v4
 
+      - name: fail
+        run: |
+          echo "This is a test failure step"
+          exit 1
+
       - name: set up python
         uses: actions/setup-python@v5
         with:

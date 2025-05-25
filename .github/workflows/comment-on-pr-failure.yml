@@ -1,0 +1,51 @@
+name: 'Comment on PR when Another Workflow Fails'
+
+on:
+  workflow_run:
+    workflows:
+      - 'CI'
+      - 'container_security.yml'
+    types:
+      - completed
+
+jobs:
+  notify_failed_pr:
+    # 完了したワークフローが “failure” のときだけ実行
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Post failure details to PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const run = context.payload.workflow_run;
+            const prs = run.pull_requests;
+            if (prs.length === 0) {
+              console.log('No pull request associated; skipping comment.');
+              return;
+            }
+
+            // 失敗ジョブをリストアップ
+            const jobsResp = await github.rest.actions.listJobsForWorkflowRun({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: run.id,
+            });
+            const failedJobs = jobsResp.data.jobs.filter(j => j.conclusion === 'failure');
+
+            // コメント本文を組み立て
+            let body = `🚨 **Workflow '${run.name}' failed** 🚨\n\n`;
+            failedJobs.forEach(job => {
+              body += `- **${job.name}**: [View logs](${job.html_url})\n`;
+            });
+
+            // PRごとにコメント（複数PRがあればループしてもOK）
+            for (const pr of prs) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pr.number,
+                body,
+              });
+            }
