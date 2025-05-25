@@ -72,16 +72,3 @@ AZURE_COSMOS_CONTAINER_NAME_HISTORIES = env.str("AZURE_COSMOS_CONTAINER_NAME_HIS
 AWS_DYNAMODB_TABLE_NAME_HISTORIES = env.str("AWS_DYNAMODB_TABLE_NAME_HISTORIES")
 AWS_API_GATEWAY_STAGE_NAME = env.str("AWS_API_GATEWAY_STAGE_NAME")
 
-match RUN_ENV:
-    case RunEnv.LOCAL:
-        LOGGER_CONFIG_FILE = env.str("LOGGER_CONFIG_FILE_DEFAULT")
-    case RunEnv.GITHUB_ACTIONS:
-        LOGGER_CONFIG_FILE = "logger_config_default.yaml"
-    case RunEnv.GCP:
-        LOGGER_CONFIG_FILE = env.str("LOGGER_CONFIG_FILE_GCP")
-    case RunEnv.AWS:
-        LOGGER_CONFIG_FILE = env.str("LOGGER_CONFIG_FILE_AWS")
-    case RunEnv.AZURE:
-        LOGGER_CONFIG_FILE = env.str("LOGGER_CONFIG_FILE_AZURE")
-    case _:
-        raise ValueError(f"Unexpected RUN_ENV: {RUN_ENV}")

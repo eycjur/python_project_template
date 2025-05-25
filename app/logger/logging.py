@@ -3,9 +3,7 @@ import os
 import sys
 from logging.config import dictConfig
 
-import yaml  # type: ignore
-
-from app.settings import LOGGER_CONFIG_FILE
+from app.logger.config import get_logger_config
 
 
 def _is_exc_info() -> bool:
@@ -45,9 +43,7 @@ class DefaultLogger(object):
 
 def init_logger() -> None:
     """Loggerを初期化する"""
-    logger_config_path = os.path.join(os.path.dirname(__file__), LOGGER_CONFIG_FILE)
-    with open(logger_config_path) as f:
-        logger_config = yaml.safe_load(f)
+    logger_config = get_logger_config()
     dictConfig(logger_config)
 
 
