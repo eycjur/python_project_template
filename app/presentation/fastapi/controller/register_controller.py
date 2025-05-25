@@ -3,7 +3,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends
 from injector import Injector, inject
 
-from app.presentation.fastapi.controller.get_injector import get_injector
+from app.di import get_injector
 from app.presentation.fastapi.view_model.register_view_model import (
     RegisterRequest,
     RegisterResponse,

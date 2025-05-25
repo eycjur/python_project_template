@@ -5,9 +5,8 @@ from fastapi import status
 from fastapi.testclient import TestClient
 from injector import Injector
 
-from app.di import TestModule
+from app.di import get_injector
 from app.presentation.fastapi.app import app
-from app.presentation.fastapi.controller.get_injector import get_injector
 
 
 # セットアップとティアダウンを行うタイミングを指定できる
@@ -19,7 +18,7 @@ from app.presentation.fastapi.controller.get_injector import get_injector
 #   function(テスト関数ごとに1回)
 @pytest.fixture
 def injector() -> Injector:
-    return Injector(TestModule())
+    return get_injector(is_test=True)
 
 
 @pytest.fixture

@@ -1,9 +1,9 @@
 from dash import Input, Output, State, dcc, html
 from dash.development.base_component import Component
 
+from app.di import get_injector
 from app.domain.message.message import Message
 from app.presentation.dash.app import app
-from app.presentation.dash.injector import injector
 from app.usecase.register import RegisterUsecase
 
 
@@ -36,6 +36,7 @@ def update_output(_: int, user_input: str) -> Component:
     Returns:
         Component: 表示するコンポーネント
     """
+    injector = get_injector()
     register_usecase = injector.get(RegisterUsecase)
     result = register_usecase.execute(Message(user_input))
     return html.Div(result)

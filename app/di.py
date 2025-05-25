@@ -1,8 +1,9 @@
-"""DIコンテナのモジュールを提供する"""
+"""DIコンテナのモジュールと共通のInjectorインスタンスを提供する"""
 
-from typing import Any, Optional
+from abc import ABC, abstractmethod
+from typing import Any
 
-from injector import Module, provider, singleton
+from injector import Injector, Module, provider, singleton
 
 from app.domain.message.message_repository import IMessageRepository
 from app.infrastructure.repository.message.aws_message_repository import (
@@ -34,9 +35,10 @@ from app.usecase.history import HistoryUsecase
 from app.usecase.register import RegisterUsecase
 
 logger = DefaultLogger(__name__)
+_global_injector: Injector | None = None
 
 
-class CommonModule(Module):
+class CommonModule(Module, ABC):
     def configure(self, binder: Any) -> None:
         """DIコンテナに登録するクラスを設定する
 
@@ -56,13 +58,14 @@ class CommonModule(Module):
         binder.bind(RegisterUsecase, to=RegisterUsecase)
         binder.bind(HistoryUsecase, to=HistoryUsecase)
         binder.bind(ErrorUsecase, to=ErrorUsecase)
+        binder.bind(IMessageRepository, to=self.provide_message_repository)
+
+    @abstractmethod
+    def provide_message_repository(self) -> IMessageRepository:
+        pass
 
 
 class LocalModule(CommonModule):
-    def configure(self, binder: Any) -> None:
-        super().configure(binder)
-        binder.bind(IMessageRepository, to=self.provide_message_repository)
-
     @provider
     # @singleton  # sqlite3は異なるスレッドからのアクセスができない
     def provide_message_repository(self) -> IMessageRepository:
@@ -70,22 +73,13 @@ class LocalModule(CommonModule):
 
 
 class TestModule(CommonModule):
-    def configure(self, binder: Any) -> None:
-        super().configure(binder)
-        binder.bind(IMessageRepository, to=self.provide_message_repository)
-
     @provider
     @singleton
     def provide_message_repository(self) -> IMessageRepository:
-        # :memory: はスレッド間で共有できずエラーになることがある
-        return SQLiteMessageRepository(BASE_DIR / "db" / "test.sqlite3")
+        return SQLiteMessageRepository(":memory:")
 
 
 class GCPModule(CommonModule):
-    def configure(self, binder: Any) -> None:
-        super().configure(binder)
-        binder.bind(IMessageRepository, to=self.provide_message_repository)
-
     @provider
     @singleton
     def provide_message_repository(self) -> IMessageRepository:
@@ -95,10 +89,6 @@ class GCPModule(CommonModule):
 
 
 class AWSModule(CommonModule):
-    def configure(self, binder: Any) -> None:
-        super().configure(binder)
-        binder.bind(IMessageRepository, to=self.provide_message_repository)
-
     @provider
     @singleton
     def provide_message_repository(self) -> IMessageRepository:
@@ -106,10 +96,6 @@ class AWSModule(CommonModule):
 
 
 class AzureModule(CommonModule):
-    def configure(self, binder: Any) -> None:
-        super().configure(binder)
-        binder.bind(IMessageRepository, to=self.provide_message_repository)
-
     @provider
     @singleton
     def provide_message_repository(self) -> IMessageRepository:
@@ -120,9 +106,9 @@ class AzureModule(CommonModule):
         )
 
 
-def get_di_module(
-    cloud: Optional[RunEnv] = None,
-) -> LocalModule | GCPModule | AWSModule | AzureModule:
+def _get_di_module(
+    cloud: RunEnv | None = None,
+) -> LocalModule | TestModule | GCPModule | AWSModule | AzureModule:
     if cloud is None:
         cloud = RUN_ENV
 
@@ -130,6 +116,8 @@ def get_di_module(
     match cloud:
         case RunEnv.LOCAL | RunEnv.GITHUB_ACTIONS:  # CI環境もローカルと同じ扱いにする
             return LocalModule()
+        case RunEnv.TEST:
+            return TestModule()
         case RunEnv.GCP:
             return GCPModule()
         case RunEnv.AWS:
@@ -137,4 +125,32 @@ def get_di_module(
         case RunEnv.AZURE:
             return AzureModule()
         case _:
-            raise ValueError("Invalid cloud type")
+            raise ValueError(f"Invalid cloud type {cloud}")
+
+
+def get_injector(is_test: bool = False) -> Injector:
+    """DIコンテナのモジュールを取得する
+
+    Args:
+        is_test (bool): テスト環境かどうか。デフォルトはFalse。
+
+    Returns:
+        Injector: DIコンテナのインスタンス
+    """
+    global _global_injector
+    if _global_injector is not None:
+        return _global_injector
+
+    logger.info("Creating new injector instance")
+    if is_test:
+        _global_injector = Injector(_get_di_module(RunEnv.TEST))
+    else:
+        _global_injector = Injector(_get_di_module())
+    return _global_injector
+
+
+def reset_injector() -> None:
+    """グローバルなInjectorインスタンスをリセットする (主にテスト用)"""
+    global _global_injector
+    _global_injector = None
+    logger.info("Reset global injector instance")
