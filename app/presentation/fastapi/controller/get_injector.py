@@ -1,7 +1,7 @@
 from injector import Injector
 
-from app.di import get_di_module
+from app.di import get_injector as _get_injector
 
 
 def get_injector() -> Injector:
-    return Injector(get_di_module())
+    return _get_injector()
