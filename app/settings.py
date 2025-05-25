@@ -12,6 +12,7 @@ class RunEnv(Enum):
     """実行している環境"""
 
     LOCAL = "Local"
+    TEST = "Test"
     GITHUB_ACTIONS = "GitHub Actions"
     GCP = "GCP"
     AWS = "AWS"
@@ -19,6 +20,8 @@ class RunEnv(Enum):
 
     @classmethod
     def judge_from_env(cls) -> "RunEnv":
+        if "PYTEST_CURRENT_TEST" in os.environ:  # pytest実行時
+            return cls.TEST
         if "GITHUB_ACTIONS" in os.environ:
             return cls.GITHUB_ACTIONS
         if "K_SERVICE" in os.environ:  # Cloud Run
@@ -75,6 +78,8 @@ AWS_API_GATEWAY_STAGE_NAME = env.str("AWS_API_GATEWAY_STAGE_NAME")
 match RUN_ENV:
     case RunEnv.LOCAL:
         LOGGER_CONFIG_FILE = env.str("LOGGER_CONFIG_FILE_DEFAULT")
+    case RunEnv.TEST:
+        LOGGER_CONFIG_FILE = "logger_config_default.yaml"
     case RunEnv.GITHUB_ACTIONS:
         LOGGER_CONFIG_FILE = "logger_config_default.yaml"
     case RunEnv.GCP:
