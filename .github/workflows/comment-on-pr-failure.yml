@@ -10,7 +10,6 @@ on:
 
 jobs:
   notify_failed_pr:
-    # 完了したワークフローが “failure” のときだけ実行
     if: ${{ github.event.workflow_run.conclusion == 'failure' }}
     runs-on: ubuntu-latest
 
@@ -36,11 +35,23 @@ jobs:
 
             // コメント本文を組み立て
             let body = `🚨 **Workflow '${run.name}' failed** 🚨\n\n`;
-            failedJobs.forEach(job => {
-              body += `- **${job.name}**: [View logs](${job.html_url})\n`;
-            });
+            for (const job of failedJobs) {
+              // ログをフェッチして末尾 50 行を取得
+              const logResp = await fetch(job.logs_url, {
+                headers: { 'Authorization': `token ${process.env.GITHUB_TOKEN}` }
+              });
+              const logText = await logResp.text();
+              const lines = logText.split('\n');
+              const tail = lines.slice(-50).join('\n');
 
-            // PRごとにコメント（複数PRがあればループしてもOK）
+              body += `### ❌ ${job.name}\n`;
+              body += `- [View full logs](${job.html_url})\n\n`;
+              body += '```bash\n';
+              body += `${tail}\n`;
+              body += '```\n\n';
+            }
+
+            // PRごとにコメント
             for (const pr of prs) {
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
