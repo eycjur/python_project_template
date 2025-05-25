@@ -29,10 +29,9 @@ from IPython.display import display
 
 sys.path.append("/app")
 
-from injector import Injector
 from IPython import InteractiveShell
 
-from app.di import get_di_module
+from app.di import get_injector
 from app.domain.message.message import Message
 from app.usecase.history import HistoryUsecase
 from app.usecase.register import RegisterUsecase
@@ -59,7 +58,7 @@ InteractiveShell.ast_node_interactivity = "all"  # セル内の全ての出力�
 text = "こんにちは"
 
 # %%
-injector = Injector([get_di_module()])
+injector = get_injector()
 register_usecase = injector.get(RegisterUsecase)
 message = Message(content=text)
 register_usecase.execute(message)
