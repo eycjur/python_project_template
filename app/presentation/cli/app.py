@@ -14,20 +14,23 @@ Attention:
 """
 
 import typer
-from injector import Injector
 
-from app.di import get_di_module
-from app.domain.message.message import Message
+from app.shared.controller.message_controller import (
+    MessageHistoryController,
+    RegisterMessageController,
+    handle_controller_error,
+)
+from app.shared.dto.message_dto import RegisterMessageRequest
+from app.shared.injector_factory import get_shared_injector
 from app.usecase.error import ErrorUsecase
-from app.usecase.history import HistoryUsecase
-from app.usecase.register import RegisterUsecase
 
 app = typer.Typer()
-injector = Injector(get_di_module())
+injector = get_shared_injector()
 
 
 @app.command()
 def hello() -> None:
+    """Hello worldを表示する"""
     typer.echo("hello")
 
 
@@ -35,22 +38,58 @@ def hello() -> None:
 def register(
     text: str = typer.Option("デフォルト", "-t", "--text", help="登録するテキスト"),
 ) -> None:
-    register_usecase = injector.get(RegisterUsecase)
-    message = Message(content=text)
-    register_usecase.execute(message)
-    typer.echo(f"登録しました: {text}")
+    """メッセージを登録する
+    
+    Args:
+        text: 登録するテキスト
+    """
+    try:
+        # 共通DTOを作成
+        dto_request = RegisterMessageRequest(text=text)
+        
+        # 共通コントローラーを使用
+        controller = injector.get(RegisterMessageController)
+        result = controller.execute(dto_request)
+        
+        typer.echo(result.message)
+        
+    except ValueError as e:
+        # バリデーションエラー
+        error_response = handle_controller_error(e)
+        typer.echo(f"エラー: {error_response.error_message}", err=True)
+        raise typer.Exit(1)
+        
+    except Exception as e:
+        # 内部エラー
+        error_response = handle_controller_error(e)
+        typer.echo(f"内部エラー: {error_response.error_message}", err=True)
+        raise typer.Exit(1)
 
 
 @app.command()
 def history() -> None:
-    history_usecase = injector.get(HistoryUsecase)
-    messages = history_usecase.execute()
-    for m in messages:
-        typer.echo(m.content)
+    """メッセージ履歴を表示する"""
+    try:
+        # 共通コントローラーを使用
+        controller = injector.get(MessageHistoryController)
+        result = controller.execute(None)
+        
+        if result.count == 0:
+            typer.echo("メッセージが登録されていません")
+        else:
+            for msg in result.messages:
+                typer.echo(f"[{msg['id']}] {msg['content']}")
+                
+    except Exception as e:
+        # 内部エラー
+        error_response = handle_controller_error(e)
+        typer.echo(f"エラー: {error_response.error_message}", err=True)
+        raise typer.Exit(1)
 
 
 @app.command()
 def error() -> None:
+    """エラーを発生させる（テスト用）"""
     error_usecase = injector.get(ErrorUsecase)
     result = error_usecase.execute()
     typer.echo(result)

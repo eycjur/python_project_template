@@ -1,7 +1,11 @@
 from injector import Injector
 
-from app.di import get_di_module
+from app.shared.injector_factory import get_shared_injector
 
 
 def get_injector() -> Injector:
-    return Injector(get_di_module())
+    """FastAPI用のDIコンテナを取得する
+    
+    共有インスタンスを使用してパフォーマンスを向上させる。
+    """
+    return get_shared_injector()

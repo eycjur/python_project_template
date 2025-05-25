@@ -1,5 +1,3 @@
-from injector import Injector
+from app.shared.injector_factory import get_shared_injector
 
-from app.di import get_di_module
-
-injector = Injector(get_di_module())
+injector = get_shared_injector()
