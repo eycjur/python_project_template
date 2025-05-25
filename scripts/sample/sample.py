@@ -1,19 +1,28 @@
-# uv run scripts/sample/sample.py
+# ruff: noqa: E402, F401  # import順を無視
+#
+# https://docs.astral.sh/uv/guides/scripts/#declaring-script-dependencies
 # /// script
+# requires-python = "==3.12"
 # dependencies = [
-#     "japanize-matplotlib",
-#     "matplotlib",
 #     "numpy",
 #     "pandas",
+#     "matplotlib",
+#     "japanize-matplotlib",
+#     "ipython",
 # ]
 # ///
 
-# ruff: noqa: E402, F401  # import順を無視
+"""
+# pythonで実行する
+python scripts/sample/sample.py
 
-"""コメント
+# uvでstandaloneスクリプトとして実行する
+uv run scripts/sample/sample.py
 
-export: インタラクティブ画面側の、エクスポート > HTMLから、Output込みのJupyter形式のファイルをHTMLとしてエクスポートできます
+Tips:
+- インタラクティブ画面側の、エクスポート > Jupyter形式のファイルをHTMLとしてエクスポートできます
 """  # noqa
+
 
 # %%[markdown]
 # # H1
@@ -25,12 +34,9 @@ import japanize_matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from IPython.display import display
+from injector import Injector
 
 sys.path.append("/app")
-
-from injector import Injector
-from IPython import InteractiveShell
 
 from app.di import get_di_module
 from app.domain.message.message import Message
@@ -42,7 +48,15 @@ np.set_printoptions(
     suppress=True,  # 指数表示をしない
 )
 plt.rcParams["font.size"] = 14
-InteractiveShell.ast_node_interactivity = "all"  # セル内の全ての出力を表示する
+
+try:
+    from IPython import InteractiveShell
+    from IPython.display import display
+
+    # セル内の全ての出力を表示する
+    InteractiveShell.ast_node_interactivity = "all"  # type: ignore
+except ModuleNotFoundError:
+    print("Running in a non-interactive environment")
 
 #!%load_ext autoreload
 #!%autoreload 2
