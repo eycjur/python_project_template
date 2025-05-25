@@ -1,3 +1,13 @@
+# uv run scripts/sample/sample.py
+# /// script
+# dependencies = [
+#     "japanize-matplotlib",
+#     "matplotlib",
+#     "numpy",
+#     "pandas",
+# ]
+# ///
+
 # ruff: noqa: E402, F401  # import順を無視
 
 """コメント
@@ -20,6 +30,7 @@ from IPython.display import display
 sys.path.append("/app")
 
 from injector import Injector
+from IPython import InteractiveShell
 
 from app.di import get_di_module
 from app.domain.message.message import Message
@@ -31,6 +42,7 @@ np.set_printoptions(
     suppress=True,  # 指数表示をしない
 )
 plt.rcParams["font.size"] = 14
+InteractiveShell.ast_node_interactivity = "all"  # セル内の全ての出力を表示する
 
 #!%load_ext autoreload
 #!%autoreload 2
