@@ -11,6 +11,7 @@ RUN apt-get update && \
     apt-get install --no-install-recommends -y \
         fonts-ipafont-gothic \
         gcc \
+        g++ \
         git \
         locales \
         make \
