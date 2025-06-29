@@ -57,6 +57,7 @@ repos:
         args:
           - --args=--severity=HIGH,CRITICAL
           - --hook-config=--parallelism-ci-cpu-cores=1
+          - --hook-config=--parallelism-limit=1
       # - id: terraform_validate  # 遅い
       # # 重大度での絞り込みにはAPI KEYが必要
       # - id: terraform_checkov
