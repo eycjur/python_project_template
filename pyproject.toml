@@ -85,7 +85,7 @@ unfixable = ["W", "F401", "F841"]
 ]
 
 [tool.mypy]
-python_version = "3.12"
+python_version = "3.13"
 # チェック項目
 strict = true
 warn_unreachable = true
