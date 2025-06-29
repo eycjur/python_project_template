@@ -1,7 +1,7 @@
 [project]
 name = "app"
 version = "0.1.0"
-requires-python = "~=3.12"
+requires-python = "~=3.13"
 readme = "README.md"
 license = "MIT"
 dependencies = [
@@ -55,7 +55,7 @@ package = false
 
 [tool.ruff]
 line-length = 88
-target-version = "py312"
+target-version = "py313"
 
 [tool.ruff.lint]
 select = [
