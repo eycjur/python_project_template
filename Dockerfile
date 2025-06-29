@@ -2,7 +2,9 @@
 # 参考
 # https://docs.astral.sh/uv/guides/integration/docker/#using-uv-in-docker
 # https://github.com/astral-sh/uv-docker-example/blob/main/Dockerfile
-FROM python:3.12-slim-bookworm
+
+# 10: buster, 11: bullseye, 12: bookworm
+FROM python:3.13-slim-bookworm
 COPY --from=ghcr.io/astral-sh/uv:0.7.2 /uv /uvx /bin/
 
 ENV DEBIAN_FRONTEND=noninteractive
