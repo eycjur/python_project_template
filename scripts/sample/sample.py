@@ -36,6 +36,7 @@ from app.domain.message.message import Message
 from app.usecase.history import HistoryUsecase
 from app.usecase.register import RegisterUsecase
 
+np.set_printoptions(edgeitems=10)  # 省略表示する際の表示数
 np.set_printoptions(
     edgeitems=3,  # 表示する要素数の最大
     suppress=True,  # 指数表示をしない
