@@ -18,7 +18,7 @@ minimize:
 	rm -rf docs/
 	rm -rf infra/ Dockerfile.lambda .tflint.hcl cloudbuild.yaml
 	rm -rf credentials/
-	rm -rf .github/
+	rm -rf .github/ CLAUDE.md
 	rm -rf db/
 	rm -rf app/domain app/infrastructure app/usecase
 	rm -rf \
