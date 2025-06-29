@@ -5,6 +5,7 @@
   "workspaceFolder": "/app",
   "shutdownAction": "stopCompose",
   "overrideCommand": true,
+  "postCreateCommand": "playwright install-deps && playwright install",
   "customizations": {
     "vscode": {
       "extensions": [

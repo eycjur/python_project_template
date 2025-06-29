@@ -61,6 +61,12 @@ jobs:
       #   if: always()
       #   run: uv run mypy --config-file=pyproject.toml .
 
+      - name: install playwright
+        if: always()
+        run: |
+          playwright install-deps
+          playwright install
+
       - name: run test
         if: always()
         run: |
