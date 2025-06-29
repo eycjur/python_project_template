@@ -36,8 +36,8 @@ jobs:
       - name: install playwright
         if: always()
         run: |
-          playwright install-deps
-          playwright install
+          uv run playwright install-deps
+          uv run playwright install
 
       - name: run test
         if: always()
