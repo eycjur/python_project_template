@@ -1,15 +1,15 @@
-name: CI
+name: Static Analysis
 
 on:
   pull_request:
   workflow_dispatch:
 
 concurrency:
-  group: 'ci'
+  group: 'static_analysis'
   cancel-in-progress: true
 
 jobs:
-  ci:
+  static_analysis:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -51,6 +51,7 @@ jobs:
       - name: pre-commit
         if: always()
         run: uv run pre-commit run --all-files
+
       # - name: run ruff (lint)
       #   if: always()
       #   run: uv run ruff check --output-format=github .
@@ -60,21 +61,3 @@ jobs:
       # - name: run mypy
       #   if: always()
       #   run: uv run mypy --config-file=pyproject.toml .
-
-      - name: install playwright
-        if: always()
-        run: |
-          playwright install-deps
-          playwright install
-
-      - name: run test
-        if: always()
-        run: |
-          set -o pipefail
-          uv run pytest -sv --cov=app --cov-report=term-missing --junitxml=pytest.xml | tee pytest-coverage.txt
-
-      - name: pytest coverage comment
-        uses: MishaKav/pytest-coverage-comment@v1.1.47
-        with:
-          pytest-coverage-path: ./pytest-coverage.txt
-          junitxml-path: ./pytest.xml
