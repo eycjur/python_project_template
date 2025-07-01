@@ -9,7 +9,7 @@ pythonでプロジェクトを作成する際のテンプレートです。
 
 ### ユースケース図
 
-![ユースケース図](docs/usecase/usecase.png)
+<img src="docs/usecase/usecase.png" width="320px">
 
 ### 機能要件
 
@@ -20,7 +20,7 @@ pythonでプロジェクトを作成する際のテンプレートです。
 
 #### 画面遷移図
 
-![画面遷移図](docs/requirements/screen_transition.png)
+<img src="docs/requirements/screen_transition.png" width="320px">
 
 #### API仕様(FastAPI)
 
@@ -61,7 +61,7 @@ Onion Architectureを採用しています。
 
 UIフレームワークによって詳細は異なりますが、FastAPIを利用する場合のアーキテクチャ図を以下に示します。
 
-![アーキテクチャ図(FastAPI)](docs/architecture/architecture_fastapi.png)
+<img src="docs/architecture/architecture_fastapi.png" width="640px">
 
 ## Initialize Project
 
