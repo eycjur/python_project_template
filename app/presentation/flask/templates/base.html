@@ -12,9 +12,9 @@
     <div>
       <!-- サブディレクトリでも利用できるように相対パスを利用 -->
       <!-- Note: 本来は絶対パスの方が良い -->
-      <a href="home">history</a>
-      <a href="register">Register</a>
-      <a href="error">Error</a>
+      <a href="{{ url_for('app.history') }}">history</a>
+      <a href="{{ url_for('app.register_get') }}">Register</a>
+      <a href="{{ url_for('app.error') }}">Error</a>
     </div>
   </div>
 </body>
