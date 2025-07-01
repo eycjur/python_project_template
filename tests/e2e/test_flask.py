@@ -11,6 +11,7 @@ import re
 import subprocess
 import sys
 import time
+from pathlib import Path
 from typing import Generator
 
 import pytest
@@ -24,23 +25,24 @@ def flask_server() -> Generator[None, None, None]:
     Yields:
         None
     """
-    proc = subprocess.Popen(  # noqa: S603
-        [
-            sys.executable,  # 現在のPythonインタープリターを使用
-            "-m",
-            "app.presentation.flask.app",
-        ],  # Flaskアプリの起動コマンドに合わせて修正
-        env={
-            "CONTAINER_PORT": "5000",
-            "PYTEST_CURRENT_TEST": "1",
-        },  # テスト実行中のフラグを設定
-    )
-    time.sleep(2)  # サーバー起動待ち
-    try:
-        yield
-    finally:
-        proc.terminate()
-        proc.wait()
+    command = [
+        sys.executable,  # 現在のPythonインタープリターを使用
+        "-m",
+        "app.presentation.flask.app",
+    ]
+    env = {
+        "CONTAINER_PORT": "5000",
+        "PYTEST_CURRENT_TEST": "1",  # テスト実行中のフラグを設定
+    }
+    cwd = Path(__file__).parent.parent.parent
+
+    with subprocess.Popen(command, env=env, cwd=cwd) as proc:  # noqa: S603
+        time.sleep(2)  # サーバー起動待ち
+        try:
+            yield
+        finally:
+            proc.terminate()
+            proc.wait()
 
 
 def test_flask_index_page(page: Page) -> None:
