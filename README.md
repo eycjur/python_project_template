@@ -1,3 +1,11 @@
+![Python Version](https://img.shields.io/python/required-version-toml?tomlFilePath=https%3A%2F%2Fraw.githubusercontent.com%2Feycjur%2Fpython_project_template%2Fmain%2Fpyproject.toml)
+[![Static Analysis](https://github.com/eycjur/python_project_template/actions/workflows/static_analysis.yml/badge.svg)](https://github.com/eycjur/python_project_template/actions/workflows/static_analysis.yml)
+[![Test](https://github.com/eycjur/python_project_template/actions/workflows/test.yml/badge.svg)](https://github.com/eycjur/python_project_template/actions/workflows/test.yml)
+[![Container Security](https://github.com/eycjur/python_project_template/actions/workflows/container_security.yml/badge.svg)](https://github.com/eycjur/python_project_template/actions/workflows/container_security.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Open in Dev Containers](https://img.shields.io/static/v1?label=Dev%20Containers&message=Open&color=blue&logo=visualstudiocode&style=flat-square)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/eycjur/python_project_template)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/eycjur/python_project_template)
+
 # Python Project Template
 pythonでプロジェクトを作成する際のテンプレートです。
 
