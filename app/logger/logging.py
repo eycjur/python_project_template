@@ -52,6 +52,3 @@ def init_logger() -> None:
 
 
 init_logger()
-
-logger = DefaultLogger(__name__)
-logger.debug(f"environment valiable list: {os.environ}")

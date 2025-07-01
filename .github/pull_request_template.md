@@ -11,9 +11,7 @@ Closes #
 
 
 ## テスト・動作確認
-- [ ] ユニットテストが通ることを確認 / Unit tests pass
-- [ ] E2Eテストが通ることを確認 / E2E tests pass
-- [ ] 手動テストを実施 / Manual testing performed
+- [ ] 手動での動作確認を実施 / Manual testing performed
 
 ### 手動テスト手順 / Manual Testing Steps
 

@@ -1,0 +1,52 @@
+name: Test
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: 'test'
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.13"]
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: set up python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: install dependencies
+        run: uv sync --frozen --no-install-project
+
+      - name: install playwright
+        if: always()
+        run: |
+          uv run playwright install-deps
+          uv run playwright install
+
+      - name: run test
+        if: always()
+        run: |
+          set -o pipefail
+          uv run pytest -sv --cov=app --cov-report=term-missing --junitxml=pytest.xml | tee pytest-coverage.txt
+
+      - name: pytest coverage comment
+        uses: MishaKav/pytest-coverage-comment@v1.1.47
+        with:
+          pytest-coverage-path: ./pytest-coverage.txt
+          junitxml-path: ./pytest.xml

@@ -56,8 +56,9 @@ except Exception as e:
     print(f"Failed to load cloud's .env: {e}")
 
 
-# HACK: CI環境の場合は環境変数がなくてもエラーとしないように、遅延バリデーションとする
-env = Env(eager=RUN_ENV != RunEnv.GITHUB_ACTIONS)
+# HACK: Test/CI環境の場合は環境変数がなくてもエラーとしないように、
+# 遅延バリデーションとする
+env = Env(eager=RUN_ENV not in [RunEnv.TEST, RunEnv.GITHUB_ACTIONS])
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -76,9 +77,9 @@ AWS_DYNAMODB_TABLE_NAME_HISTORIES = env.str("AWS_DYNAMODB_TABLE_NAME_HISTORIES")
 AWS_API_GATEWAY_STAGE_NAME = env.str("AWS_API_GATEWAY_STAGE_NAME")
 
 match RUN_ENV:
-    case RunEnv.LOCAL | RunEnv.TEST:
+    case RunEnv.LOCAL:
         LOGGER_CONFIG_FILE = env.str("LOGGER_CONFIG_FILE_DEFAULT")
-    case RunEnv.GITHUB_ACTIONS:
+    case RunEnv.GITHUB_ACTIONS | RunEnv.TEST:
         LOGGER_CONFIG_FILE = "logger_config_default.yaml"
     case RunEnv.GCP:
         LOGGER_CONFIG_FILE = env.str("LOGGER_CONFIG_FILE_GCP")

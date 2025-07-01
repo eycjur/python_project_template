@@ -1,41 +1,42 @@
-from functools import partial, update_wrapper
-from typing import Any, Callable
-
-from flask import Blueprint
+from flask import Blueprint, redirect, render_template, request
 from injector import Injector
+from werkzeug import Response
 
-from app.presentation.flask.controller.error_controller import error
-from app.presentation.flask.controller.history_controller import history
-from app.presentation.flask.controller.register_controller import (
-    register_get,
-    register_post,
-)
+from app.di import get_injector
+from app.domain.message.message import Message
+from app.usecase.error import ErrorUsecase
+from app.usecase.history import HistoryUsecase
+from app.usecase.register import RegisterUsecase
 
+router = Blueprint("app", __name__)
 
-def wrap_partial(func: Callable, *args: Any, **kwargs: Any) -> partial:
-    """元の関数の情報を保持したまま、引数を固定した関数を返す
-
-    Args:
-        func (Callable): 元の関数
-        *args (Any): 固定する引数
-        **kwargs (Any): 固定する引数
-
-    Returns:
-        partial: 引数が固定された関数
-    """
-    partial_func = partial(func, *args, **kwargs)
-    update_wrapper(partial_func, func)
-    return partial_func
+injector = get_injector()
 
 
-def get_router(injector: Injector) -> Blueprint:
-    router = Blueprint("router", __name__)
+@router.route("/", methods=["GET"])
+@router.route("/home", methods=["GET"])
+def history(injector: Injector = injector) -> str:
+    history_usecase = injector.get(HistoryUsecase)
+    messages = history_usecase.execute()
+    return render_template("history.html", messages=messages)
 
-    # 複数のルートを指定する場合は、以下のように記述する
-    router.route("/", methods=["GET"])(
-        router.route("/home", methods=["GET"])(wrap_partial(history, injector))
-    )
-    router.route("/register", methods=["GET"])(wrap_partial(register_get, injector))
-    router.route("/register", methods=["POST"])(wrap_partial(register_post, injector))
-    router.route("/error", methods=["GET"])(wrap_partial(error, injector))
-    return router
+
+@router.route("/register", methods=["GET"])
+def register_get(injector: Injector = injector) -> str:
+    return render_template("register.html")
+
+
+@router.route("/register", methods=["POST"])
+def register_post(injector: Injector = injector) -> Response:
+    user_input = request.form["user_input"]
+
+    register_usecase = injector.get(RegisterUsecase)
+    register_usecase.execute(Message(user_input))
+    return redirect("home")
+
+
+@router.route("/error", methods=["GET"])
+def error(injector: Injector = injector) -> str:
+    error_usecase = injector.get(ErrorUsecase)
+    result = error_usecase.execute()
+    return render_template("error.html", message=result)
