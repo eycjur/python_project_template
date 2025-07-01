@@ -9,6 +9,7 @@ playwright codegen
 
 import re
 import subprocess
+import sys
 import time
 from typing import Generator
 
@@ -25,7 +26,7 @@ def flask_server() -> Generator[None, None, None]:
     """
     proc = subprocess.Popen(  # noqa: S603
         [
-            "/usr/local/bin/python",
+            sys.executable,  # 現在のPythonインタープリターを使用
             "-m",
             "app.presentation.flask.app",
         ],  # Flaskアプリの起動コマンドに合わせて修正
