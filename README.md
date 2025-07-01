@@ -2,6 +2,7 @@
 [![Static Analysis](https://github.com/eycjur/python_project_template/actions/workflows/static_analysis.yml/badge.svg)](https://github.com/eycjur/python_project_template/actions/workflows/static_analysis.yml)
 [![Test](https://github.com/eycjur/python_project_template/actions/workflows/test.yml/badge.svg)](https://github.com/eycjur/python_project_template/actions/workflows/test.yml)
 [![Container Security](https://github.com/eycjur/python_project_template/actions/workflows/container_security.yml/badge.svg)](https://github.com/eycjur/python_project_template/actions/workflows/container_security.yml)
+[![Container Security](https://github.com/eycjur/python_project_template/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/eycjur/python_project_template/actions/workflows/github-code-scanning/codeql)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/eycjur/python_project_template)
 
