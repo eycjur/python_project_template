@@ -11,7 +11,6 @@ import re
 import subprocess
 import sys
 import time
-from pathlib import Path
 from typing import Generator
 
 import pytest
@@ -34,9 +33,8 @@ def flask_server() -> Generator[None, None, None]:
         "CONTAINER_PORT": "5000",
         "PYTEST_CURRENT_TEST": "1",  # テスト実行中のフラグを設定
     }
-    cwd = Path(__file__).parent.parent.parent
 
-    with subprocess.Popen(command, env=env, cwd=cwd) as proc:  # noqa: S603
+    with subprocess.Popen(command, env=env, text=True) as proc:  # noqa: S603
         time.sleep(2)  # サーバー起動待ち
         try:
             yield
