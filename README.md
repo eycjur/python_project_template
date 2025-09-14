@@ -85,11 +85,11 @@ UIフレームワークによって詳細は異なりますが、FastAPIを利�
 最小限の構成として利用する場合は、以下の手順で不要なファイルを削除してください。
 
 1. `make minimize`を実行
-2. docker-compose.ymlからcredentialsのマウントを削除
-3. app/presentation/のサブディレクトリのうち、不要なフレームワークのディレクトリを削除
-4. .devcontainer/devcontainer.jsonのlaunchの設定のうち、不要なフレームワークの設定を削除
+2. `compose.yml`からcredentialsのマウントを削除
+3. `app/presentation/`のサブディレクトリのうち、不要なフレームワークのディレクトリを削除
+4. `.devcontainer/devcontainer.json`のlaunchの設定のうち、不要なフレームワークの設定を削除
 5. README.mdを編集
-6. クラウド関係の環境変数を.envとapp/settings.pyから削除
+6. クラウド関係の環境変数を`.env`と`app/settings.py`から削除
 
 ## Run Application
 
@@ -97,8 +97,8 @@ UIフレームワークによって詳細は異なりますが、FastAPIを利�
 
 1. `make up`でDocker Composeを起動
 2. http://localhost:<LOCAL_PORT>/ からアプリにアクセス
-3. `make down`でDocker Composeを終了  
-   終了せずにDev Containerを起動すると、docker-compose.override.ymlの内容が上書きされずデバッグが利用できません。
+3. `make down`でDocker Composeを終了
+   終了せずにDev Containerを起動すると、compose.override.ymlの内容が上書きされずデバッグが利用できません。
 
 ## Development
 
@@ -106,8 +106,8 @@ UIフレームワークによって詳細は異なりますが、FastAPIを利�
 
 1. pre-commitをインストール(ex. `pip install pre-commit`)
 2. `pre-commit install`でpre-commitのhookスクリプトを導入
-3. VSCodeでDev Container拡張機能をインストール
-4. コマンドパレット(`Ctrl+Shift+P`)から`Remote-Containers: Reopen in Container`を実行
+3. VS CodeでDev Containers拡張機能をインストール
+4. コマンドパレット(`Ctrl+Shift+P`)から`Dev Containers: Reopen in Container`を実行
 5. (Docker Compose立ち上げ時のみ)拡張機能の依存関係の解決に失敗することがあるので、ウィンドウの再読み込みする
 6. F5でデバッグ実行が可能
 7. http://localhost:<LOCAL_PORT>/ からアプリにアクセス
@@ -216,10 +216,12 @@ make destroy-aws-lambda
 
 Container Appsへのデプロイを実施します
 
+#### 前準備
+
 1. Entra IDのアプリを登録からサービスプリンシパルを登録し、クライアントシークレットを発行する
-2. .envのAZURE_CLIENT_ID,AZURE_CLIENT_SECRETに各値を設定
+2. `.env`のAZURE_CLIENT_ID,AZURE_CLIENT_SECRETに各値を設定
 3. CosmosDBのデータベースとコレクションを作成
-4. サービスプリンシパルにCosmosDBへのアクセス権の付与  
+4. サービスプリンシパルにCosmosDBへのアクセス権の付与
     ```shell
     az cosmosdb sql role assignment create \
     --account-name <CosmosDBのアカウント名> \
@@ -227,9 +229,17 @@ Container Appsへのデプロイを実施します
     --scope "/" \
     --principal-id <EntraIDのエンタープライズアプリケーションの該当アプリケーション（サービスプリンシパル）のオブジェクトID> \
     --role-definition-id <ロールid=00000000-0000-0000-0000-000000000002>
-   ```   
+   ```
     cf. https://learn.microsoft.com/ja-jp/azure/cosmos-db/how-to-setup-rbac
-5. `make deploy-azure`でContainer Appsにデプロイ
-6. (オプション)Application Insightsを作成
-7. (オプション)Application Insightsなどの監視/ログからアラートを設定  
+
+#### デプロイ
+
+```bash
+make deploy-azure
+```
+
+#### 後処理
+
+1. (オプション)Application Insightsを作成
+2. (オプション)Application Insightsなどの監視/ログからアラートを設定
   cf. https://yotiky.hatenablog.com/entry/azure_exceptionsalert
