@@ -18,6 +18,7 @@
       "cwd": "${workspaceFolder}",
       "console": "internalConsole",
       "justMyCode": false
+      // "stopOnEntry": false
     },
     {
       "name": "CLI: コマンドを実行",

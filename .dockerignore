@@ -1,3 +1,4 @@
+# cf. https://docs.docker.com/build/concepts/context/#dockerignore-files
 .venv/
 **/__pycache__/
 .DS_Store
